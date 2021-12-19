@@ -20,14 +20,14 @@ Rakamlar ve rakamlara benzeyen harflerin eşleşmesi aşağıdaki gibi:
 
 Kendimce bu eşleştirme listesini kullanarak ortaya çıkabilecek tüm kelimelerle bir oyun yazmaya karar verdim. Bunun için Unity oyun motorunu kullandım.
 
-Oyunda 3 harfliden 9 harfli kelimelere kadar kelime listeleri bulunuyor.
-Harf miktarı seviyeyi ifade ediyor. Örneğin: birinci seviye üç harfli, ikinci seviye dört harfli gibi.
-Her seviye için can azalma, seviye bitimi can kazanma, puan alma, süre azalma, süre kazanma gibi özellikler tanımladım.
-Oyuna internetten ücretsiz bir şekilde bulduğum ses dosyaları ekledim.
-Bir tween eklentisi olan LeanTween ile ufak bir animasyon yaptım.
-Oyundaki yüksek skorların kaydedilebilmesini sağladım.
-Dört adet tema renk seçeneği ekledim.
-İki adet dil seçeneği ekledim. Dil seçimine göre kelimeler de değişiyor.
+- Oyunda 3 harfliden 9 harfli kelimelere kadar kelime listeleri bulunuyor.
+- Harf miktarı seviyeyi ifade ediyor. Örneğin: birinci seviye üç harfli, ikinci seviye dört harfli gibi.
+- Her seviye için can azalma, seviye bitimi can kazanma, puan alma, süre azalma, süre kazanma gibi özellikler tanımladım.
+- Oyuna internetten ücretsiz bir şekilde bulduğum ses dosyaları ekledim.
+- Bir tween eklentisi olan LeanTween ile ufak bir animasyon yaptım.
+- Oyundaki yüksek skorların kaydedilebilmesini sağladım.
+- Dört adet tema renk seçeneği ekledim.
+- İki adet dil seçeneği ekledim. Dil seçimine göre kelimeler de değişiyor.
 
 Oyunda kullandığım eklentiler:
 LeanTween, Newtonsoft Json 
