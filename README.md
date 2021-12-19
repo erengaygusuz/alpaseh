@@ -1,2 +1,2 @@
-# alpaseh
+# ALPASEH
 Extraordinary Word Game
