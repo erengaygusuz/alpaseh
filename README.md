@@ -7,16 +7,16 @@ Bir gün bu şekilde kaç tane kelime yazılır diye merak ettim. İnternetten i
 
 Rakamlar ve rakamlara benzeyen harflerin eşleşmesi aşağıdaki gibi:
 
-0: o, O
-1: ı, I, i
-2: z, Z
-3: e, E
-4: h, H
-5: s, S
-6: g
-7: l, L
-8: b, B
-9: G
+- 0: o, O
+- 1: ı, I, i
+- 2: z, Z
+- 3: e, E
+- 4: h, H
+- 5: s, S
+- 6: g
+- 7: l, L
+- 8: b, B
+- 9: G
 
 Kendimce bu eşleştirme listesini kullanarak ortaya çıkabilecek tüm kelimelerle bir oyun yazmaya karar verdim. Bunun için Unity oyun motorunu kullandım.
 
