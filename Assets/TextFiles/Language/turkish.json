@@ -1,0 +1,99 @@
+{
+    "Intro": {
+        "UsernameLabel": "Kullanıcı Adı",
+        "UsernameInputFieldPlaceholder": "Kullanıcı Adı Giriniz...",
+        "LanguageLabel": "Dil",
+        "NextButtonText": "İleri",
+        "MessageBoxInfoText": "Lütfen geçerli bir kullanıcı adı giriniz!!",
+        "MessageBoxOkButtonText": "Tamam"
+
+    },
+    "MainMenu": {
+        "StartGameButtonText": "Başla",
+        "HowToPlayButtonText": "Nasıl Oynanır?",
+        "SettingsButtonText": "Ayarlar",
+        "HighScoresButtonText": "Yüksek Skorlar",
+        "CreditsButtonText": "Hazırlayanlar",
+        "ExitButtonText": "Çıkış"
+    },
+    "HowToPlay": {
+        "InfoPanelInfo1Text": "Sen de küçükken hesap makinesini kullanmayı sever miydin? \n\n Ben çok severdim. Hatta o kadar severdim ki, hesap makinesiyle oyun bile türetirdim. \n\n Bir gün hesap makinesinin rakamlarını kullanarak bir kelime türettim. Türettiğim kelime Leblebi'di. \n\n Daha doğrusu rakamlarla oluşturduğum şey Leblebi kelimesine benziyordu.",
+        "InfoPanelInfo2Text1": "Çoğu hesap makinesinin rakamları aşağıdaki gibidir.",
+        "InfoPanelInfo2Text2": "Rakamları saat yönünde 180 derece çevirdiğimizde harflere benzediğini fark etmişsindir.",
+        "InfoPanelInfo3Text": "Rakamlarla rakamlara benzeyen harflerin eşleşmesi aşağıdaki gibidir.",
+        "InfoPanelInfo3ButtonSetNumber0Text": " = O",
+        "InfoPanelInfo3ButtonSetNumber1Text": " = I veya i",
+        "InfoPanelInfo3ButtonSetNumber2Text": " = Z",
+        "InfoPanelInfo3ButtonSetNumber3Text": " = E",
+        "InfoPanelInfo3ButtonSetNumber4Text": " = H",
+        "InfoPanelInfo3ButtonSetNumber5Text": " = S",
+        "InfoPanelInfo3ButtonSetNumber6Text": " = g",
+        "InfoPanelInfo3ButtonSetNumber7Text": " = L",
+        "InfoPanelInfo3ButtonSetNumber8Text": " = B",
+        "InfoPanelInfo3ButtonSetNumber9Text": " = G",
+        "InfoPanelInfo4Text": "Bu şekilde rakamları kullanarak aşağıdaki gibi leblebi adlı kelimeyi türetebiliriz.",
+        "InfoPanelInfo4ButtonSetNumber1Text": " = I",
+        "InfoPanelInfo4ButtonSetNumber3Text": " = E",
+        "InfoPanelInfo4ButtonSetNumber7Text": " = L",
+        "InfoPanelInfo4ButtonSetNumber8Text": " = B",
+        "InfoPanelInfo5Text1": "Şimdi hazırsan Ana Menü butonuna tıkla ve oyunu oynamaya başla.",
+        "InfoPanelInfo5Text2": "Oyunu oynarken kelimeler zorlaştıkça süren de azalacak unutma.",
+        "InfoPanelInfo5Text3": "İyi Şanslar",
+        "MainMenuButtonText": "Ana Menü"
+    },
+    "Settings": {
+        "GeneralTabText": "Genel",
+        "PersonalTabText": "Kişisel",
+        "GeneralContentAudioLabel": "Ses Seviyesi",
+        "GeneralContentThemesLabel": "Temalar",
+        "PersonalContentUsernameLabel": "Kullanıcı Adı",
+        "PersonalContentUsernameInputFieldPlaceholder": "Kullanıcı adınızı giriniz...",
+        "PersonalContentLanguageLabel": "Dil",
+        "MainMenuButtonText": "Ana Menü"
+    },
+    "HighScores": {
+        "ScoreLabelsUsernameText": "Kullanıcı Adı",
+        "ScoreLabelsScoreText": "Skor",
+        "MessageBox1InfoText": "Tüm skor kayıtlarını silmek \n istediğinize emin misiniz?",
+        "MessageBox1YesButtonText": "Evet",
+        "MessageBox1NoButtonText": "Hayır",
+        "MessageBox2InfoText": "Tüm skor kayıtları silindi.",
+        "MessageBox2OkButtonText": "Tamam",
+        "MessageBox3InfoText": "Silinecek herhangi bir kayıt yok.",
+        "MessageBox3OkButtonText": "Tamam",
+        "MainMenuButtonText": "Ana Menü",
+        "DeleteAllButtonText": "Tümünü Sil"
+    },
+    "Credits": {
+        "CompanyText": "FTR GAMES",
+        "DeveloperText": "Geliştirici",
+        "VersionText": "Versiyon ",
+        "MainMenuButtonText": "Ana Menü"
+    },
+    "Game": {
+        "TopBarTotalTimeText": "Zaman",
+        "TopBarTotalLifeText": "Can",
+        "TopBarActiveLevelText": "Seviye",
+        "TopBarTotalScoreText": "Skor",
+        "ProcessButtonsCheckButtonText": "Kontrol",
+        "ProcessButtonsDeleteButtonText": "Sil",
+        "ProcessButtonsMainMenuButtonText": "Ana Menü",
+        "GameOverPanelInfoText": "Oyun Bitti",
+        "GameOverPanelPlayAgainButtonText": "Tekrar Oyna",
+        "GameOverPanelMainMenuButtonText": "Ana Menü",
+        "GameOverPanelExitGameButtonText": "Oyundan Çık",
+        "GameOverPanelMessageBox1InfoText": "Yüksek bir skora ulaştınız. \n Kaydetmek ister misiniz?",
+        "GameOverPanelMessageBox1YesBtnText": "Evet",
+        "GameOverPanelMessageBox1NoBtnText": "Hayır",
+        "GameOverPanelMessageBox2InfoText": "Skorunuz kaydedildi.",
+        "GameOverPanelMessageBox2OkBtnText": "Tamam"
+    },
+    "Language": [
+        {
+            "Name": "İngilizce"
+        },
+        {
+            "Name": "Türkçe"
+        }
+    ]
+}

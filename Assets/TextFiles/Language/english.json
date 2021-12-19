@@ -1,0 +1,99 @@
+{
+    "Intro": {
+        "UsernameLabel": "Username",
+        "UsernameInputFieldPlaceholder": "Enter Username...",
+        "LanguageLabel": "Language",
+        "NextButtonText": "Next",
+        "MessageBoxInfoText": "Please enter a valid username!!",
+        "MessageBoxOkButtonText": "Ok"
+
+    },
+    "MainMenu": {
+        "StartGameButtonText": "Start Game",
+        "HowToPlayButtonText": "How To Play?",
+        "SettingsButtonText": "Settings",
+        "HighScoresButtonText": "High Scores",
+        "CreditsButtonText": "Credits",
+        "ExitButtonText": "Exit"
+    },
+    "HowToPlay": {
+        "InfoPanelInfo1Text": "Did you like to use the calculator when you were little? \n\n I loved it. In fact, I loved it so much that I even created a game with a calculator. \n\n One day I derived a word using the numbers of a calculator. The word I derived was Chickpea. \n\n More precisely, the thing I created with numbers was similar to the word Chickpea.",
+        "InfoPanelInfo2Text1": "The digits of most calculators are as follows.",
+        "InfoPanelInfo2Text2": "You may have noticed that when we rotate the numbers 180 degrees clockwise, they look like letters.",
+        "InfoPanelInfo3Text": "The matching of numbers with letters that look like numbers is as follows.",
+        "InfoPanelInfo3ButtonSetNumber0Text": " = O",
+        "InfoPanelInfo3ButtonSetNumber1Text": " = I or i",
+        "InfoPanelInfo3ButtonSetNumber2Text": " = Z",
+        "InfoPanelInfo3ButtonSetNumber3Text": " = E",
+        "InfoPanelInfo3ButtonSetNumber4Text": " = H",
+        "InfoPanelInfo3ButtonSetNumber5Text": " = S",
+        "InfoPanelInfo3ButtonSetNumber6Text": " = g",
+        "InfoPanelInfo3ButtonSetNumber7Text": " = L",
+        "InfoPanelInfo3ButtonSetNumber8Text": " = B",
+        "InfoPanelInfo3ButtonSetNumber9Text": " = G",
+        "InfoPanelInfo4Text": "In this way, we can derive the word chickpea using numbers as follows.",
+        "InfoPanelInfo4ButtonSetNumber1Text": " = I",
+        "InfoPanelInfo4ButtonSetNumber3Text": " = E",
+        "InfoPanelInfo4ButtonSetNumber7Text": " = L",
+        "InfoPanelInfo4ButtonSetNumber8Text": " = B",
+        "InfoPanelInfo5Text1": "Now if you are ready click the Main Menu button and start playing the game.",
+        "InfoPanelInfo5Text2": "While playing the game, don't forget that the time will decrease as the words get harder.",
+        "InfoPanelInfo5Text3": "Good luck",
+        "MainMenuButtonText": "Main Menu"
+    },
+    "Settings": {
+        "GeneralTabText": "General",
+        "PersonalTabText": "Personal",
+        "GeneralContentAudioLabel": "Audio Level",
+        "GeneralContentThemesLabel": "Themes",
+        "PersonalContentUsernameLabel": "Username",
+        "PersonalContentUsernameInputFieldPlaceholder": "Enter Username...",
+        "PersonalContentLanguageLabel": "Language",
+        "MainMenuButtonText": "Main Menu"
+    },
+    "HighScores": {
+        "ScoreLabelsUsernameText": "Username",
+        "ScoreLabelsScoreText": "Score",
+        "MessageBox1InfoText": "Are you sure you want to \n delete all score records?",
+        "MessageBox1YesButtonText": "Yes",
+        "MessageBox1NoButtonText": "No",
+        "MessageBox2InfoText": "All score records are deleted.",
+        "MessageBox2OkButtonText": "Ok",
+        "MessageBox3InfoText": "There is no record to delete.",
+        "MessageBox3OkButtonText": "Ok",
+        "MainMenuButtonText": "Main Menu",
+        "DeleteAllButtonText": "Delete All"
+    },
+    "Credits": {
+        "CompanyText": "FTR GAMES",
+        "DeveloperText": "Developer",
+        "VersionText": "Version ",
+        "MainMenuButtonText": "Main Menu"
+    },
+    "Game": {
+        "TopBarTotalTimeText": "Time",
+        "TopBarTotalLifeText": "Life",
+        "TopBarActiveLevelText": "Level",
+        "TopBarTotalScoreText": "Score",
+        "ProcessButtonsCheckButtonText": "Control",
+        "ProcessButtonsDeleteButtonText": "Delete",
+        "ProcessButtonsMainMenuButtonText": "Main Menu",
+        "GameOverPanelInfoText": "Game Over",
+        "GameOverPanelPlayAgainButtonText": "Play Again",
+        "GameOverPanelMainMenuButtonText": "Main Menu",
+        "GameOverPanelExitGameButtonText": "Exit",
+        "GameOverPanelMessageBox1InfoText": "You have reached a high score. \n Do you want to save it?",
+        "GameOverPanelMessageBox1YesBtnText": "Yes",
+        "GameOverPanelMessageBox1NoBtnText": "No",
+        "GameOverPanelMessageBox2InfoText": "Your score has been saved.",
+        "GameOverPanelMessageBox2OkBtnText": "Ok"
+    },
+    "Language": [
+        {
+            "Name": "English"
+        },
+        {
+            "Name": "Turkish"
+        }
+    ]
+}
