@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using FTRGames.Alpaseh.Model;
+using Newtonsoft.Json.Linq;
+using System.Text;
 
 namespace FTRGames.Alpaseh.Core
 {
@@ -41,9 +43,27 @@ namespace FTRGames.Alpaseh.Core
 
         private void SetLocalizationData(int selectedLanguageIndex)
         {
-            Localization tempLocal = JsonConvert.DeserializeObject<Localization>(languageFiles[selectedLanguageIndex].text);
+            JObject rss = JObject.Parse(languageFiles[selectedLanguageIndex].text);
 
-            LocalizationDatas.Add(tempLocal);
+            var introLocal = rss["Intro"].ToObject<Intro>();
+            var mainMenuLocal = rss["MainMenu"].ToObject<MainMenu>();
+            var howToPlayLocal = rss["HowToPlay"].ToObject<HowToPlay>();
+            var settingsLocal = rss["Settings"].ToObject<Settings>();
+            var highScoresLocal = rss["HighScores"].ToObject<HighScores>();
+            var creditsLocal = rss["Credits"].ToObject<Credits>();
+            var gameLocal = rss["Game"].ToObject<Game>();
+            var languageLocal = ((JArray)rss["Language"]).ToObject<List<Language>>().ToArray();
+
+            LocalizationDatas.Add(new Localization { 
+                Intro = introLocal,
+                MainMenu = mainMenuLocal,
+                HowToPlay = howToPlayLocal,
+                Settings = settingsLocal,
+                HighScores = highScoresLocal,
+                Credits = creditsLocal,
+                Game = gameLocal,
+                Language = languageLocal
+            });
         }
 
         public Localization GetLocalizationData()

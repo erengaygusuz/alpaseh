@@ -3,7 +3,7 @@ using System;
 namespace FTRGames.Alpaseh.Model
 {
     [Serializable]
-    public struct Language
+    public class Language
     {
         public string Name { get; set; }
     }

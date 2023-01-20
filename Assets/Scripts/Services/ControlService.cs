@@ -12,8 +12,6 @@ public class ControlService
 
     public void CheckKeys()
     {
-        PlayerPrefs.DeleteAll();
-
         if (PlayerPrefs.HasKey("Alpaseh-Username") && PlayerPrefs.HasKey("Alpaseh-Language"))
         {
             SceneManager.LoadScene("MainMenu");

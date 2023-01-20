@@ -134,7 +134,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.1.14
+  bundleVersion: 0.2.16
   preloadedAssets:
   - {fileID: 11400000, guid: 122e767345ba343448ee169c56a5e69b, type: 2}
   metroInputSource: 0
@@ -161,7 +161,7 @@ PlayerSettings:
     iPhone: 0
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 14
+  AndroidBundleVersionCode: 16
   AndroidMinSdkVersion: 19
   AndroidTargetSdkVersion: 31
   AndroidPreferredInstallLocation: 0
@@ -169,7 +169,7 @@ PlayerSettings:
   stripEngineCode: 1
   iPhoneStrippingLevel: 0
   iPhoneScriptCallOptimization: 0
-  ForceInternetPermission: 0
+  ForceInternetPermission: 1
   ForceSDCardPermission: 0
   CreateWallpaper: 0
   APKExpansionFiles: 0
@@ -248,7 +248,7 @@ PlayerSettings:
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: '{inproject}: Assets/TextFiles/Keystore/FTRGames.keystore'
+  AndroidKeystoreName: E:/DocumentFiles/[2]_Other/Keystore/FTRGames.keystore
   AndroidKeyaliasName: fotbiler
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 1
@@ -671,7 +671,7 @@ PlayerSettings:
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
-    Android: 0
+    Android: 1
   il2cppCompilerConfiguration: {}
   managedStrippingLevel:
     Android: 1
