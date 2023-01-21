@@ -47,15 +47,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d90719134bb58f1478c12ca838444e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenuAudio: {fileID: 8300000, guid: 14cbc79c06e109340a3321f8fb7e079b, type: 3}
-  gameSceneAudio: {fileID: 8300000, guid: fa5556dc3f64f764793dc23ffcab06e2, type: 3}
+  mainMenuAudio: {fileID: 8300000, guid: a55c6a6303c5fcb4ab706002e7800073, type: 3}
+  gameSceneAudio: {fileID: 8300000, guid: d5625ebe36e38fe428462458d24ce781, type: 3}
   loopAudioSource: {fileID: 4795191860781526054}
-  wrongAnswerAudio: {fileID: 8300000, guid: bde4d4a15a1a9f0419678599a67b524a, type: 3}
-  correctAnswerAudio: {fileID: 8300000, guid: ec0b7a5b72d4bd84a98eb93997f2ef60, type: 3}
+  wrongAnswerAudio: {fileID: 8300000, guid: 31f11930f644d1e499cff6e351b90aee, type: 3}
+  correctAnswerAudio: {fileID: 8300000, guid: 50e97e68587997141bf5d14010878df9, type: 3}
   answerAudioSource: {fileID: 4795191859490338077}
-  timeTickAudio: {fileID: 8300000, guid: aa673e9f2fd2e2642b541fd0c12b8524, type: 3}
+  timeTickAudio: {fileID: 8300000, guid: 71bded6892befd34d9cf0487ce8c439d, type: 3}
   timeTickAudioSource: {fileID: 4795191859976729463}
-  gameOverAudio: {fileID: 8300000, guid: d40da443fe4252d4bb5d32714ec8fef7, type: 3}
+  gameOverAudio: {fileID: 8300000, guid: edeb27a0e4bcf9d4ba8c8433a02be64c, type: 3}
   gameOverAudioSource: {fileID: 4795191859665686638}
 --- !u!1 &4795191859490338079
 GameObject:
