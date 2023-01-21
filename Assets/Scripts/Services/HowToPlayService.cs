@@ -5,37 +5,35 @@ namespace FTRGames.Alpaseh.Services
 {
     public class HowToPlayService
     {
-        private readonly HowToPlayView howToPlayView;
         private readonly LocalizationService localizationService;
 
         private int activeInfoIndex;
 
-        public HowToPlayService(HowToPlayView howToPlayView, LocalizationService localizationService)
+        public HowToPlayService(LocalizationService localizationService)
         {
-            this.howToPlayView = howToPlayView;
             this.localizationService = localizationService;
         }
 
-        public void Initialization()
+        public void Initialization(HowToPlayView howToPlayView)
+        {
+            InitActiveInfoIndex();
+            ActivateNavigationButtons(howToPlayView);
+            ActivateInfo(howToPlayView, activeInfoIndex);
+            AssignTranslatedValues(howToPlayView);
+        }
+
+        private void InitActiveInfoIndex()
+        {
+            activeInfoIndex = 0;
+        }
+
+        private void ActivateNavigationButtons(HowToPlayView howToPlayView)
         {
             howToPlayView.leftArrow.SetActive(false);
             howToPlayView.rightArrow.SetActive(true);
-            activeInfoIndex = 0;
-            ActivateInfo(activeInfoIndex);
-
-            UIEventBinding();
-
-            AssignTranslatedValues();
         }
 
-        private void UIEventBinding()
-        {
-            howToPlayView.leftArrowButton.onClick.AddListener(LeftArrowBtnClick);
-            howToPlayView.rightArrowButton.onClick.AddListener(RightArrowBtnClick);
-            howToPlayView.mainMenuButton.onClick.AddListener(GoToMainMenuBtnClick);
-        }
-
-        private void ActivateInfo(int index)
+        private void ActivateInfo(HowToPlayView howToPlayView, int index)
         {
             for (int i = 0; i < howToPlayView.infos.Length; i++)
             {
@@ -50,7 +48,7 @@ namespace FTRGames.Alpaseh.Services
             howToPlayView.infos[index].SetActive(true);
         }
 
-        private void LeftArrowBtnClick()
+        public void LeftArrowBtnClick(HowToPlayView howToPlayView)
         {
             activeInfoIndex--;
 
@@ -64,10 +62,10 @@ namespace FTRGames.Alpaseh.Services
                 howToPlayView.leftArrow.SetActive(false);
             }
 
-            ActivateInfo(activeInfoIndex);
+            ActivateInfo(howToPlayView, activeInfoIndex);
         }
 
-        private void RightArrowBtnClick()
+        public void RightArrowBtnClick(HowToPlayView howToPlayView)
         {
             activeInfoIndex++;
 
@@ -81,15 +79,15 @@ namespace FTRGames.Alpaseh.Services
                 howToPlayView.rightArrow.SetActive(false);
             }
 
-            ActivateInfo(activeInfoIndex);
+            ActivateInfo(howToPlayView, activeInfoIndex);
         }
 
-        private void GoToMainMenuBtnClick()
+        public void GoToMainMenuBtnClick(HowToPlayView howToPlayView)
         {
             SceneManager.LoadScene("MainMenu");
         }
 
-        private void AssignTranslatedValues()
+        private void AssignTranslatedValues(HowToPlayView howToPlayView)
         {
             howToPlayView.infoPanelInfo1Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo1Text;
             howToPlayView.infoPanelInfo2Text1.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo2Text1;

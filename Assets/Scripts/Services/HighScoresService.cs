@@ -13,12 +13,16 @@ namespace FTRGames.Alpaseh.Services
 
         public HighScoresService(LocalizationService localizationService, ScoreService scoreService)
         {
-            
             this.localizationService = localizationService;
             this.scoreService = scoreService;
         }
 
-        public void GetAllScoreList(HighScoresView highScoresView, Func<GameObject> scoreListFactory)
+        public void Initialization(HighScoresView highScoresView, Func<GameObject> scoreListFactory)
+        {
+            GetAllScoreList(highScoresView, scoreListFactory);
+        }
+
+        private void GetAllScoreList(HighScoresView highScoresView, Func<GameObject> scoreListFactory)
         {
             for (int i = 0; i < scoreService.GetScoreList().Count; i++)
             {

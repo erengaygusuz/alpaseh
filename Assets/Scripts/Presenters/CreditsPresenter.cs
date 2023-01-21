@@ -19,8 +19,7 @@ namespace FTRGames.Alpaseh.Presenters
 
         void IStartable.Start()
         {
-            creditsService.UIReferenceInit(creditsView);
-            creditsService.AssignTranslatedValues(creditsView, localizationService);
+            creditsService.Initialization(creditsView, localizationService);
 
             EventBinding();
         }

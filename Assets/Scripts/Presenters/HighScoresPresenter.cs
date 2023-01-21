@@ -26,7 +26,7 @@ namespace FTRGames.Alpaseh.Presenters
         {
             scoreService.Initialization();
 
-            highScoresService.GetAllScoreList(highScoresView, scoreListFactory);
+            highScoresService.Initialization(highScoresView, scoreListFactory);
 
             EventBinding();
         }
