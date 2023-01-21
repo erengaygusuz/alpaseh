@@ -3,7 +3,7 @@ using VContainer.Unity;
 
 namespace FTRGames.Alpaseh.Presenters
 {
-    public class GamePresenter : ITickable, IStartable
+    public class GamePresenter : IStartable, ITickable
     {
         private readonly GameService gameService;
         private readonly ScoreService scoreService;

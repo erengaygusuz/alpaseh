@@ -16,7 +16,7 @@ namespace FTRGames.Alpaseh.Models
 
         private List<Letter> IdentifiedLetters(char[] identifiedLetters)
         {
-            List<Letter> letters = new List<Letter>();
+            var letters = new List<Letter>();
 
             for (int i = 0; i < identifiedLetters.Length; i = i + 2)
             {
@@ -32,21 +32,21 @@ namespace FTRGames.Alpaseh.Models
 
         private void AddWordsToList(string[] wordList, int wordSize, List<Letter> selectedLetters)
         {
-            int count = 0;
+            var count = 0;
 
-            List<string> tempList = new List<string>();
+            var tempList = new List<string>();
 
             for (int i = 0; i < wordList.Length; i++)
             {
-                bool isSuitableWord = false;
+                var isSuitableWord = false;
 
                 var selectedWord = wordList[i].Substring(0, wordList[i].Length - 1);
 
-                int selectedWordListCount = selectedWord.Length;
+                var selectedWordListCount = selectedWord.Length;
 
                 if (selectedWordListCount == wordSize)
                 {
-                    int wordLetterCount = 0;
+                    var wordLetterCount = 0;
 
                     for (int k = 0; k < selectedWordListCount; k++)
                     {
