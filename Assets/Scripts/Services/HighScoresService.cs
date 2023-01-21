@@ -8,47 +8,29 @@ namespace FTRGames.Alpaseh.Services
 {
     public class HighScoresService
     {
-        private readonly HighScoresView highScoresView;
         private readonly LocalizationService localizationService;
         private readonly ScoreService scoreService;
 
-        public HighScoresService(HighScoresView highScoresView, LocalizationService localizationService, ScoreService scoreService)
+        public HighScoresService(LocalizationService localizationService, ScoreService scoreService)
         {
-            this.highScoresView = highScoresView;
+            
             this.localizationService = localizationService;
             this.scoreService = scoreService;
         }
 
-        public void Initialization(Func<GameObject> scoreListFactory)
-        {
-            UIEventBinding();
-            AssignTranslatedValues();
-            GetAllScoreList(scoreListFactory);
-        }
-
-        private void UIEventBinding()
-        {
-            highScoresView.mainMenuButton.onClick.AddListener(GoToMainMenuBtnClick);
-            highScoresView.deleteAllRecordsButton.onClick.AddListener(DeleteAllScoresBtnClick);
-            highScoresView.infoPanelYesButton.onClick.AddListener(InfoPanelYesBtnClick);
-            highScoresView.infoPanelNoButton.onClick.AddListener(InfoPanelNoBtnClick);
-            highScoresView.infoPanelOk1Button.onClick.AddListener(InfoPanelOkBtnClick);
-            highScoresView.infoPanelOk2Button.onClick.AddListener(InfoPanelOkBtnClick);
-        }
-
-        private void GetAllScoreList(Func<GameObject> scoreListFactory)
+        public void GetAllScoreList(HighScoresView highScoresView, Func<GameObject> scoreListFactory)
         {
             for (int i = 0; i < scoreService.GetScoreList().Count; i++)
             {
-                AddAScoreToScoreListContent(scoreListFactory, i, scoreService.GetScoreList()[i].Username, scoreService.GetScoreList()[i].Score);
+                AddAScoreToScoreListContent(highScoresView, scoreListFactory, i, scoreService.GetScoreList()[i].Username, scoreService.GetScoreList()[i].Score);
             }
         }
 
-        private void AddAScoreToScoreListContent(Func<GameObject> scoreListFactory, int index, string username, int score)
+        private void AddAScoreToScoreListContent(HighScoresView highScoresView, Func<GameObject> scoreListFactory, int index, string username, int score)
         {
             highScoresView.ScoreListRow.SetActive(true);
 
-            GameObject tempScoreObject = scoreListFactory.Invoke(); //GameObject.Instantiate(highScoresView.ScoreListRow.transform).gameObject;
+            GameObject tempScoreObject = scoreListFactory.Invoke();
 
             tempScoreObject.transform.GetChild(0).GetComponent<Text>().text = (index + 1).ToString();
             tempScoreObject.transform.GetChild(1).GetComponent<Text>().text = username;
@@ -62,7 +44,7 @@ namespace FTRGames.Alpaseh.Services
             highScoresView.ScoreListRow.SetActive(false);
         }
 
-        private void DeleteAllScoresFromScoreListContent()
+        public void DeleteAllScoresFromScoreListContent(HighScoresView highScoresView)
         {
             for (int i = 0; i < highScoresView.ScoreListContent.transform.childCount; i++)
             {
@@ -70,7 +52,7 @@ namespace FTRGames.Alpaseh.Services
             }
         }
 
-        private void DeleteAllScoresBtnClick()
+        public void DeleteAllScoresBtnClick(HighScoresView highScoresView)
         {
             highScoresView.infoPanel.SetActive(true);
 
@@ -89,22 +71,22 @@ namespace FTRGames.Alpaseh.Services
             }
         }
 
-        private void InfoPanelYesBtnClick()
+        public void InfoPanelYesBtnClick(HighScoresView highScoresView)
         {
             highScoresView.infoPanel.transform.GetChild(0).gameObject.SetActive(false);
             highScoresView.infoPanel.transform.GetChild(1).gameObject.SetActive(true);
 
             scoreService.DeleteAllScoresFromTheList();
 
-            DeleteAllScoresFromScoreListContent();
+            DeleteAllScoresFromScoreListContent(highScoresView);
         }
 
-        private void InfoPanelNoBtnClick()
+        public void InfoPanelNoBtnClick(HighScoresView highScoresView)
         {
             highScoresView.infoPanel.SetActive(false);
         }
 
-        private void InfoPanelOkBtnClick()
+        public void InfoPanelOkBtnClick(HighScoresView highScoresView)
         {
             highScoresView.infoPanel.transform.GetChild(0).gameObject.SetActive(true);
             highScoresView.infoPanel.transform.GetChild(1).gameObject.SetActive(false);
@@ -112,12 +94,12 @@ namespace FTRGames.Alpaseh.Services
             highScoresView.infoPanel.SetActive(false);
         }
 
-        private void GoToMainMenuBtnClick()
+        public void GoToMainMenuBtnClick()
         {
             SceneManager.LoadScene("MainMenu");
         }
 
-        private void AssignTranslatedValues()
+        public void AssignTranslatedValues(HighScoresView highScoresView)
         {
             highScoresView.scoreLabelsUsernameText.text = localizationService.GetLocalizationData().HighScores.ScoreLabelsUsernameText;
             highScoresView.scoreLabelsScoreText.text = localizationService.GetLocalizationData().HighScores.ScoreLabelsScoreText;

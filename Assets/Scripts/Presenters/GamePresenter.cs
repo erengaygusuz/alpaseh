@@ -32,6 +32,7 @@ namespace FTRGames.Alpaseh.Presenters
             wordParserService.Initialization();
             wordNumberConverterService.Initialization();
             levelService.Initialization();
+
             gameService.Initialization(audioView, levelService, gameView);
 
             EventBinding();
