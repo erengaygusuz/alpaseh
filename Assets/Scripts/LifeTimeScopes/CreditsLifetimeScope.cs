@@ -1,4 +1,5 @@
 using FTRGames.Alpaseh.Presenters;
+using FTRGames.Alpaseh.Services;
 using FTRGames.Alpaseh.Views;
 using UnityEngine;
 using VContainer;
@@ -14,6 +15,8 @@ namespace FTRGames.Alpaseh.LifeTimeScopes
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterEntryPoint<CreditsPresenter>();
+
+            builder.Register<CreditsService>(Lifetime.Scoped);
 
             builder.RegisterComponent(creditsView);
         }

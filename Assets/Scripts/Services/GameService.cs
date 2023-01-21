@@ -9,13 +9,8 @@ namespace FTRGames.Alpaseh.Services
 {
     public class GameService 
     {
-        private readonly GameView gameView;
-        private readonly AudioView audioView;
         private readonly AudioService audioService;
-        private readonly WordParserService wordParserService;
         private readonly LocalizationService localizationService;
-        private readonly LevelService levelService;
-        private readonly WordNumberConverterService wordNumberConverterService;
         private readonly TweenService tweenService;
         private readonly ScoreService scoreService;
 
@@ -27,96 +22,72 @@ namespace FTRGames.Alpaseh.Services
 
         private bool isGameOver;
 
-        private bool isWaitForTimeTick;
+        private bool isWaitedForTimeTick;
 
         public bool IsGotoMainMenuBtnClick;
 
-        public GameService(AudioService audioService, WordParserService wordParserService, LocalizationService localizationService, LevelService levelService, 
-            WordNumberConverterService wordNumberConverterService, GameView gameView, AudioView audioView, TweenService tweenService, ScoreService scoreService)
+        public GameService(AudioService audioService, LocalizationService localizationService, TweenService tweenService, ScoreService scoreService)
         {
             this.audioService = audioService;
-            this.wordParserService = wordParserService;
             this.localizationService = localizationService;
-            this.levelService = levelService;
-            this.wordNumberConverterService = wordNumberConverterService;
-            this.gameView = gameView;
-            this.audioView = audioView;
             this.tweenService = tweenService;
             this.scoreService = scoreService;
         }
 
-        public void Initialization()
+        public void Initialization(AudioView audioView, LevelService levelService, GameView gameView)
         {
-            UIEventBinding();
-            wordParserService.Initialization();
-            wordNumberConverterService.Initialization();
-            levelService.Initialization();
+            GameOverEventInit();
+            InitLifeAndTime();
+            InitGameUI(gameView, levelService);
 
+            GetActiveQuestionText(levelService, gameView);
+
+            PlayAmbienceSound(audioView);
+            PlayTimeTickSound();
+
+            AssignTranslatedValues(gameView);
+        }
+
+        #region Sound Functions
+
+        private void PlayTimeTickSound()
+        {
+            isWaitedForTimeTick = true;
+        }
+
+        private void PlayAmbienceSound(AudioView audioView)
+        {
+            audioService.StopAudio(audioView.loopAudioSource);
+            audioService.PlayGameSceneAudio();
+        }
+
+        #endregion
+
+        private void InitGameUI(GameView gameView, LevelService levelService)
+        {
             gameView.enteredNumberWordText.text = "";
-            totalLife = 6;
-            totalTime = 1200;
+
             gameView.totalTimeText.text = Mathf.Round(totalTime).ToString();
             gameView.totalLifeText.text = totalLife.ToString("F2");
             gameView.totalScoreText.text = totalScore.ToString();
             gameView.activeLevelText.text = (levelService.ActiveLevelIndex + 1).ToString();
-
-            GameOverEventBinding();
-            GetActiveQuestionText();
-
-            audioService.StopAudio(audioView.loopAudioSource);
-            audioService.PlayGameSceneAudio();
-            isWaitForTimeTick = true;
-
-            AssignTranslatedValues();
-            BindEvents();
         }
 
-        private void UIEventBinding()
+        private void InitLifeAndTime()
         {
-            gameView.numberButtons[0].onClick.AddListener(Number0BtnClick);
-            gameView.numberButtons[1].onClick.AddListener(Number1BtnClick);
-            gameView.numberButtons[2].onClick.AddListener(Number2BtnClick);
-            gameView.numberButtons[3].onClick.AddListener(Number3BtnClick);
-            gameView.numberButtons[4].onClick.AddListener(Number4BtnClick);
-            gameView.numberButtons[5].onClick.AddListener(Number5BtnClick);
-            gameView.numberButtons[6].onClick.AddListener(Number6BtnClick);
-            gameView.numberButtons[7].onClick.AddListener(Number7BtnClick);
-            gameView.numberButtons[8].onClick.AddListener(Number8BtnClick);
-            gameView.numberButtons[9].onClick.AddListener(Number9BtnClick);
-
-            gameView.checkButton.onClick.AddListener(ControlBtnClick);
-            gameView.deleteButton.onClick.AddListener(DeleteBtnClick);
-            gameView.mainMenuButton.onClick.AddListener(GoToMainMenuBtnClick);
-            gameView.gameOverPanelPlayAgainButton.onClick.AddListener(PlayAgainBtnClick);
-            gameView.gameOverPanelExitButton.onClick.AddListener(ExitGameBtnClick);
-            gameView.gameOverPanelMainMenuButton.onClick.AddListener(GoToMainMenuBtnClick);
-            gameView.infoPanelYesButton.onClick.AddListener(InfoPanelYesBtnClick);
-            gameView.infoPanelNoButton.onClick.AddListener(InfoPanelNoBtnClick);
-            gameView.infoPanelOkButton.onClick.AddListener(InfoPanelOkBtnClick);
+            totalLife = 6;
+            totalTime = 1200;
         }
 
-        private void BindEvents()
-        {
-            levelService.EarnScore.AddListener(EarnScoreTextEffect);
-            levelService.EarnTime.AddListener(EarnTimeTextEffect);
-            levelService.LooseLife.AddListener(LooseLifeTextEffect);
-            levelService.LooseTime.AddListener(LooseTimeTextEffect);
-        }
-
-        private void GameOverEventBinding()
+        private void GameOverEventInit()
         {
             if (GameOver == null)
             {
                 GameOver = new UnityEvent();
             }
-
-            GameOver.AddListener(ShowInfoPanelUI);
-            GameOver.AddListener(ShowGameOverPanel);
-            GameOver.AddListener(StopGameLoopAudio);
-            GameOver.AddListener(PlayGameOverAudio);
         }
 
-        private void GetActiveQuestionText()
+        private void GetActiveQuestionText(LevelService levelService, GameView gameView)
         {
             int activeQuestionIndex = levelService.Levels[levelService.ActiveLevelIndex].ActiveQuestionIndex;
 
@@ -138,162 +109,20 @@ namespace FTRGames.Alpaseh.Services
             return text;
         }
 
-        private void ClearEnteredNumberWordText()
+        private void ClearEnteredNumberWordText(GameView gameView)
         {
             gameView.enteredNumberWordText.text = "";
         }
 
-        private void ControlBtnClick()
-        {
-            bool isCorrectAnswer = levelService.Levels[levelService.ActiveLevelIndex].CheckEnteredNumberWord(gameView.enteredNumberWordText.text, 
-                wordNumberConverterService.GetNumbersFromWord(gameView.questionText.text));
-        
-            levelService.CalculateTimeScoreLifeAmount(ref totalTime, ref totalScore, ref totalLife);
-            levelService.CalculateActiveLevelAndQuestionIndex(ref totalLife);
+        #region Tick Event Functions
 
-            gameView.totalTimeText.text = Mathf.Round(totalTime).ToString();
-            gameView.totalLifeText.text = totalLife.ToString("F2");
-            gameView.totalScoreText.text = totalScore.ToString();
-            gameView.activeLevelText.text = (levelService.ActiveLevelIndex + 1).ToString();
-
-            GetActiveQuestionText();
-            ClearEnteredNumberWordText();
-
-            if (isCorrectAnswer)
-            {
-                audioService.PlayCorrectAnswerAudio();
-            }
-
-            else
-            {
-                audioService.PlayWrongAnswerAudio();
-            }
-        }
-
-        private void DeleteBtnClick()
-        {
-            if (gameView.enteredNumberWordText.text != "")
-            {
-                gameView.enteredNumberWordText.text = gameView.enteredNumberWordText.text.Remove(gameView.enteredNumberWordText.text.Length - 1);
-            }
-        }
-
-        private void GoToMainMenuBtnClick()
-        {
-            IsGotoMainMenuBtnClick = true;
-
-            ShowInfoPanelUI();
-        }
-
-        private void Number0BtnClick()
-        {
-            gameView.enteredNumberWordText.text += "0";
-        }
-
-        private void Number1BtnClick()
-        {
-            gameView.enteredNumberWordText.text += "1";
-        }
-
-        private void Number2BtnClick()
-        {
-            gameView.enteredNumberWordText.text += "2";
-        }
-
-        private void Number3BtnClick()
-        {
-            gameView.enteredNumberWordText.text += "3";
-        }
-
-        private void Number4BtnClick()
-        {
-            gameView.enteredNumberWordText.text += "4";
-        }
-
-        private void Number5BtnClick()
-        {
-            gameView.enteredNumberWordText.text += "5";
-        }
-
-        private void Number6BtnClick()
-        {
-            gameView.enteredNumberWordText.text += "6";
-        }
-
-        private void Number7BtnClick()
-        {
-            gameView.enteredNumberWordText.text += "7";
-        }
-
-        private void Number8BtnClick()
-        {
-            gameView.enteredNumberWordText.text += "8";
-        }
-
-        private void Number9BtnClick()
-        {
-            gameView.enteredNumberWordText.text += "9";
-        }
-
-        private IEnumerator PlayTimeTickEverySecond()
-        {
-            isWaitForTimeTick = false;
-            yield return new WaitForSeconds(1.0f);
-            audioService.PlayTimeTickAudio();
-            isWaitForTimeTick = true;
-        }
-
-        private void AssignTranslatedValues()
-        {
-            gameView.topBarTotalTimeText.text = localizationService.GetLocalizationData().Game.TopBarTotalTimeText;
-            gameView.topBarTotalLifeText.text = localizationService.GetLocalizationData().Game.TopBarTotalLifeText;
-            gameView.topBarActiveLevelText.text = localizationService.GetLocalizationData().Game.TopBarActiveLevelText;
-            gameView.topBarTotalScoreText.text = localizationService.GetLocalizationData().Game.TopBarTotalScoreText;
-            gameView.processButtonsCheckButtonText.text = localizationService.GetLocalizationData().Game.ProcessButtonsCheckButtonText;
-            gameView.processButtonsDeleteButtonText.text = localizationService.GetLocalizationData().Game.ProcessButtonsDeleteButtonText;
-            gameView.processButtonsMainMenuButtonText.text = localizationService.GetLocalizationData().Game.ProcessButtonsMainMenuButtonText;
-            gameView.gameOverPanelInfoText.text = localizationService.GetLocalizationData().Game.GameOverPanelInfoText;
-            gameView.gameOverPanelMessageBox1InfoText.text = localizationService.GetLocalizationData().Game.GameOverPanelMessageBox1InfoText;
-            gameView.gameOverPanelMessageBox1YesBtnText.text = localizationService.GetLocalizationData().Game.GameOverPanelMessageBox1YesBtnText;
-            gameView.gameOverPanelMessageBox1NoBtnText.text = localizationService.GetLocalizationData().Game.GameOverPanelMessageBox1NoBtnText;
-            gameView.gameOverPanelMessageBox2InfoText.text = localizationService.GetLocalizationData().Game.GameOverPanelMessageBox2InfoText;
-            gameView.gameOverPanelMessageBox2OkBtnText.text = localizationService.GetLocalizationData().Game.GameOverPanelMessageBox2OkBtnText;
-            gameView.gameOverPanelPlayAgainButtonText.text = localizationService.GetLocalizationData().Game.GameOverPanelPlayAgainButtonText;
-            gameView.gameOverPanelMainMenuButtonText.text = localizationService.GetLocalizationData().Game.GameOverPanelMainMenuButtonText;
-            gameView.gameOverPanelExitGameButtonText.text = localizationService.GetLocalizationData().Game.GameOverPanelExitGameButtonText;
-        }
-
-        private void EarnScoreTextEffect()
-        {
-            gameView.scoreIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.scoreIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].EarnedScoreAmount.ToString(), Color.green, true);
-        }
-
-        private void EarnTimeTextEffect()
-        {
-            gameView.timeIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].EarnedTimeAmount.ToString(), Color.green, true);
-        }
-
-        private void LooseTimeTextEffect()
-        {
-            gameView.timeIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LoseTimeAmount.ToString(), Color.red, false);
-        }
-
-        private void LooseLifeTextEffect()
-        {
-            gameView.lifeIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.lifeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LoseLifeAmount.ToString(), Color.red, false);
-        }
-
-        public void GameCheck()
+        public void GameCheck(GameView gameView)
         {
             if (!isGameOver)
             {
                 totalTime -= Time.deltaTime;
 
-                if (isWaitForTimeTick)
+                if (isWaitedForTimeTick)
                 {
                     MonoBehaviour mono = GameObject.FindObjectOfType<MonoBehaviour>();
                     mono.StartCoroutine(PlayTimeTickEverySecond());
@@ -312,13 +141,183 @@ namespace FTRGames.Alpaseh.Services
             }
         }
 
-        private void ShowGameOverPanel()
+        private IEnumerator PlayTimeTickEverySecond()
         {
-            gameView.gameOverPanel.SetActive(true);
-            gameView.gameOverPanel.transform.GetChild(1).GetComponent<Text>().text = "Game Over";
+            isWaitedForTimeTick = false;
+            yield return new WaitForSeconds(1.0f);
+            audioService.PlayTimeTickAudio();
+            isWaitedForTimeTick = true;
         }
 
-        private void ShowInfoPanelUI()
+        #endregion
+
+        #region Event Binding Functions
+
+        public void Number0BtnClick(GameView gameView)
+        {
+            gameView.enteredNumberWordText.text += "0";
+        }
+
+        public void Number1BtnClick(GameView gameView)
+        {
+            gameView.enteredNumberWordText.text += "1";
+        }
+
+        public void Number2BtnClick(GameView gameView)
+        {
+            gameView.enteredNumberWordText.text += "2";
+        }
+
+        public void Number3BtnClick(GameView gameView)
+        {
+            gameView.enteredNumberWordText.text += "3";
+        }
+
+        public void Number4BtnClick(GameView gameView)
+        {
+            gameView.enteredNumberWordText.text += "4";
+        }
+
+        public void Number5BtnClick(GameView gameView)
+        {
+            gameView.enteredNumberWordText.text += "5";
+        }
+
+        public void Number6BtnClick(GameView gameView)
+        {
+            gameView.enteredNumberWordText.text += "6";
+        }
+
+        public void Number7BtnClick(GameView gameView)
+        {
+            gameView.enteredNumberWordText.text += "7";
+        }
+
+        public void Number8BtnClick(GameView gameView)
+        {
+            gameView.enteredNumberWordText.text += "8";
+        }
+
+        public void Number9BtnClick(GameView gameView)
+        {
+            gameView.enteredNumberWordText.text += "9";
+        }
+
+        public void ControlBtnClick(GameView gameView, LevelService levelService, WordNumberConverterService wordNumberConverterService)
+        {
+            bool isCorrectAnswer = levelService.Levels[levelService.ActiveLevelIndex].CheckEnteredNumberWord(gameView.enteredNumberWordText.text,
+                wordNumberConverterService.GetNumbersFromWord(gameView.questionText.text));
+
+            levelService.CalculateTimeScoreLifeAmount(ref totalTime, ref totalScore, ref totalLife);
+            levelService.CalculateActiveLevelAndQuestionIndex(ref totalLife);
+
+            gameView.totalTimeText.text = Mathf.Round(totalTime).ToString();
+            gameView.totalLifeText.text = totalLife.ToString("F2");
+            gameView.totalScoreText.text = totalScore.ToString();
+            gameView.activeLevelText.text = (levelService.ActiveLevelIndex + 1).ToString();
+
+            GetActiveQuestionText(levelService, gameView);
+            ClearEnteredNumberWordText(gameView);
+
+            if (isCorrectAnswer)
+            {
+                audioService.PlayCorrectAnswerAudio();
+            }
+
+            else
+            {
+                audioService.PlayWrongAnswerAudio();
+            }
+        }
+
+        public void DeleteBtnClick(GameView gameView)
+        {
+            if (gameView.enteredNumberWordText.text != "")
+            {
+                gameView.enteredNumberWordText.text = gameView.enteredNumberWordText.text.Remove(gameView.enteredNumberWordText.text.Length - 1);
+            }
+        }
+
+        public void PlayAgainBtnClick()
+        {
+            SceneManager.LoadScene("Game");
+        }
+
+        public void ExitGameBtnClick()
+        {
+            Application.Quit();
+        }
+
+        public void GoToMainMenuBtnClick(GameView gameView)
+        {
+            IsGotoMainMenuBtnClick = true;
+
+            ShowInfoPanelUI(gameView);
+        }
+
+        public void InfoPanelYesBtnClick(GameView gameView)
+        {
+            scoreService.IsNewScoreAdded = true;
+
+            gameView.infoPanel.transform.GetChild(0).gameObject.SetActive(false);
+            gameView.infoPanel.transform.GetChild(1).gameObject.SetActive(true);
+        }
+
+        public void InfoPanelNoBtnClick(GameView gameView)
+        {
+            gameView.infoPanel.SetActive(false);
+
+            if (IsGotoMainMenuBtnClick)
+            {
+                Time.timeScale = 1;
+                IsGotoMainMenuBtnClick = false;
+
+                SceneManager.LoadScene("MainMenu");
+            }
+        }
+
+        public void InfoPanelOkBtnClick(GameView gameView)
+        {
+            gameView.infoPanel.transform.GetChild(0).gameObject.SetActive(true);
+            gameView.infoPanel.transform.GetChild(1).gameObject.SetActive(false);
+
+            gameView.infoPanel.transform.GetChild(1).gameObject.SetActive(false);
+            gameView.infoPanel.SetActive(false);
+
+            if (IsGotoMainMenuBtnClick)
+            {
+                Time.timeScale = 1;
+                IsGotoMainMenuBtnClick = false;
+
+                SceneManager.LoadScene("MainMenu");
+            }
+        }
+
+        public void EarnScoreTextEffect(GameView gameView, LevelService levelService)
+        {
+            gameView.scoreIncDecObj.SetActive(true);
+            tweenService.TweenText(gameView.scoreIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].EarnedScoreAmount.ToString(), Color.green, true);
+        }
+
+        public void EarnTimeTextEffect(GameView gameView, LevelService levelService)
+        {
+            gameView.timeIncDecObj.SetActive(true);
+            tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].EarnedTimeAmount.ToString(), Color.green, true);
+        }
+
+        public void LooseTimeTextEffect(GameView gameView, LevelService levelService)
+        {
+            gameView.timeIncDecObj.SetActive(true);
+            tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LoseTimeAmount.ToString(), Color.red, false);
+        }
+
+        public void LooseLifeTextEffect(GameView gameView, LevelService levelService)
+        {
+            gameView.lifeIncDecObj.SetActive(true);
+            tweenService.TweenText(gameView.lifeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LoseLifeAmount.ToString(), Color.red, false);
+        }
+
+        public void ShowInfoPanelUI(GameView gameView)
         {
             if (scoreService.CompareNewScoreWithScoresInTheList(totalScore))
             {
@@ -341,62 +340,42 @@ namespace FTRGames.Alpaseh.Services
             }
         }
 
-        private void InfoPanelYesBtnClick()
+        public void ShowGameOverPanel(GameView gameView)
         {
-            scoreService.IsNewScoreAdded = true;
-
-            gameView.infoPanel.transform.GetChild(0).gameObject.SetActive(false);
-            gameView.infoPanel.transform.GetChild(1).gameObject.SetActive(true);
+            gameView.gameOverPanel.SetActive(true);
+            gameView.gameOverPanel.transform.GetChild(1).GetComponent<Text>().text = "Game Over";
         }
 
-        private void InfoPanelNoBtnClick()
-        {
-            gameView.infoPanel.SetActive(false);
-
-            if (IsGotoMainMenuBtnClick)
-            {
-                Time.timeScale = 1;
-                IsGotoMainMenuBtnClick = false;
-
-                SceneManager.LoadScene("MainMenu");
-            }
-        }
-
-        private void InfoPanelOkBtnClick()
-        {
-            gameView.infoPanel.transform.GetChild(0).gameObject.SetActive(true);
-            gameView.infoPanel.transform.GetChild(1).gameObject.SetActive(false);
-
-            gameView.infoPanel.transform.GetChild(1).gameObject.SetActive(false);
-            gameView.infoPanel.SetActive(false);
-
-            if (IsGotoMainMenuBtnClick)
-            {
-                Time.timeScale = 1;
-                IsGotoMainMenuBtnClick = false;
-
-                SceneManager.LoadScene("MainMenu");
-            }
-        }
-
-        private void StopGameLoopAudio()
+        public void StopGameLoopAudio(AudioView audioView)
         {
             audioService.StopAudio(audioView.loopAudioSource);
         }
 
-        private void PlayGameOverAudio()
+        public void PlayGameOverAudio()
         {
             audioService.PlayGameOverAudio();
         }
 
-        private void PlayAgainBtnClick()
-        {
-            SceneManager.LoadScene("Game");
-        }
+        #endregion
 
-        private void ExitGameBtnClick()
+        private void AssignTranslatedValues(GameView gameView)
         {
-            Application.Quit();
+            gameView.topBarTotalTimeText.text = localizationService.GetLocalizationData().Game.TopBarTotalTimeText;
+            gameView.topBarTotalLifeText.text = localizationService.GetLocalizationData().Game.TopBarTotalLifeText;
+            gameView.topBarActiveLevelText.text = localizationService.GetLocalizationData().Game.TopBarActiveLevelText;
+            gameView.topBarTotalScoreText.text = localizationService.GetLocalizationData().Game.TopBarTotalScoreText;
+            gameView.processButtonsCheckButtonText.text = localizationService.GetLocalizationData().Game.ProcessButtonsCheckButtonText;
+            gameView.processButtonsDeleteButtonText.text = localizationService.GetLocalizationData().Game.ProcessButtonsDeleteButtonText;
+            gameView.processButtonsMainMenuButtonText.text = localizationService.GetLocalizationData().Game.ProcessButtonsMainMenuButtonText;
+            gameView.gameOverPanelInfoText.text = localizationService.GetLocalizationData().Game.GameOverPanelInfoText;
+            gameView.gameOverPanelMessageBox1InfoText.text = localizationService.GetLocalizationData().Game.GameOverPanelMessageBox1InfoText;
+            gameView.gameOverPanelMessageBox1YesBtnText.text = localizationService.GetLocalizationData().Game.GameOverPanelMessageBox1YesBtnText;
+            gameView.gameOverPanelMessageBox1NoBtnText.text = localizationService.GetLocalizationData().Game.GameOverPanelMessageBox1NoBtnText;
+            gameView.gameOverPanelMessageBox2InfoText.text = localizationService.GetLocalizationData().Game.GameOverPanelMessageBox2InfoText;
+            gameView.gameOverPanelMessageBox2OkBtnText.text = localizationService.GetLocalizationData().Game.GameOverPanelMessageBox2OkBtnText;
+            gameView.gameOverPanelPlayAgainButtonText.text = localizationService.GetLocalizationData().Game.GameOverPanelPlayAgainButtonText;
+            gameView.gameOverPanelMainMenuButtonText.text = localizationService.GetLocalizationData().Game.GameOverPanelMainMenuButtonText;
+            gameView.gameOverPanelExitGameButtonText.text = localizationService.GetLocalizationData().Game.GameOverPanelExitGameButtonText;
         }
     }
 }
