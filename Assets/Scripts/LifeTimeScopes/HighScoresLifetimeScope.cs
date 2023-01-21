@@ -1,37 +1,42 @@
-using FTRGames.Alpaseh.Core;
-using FTRGames.Alpaseh.Scenes;
+using FTRGames.Alpaseh.Presenters;
+using FTRGames.Alpaseh.Services;
+using FTRGames.Alpaseh.Views;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class HighScoresLifetimeScope : LifetimeScope
+namespace FTRGames.Alpaseh.LifeTimeScopes
 {
-    [SerializeField]
-    private HighScoresView highScoresView;
-
-    [SerializeField]
-    private GameObject scoreListRow;
-
-    [SerializeField]
-    private GameObject scoreListContent;
-
-    protected override void Configure(IContainerBuilder builder)
+    public class HighScoresLifetimeScope : LifetimeScope
     {
-        builder.RegisterEntryPoint<HighScoresPresenter>();
+        [SerializeField]
+        private HighScoresView highScoresView;
 
-        builder.Register<HighScoresService>(Lifetime.Scoped);
+        [SerializeField]
+        private GameObject scoreListRow;
 
-        builder.RegisterFactory<GameObject>(container =>
+        [SerializeField]
+        private GameObject scoreListContent;
+
+        protected override void Configure(IContainerBuilder builder)
         {
-            GameObject InstantiateScoreListRow()
+            builder.RegisterEntryPoint<HighScoresPresenter>();
+
+            builder.Register<HighScoresService>(Lifetime.Scoped);
+
+            builder.RegisterFactory<GameObject>(container =>
             {
-                return container.Instantiate(scoreListRow, scoreListContent.transform);
-            }
+                GameObject InstantiateScoreListRow()
+                {
+                    return container.Instantiate(scoreListRow, scoreListContent.transform);
+                }
 
-            return InstantiateScoreListRow;
-        },
-        Lifetime.Scoped);
+                return InstantiateScoreListRow;
+            },
+            Lifetime.Scoped);
 
-        builder.RegisterComponent(highScoresView);
+            builder.RegisterComponent(highScoresView);
+        }
     }
 }
+

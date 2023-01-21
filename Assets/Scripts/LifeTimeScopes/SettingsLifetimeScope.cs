@@ -1,19 +1,25 @@
-using FTRGames.Alpaseh.Scenes;
+using FTRGames.Alpaseh.Presenters;
+using FTRGames.Alpaseh.Services;
+using FTRGames.Alpaseh.Views;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class SettingsLifetimeScope : LifetimeScope
+namespace FTRGames.Alpaseh.LifeTimeScopes
 {
-    [SerializeField]
-    private SettingsView settingsView;
-
-    protected override void Configure(IContainerBuilder builder)
+    public class SettingsLifetimeScope : LifetimeScope
     {
-        builder.RegisterEntryPoint<SettingsPresenter>();
+        [SerializeField]
+        private SettingsView settingsView;
 
-        builder.Register<SettingsService>(Lifetime.Scoped);
+        protected override void Configure(IContainerBuilder builder)
+        {
+            builder.RegisterEntryPoint<SettingsPresenter>();
 
-        builder.RegisterComponent(settingsView);
+            builder.Register<SettingsService>(Lifetime.Scoped);
+
+            builder.RegisterComponent(settingsView);
+        }
     }
 }
+

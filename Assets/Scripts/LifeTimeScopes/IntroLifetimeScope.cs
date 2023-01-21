@@ -1,19 +1,25 @@
-using FTRGames.Alpaseh.Scenes;
+using FTRGames.Alpaseh.Presenters;
+using FTRGames.Alpaseh.Services;
+using FTRGames.Alpaseh.Views;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class IntroLifetimeScope : LifetimeScope
+namespace FTRGames.Alpaseh.LifeTimeScopes
 {
-    [SerializeField]
-    private IntroView introView;
-
-    protected override void Configure(IContainerBuilder builder)
+    public class IntroLifetimeScope : LifetimeScope
     {
-        builder.RegisterEntryPoint<IntroPresenter>(Lifetime.Scoped);
+        [SerializeField]
+        private IntroView introView;
 
-        builder.Register<IntroService>(Lifetime.Scoped);
+        protected override void Configure(IContainerBuilder builder)
+        {
+            builder.RegisterEntryPoint<IntroPresenter>(Lifetime.Scoped);
 
-        builder.RegisterComponent(introView);
+            builder.Register<IntroService>(Lifetime.Scoped);
+
+            builder.RegisterComponent(introView);
+        }
     }
 }
+

@@ -1,24 +1,29 @@
-using FTRGames.Alpaseh.Core;
-using FTRGames.Alpaseh.Scenes;
+using FTRGames.Alpaseh.Presenters;
+using FTRGames.Alpaseh.Services;
+using FTRGames.Alpaseh.Views;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class GameLifetimeScope : LifetimeScope
+namespace FTRGames.Alpaseh.LifeTimeScopes
 {
-    [SerializeField]
-    private GameView gameView;
-
-    protected override void Configure(IContainerBuilder builder)
+    public class GameLifetimeScope : LifetimeScope
     {
-        builder.RegisterEntryPoint<GamePresenter>();
+        [SerializeField]
+        private GameView gameView;
 
-        builder.Register<GameService>(Lifetime.Scoped);
-        builder.Register<WordParser>(Lifetime.Scoped);
-        builder.Register<TweenService>(Lifetime.Scoped);
-        builder.Register<WordNumberConverter>(Lifetime.Scoped);
-        builder.Register<LevelService>(Lifetime.Scoped);
+        protected override void Configure(IContainerBuilder builder)
+        {
+            builder.RegisterEntryPoint<GamePresenter>();
 
-        builder.RegisterComponent(gameView);
+            builder.Register<GameService>(Lifetime.Scoped);
+            builder.Register<WordParserService>(Lifetime.Scoped);
+            builder.Register<TweenService>(Lifetime.Scoped);
+            builder.Register<WordNumberConverterService>(Lifetime.Scoped);
+            builder.Register<LevelService>(Lifetime.Scoped);
+
+            builder.RegisterComponent(gameView);
+        }
     }
 }
+

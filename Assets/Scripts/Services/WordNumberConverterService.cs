@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace FTRGames.Alpaseh.Core
+namespace FTRGames.Alpaseh.Services
 {
-    public class WordNumberConverter 
+    public class WordNumberConverterService 
     {
         private Dictionary<char, char> WordNumberPairs { get; set; }
 

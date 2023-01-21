@@ -1,20 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using FTRGames.Alpaseh.Enums;
+using FTRGames.Alpaseh.Services;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
-namespace FTRGames.Alpaseh.Core
+namespace FTRGames.Alpaseh.Helpers
 {
     public class ColorAssigner : MonoBehaviour
     {
-        public enum ObjectType
-        {
-            TEXT = 0,
-            BAR = 1,
-            CONTENT = 2,
-            BUTTON = 3
-        }
-
         private List<string> ObjectTypes
         {
             get
@@ -31,9 +25,9 @@ namespace FTRGames.Alpaseh.Core
 
         public ObjectType SelectedObjectType;
 
-        private UIColorService uiColorService;
-
         public bool IsColorSchemeChanged;
+
+        private UIColorService uiColorService;
 
         [Inject]
         public void Construct(UIColorService uiColorService)
@@ -47,6 +41,11 @@ namespace FTRGames.Alpaseh.Core
         }
 
         private void Update()
+        {
+            CheckColorColorShemeStatus();
+        }
+
+        private void CheckColorColorShemeStatus()
         {
             if (IsColorSchemeChanged)
             {

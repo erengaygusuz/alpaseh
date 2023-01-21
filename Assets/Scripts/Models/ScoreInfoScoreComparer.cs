@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace FTRGames.Alpaseh.Model
+namespace FTRGames.Alpaseh.Models
 {
     public class ScoreInfoScoreComparer : IComparer<ScoreInfo>
     {

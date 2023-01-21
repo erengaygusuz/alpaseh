@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace FTRGames.Alpaseh.Core
+namespace FTRGames.Alpaseh.Models
 {
     public class WordData
     {

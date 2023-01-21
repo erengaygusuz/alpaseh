@@ -1,9 +1,9 @@
-using FTRGames.Alpaseh.Core;
+using FTRGames.Alpaseh.Services;
 using System;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace FTRGames.Alpaseh.Scenes
+namespace FTRGames.Alpaseh.Presenters
 {
     public class HighScoresPresenter : IStartable, ITickable
     {

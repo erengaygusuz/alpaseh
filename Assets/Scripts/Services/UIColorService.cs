@@ -1,8 +1,8 @@
-﻿using FTRGames.Alpaseh.Model;
+﻿using FTRGames.Alpaseh.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace FTRGames.Alpaseh.Core
+namespace FTRGames.Alpaseh.Services
 {
     public class UIColorService
     {

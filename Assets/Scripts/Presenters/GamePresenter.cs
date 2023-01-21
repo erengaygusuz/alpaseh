@@ -1,6 +1,7 @@
-﻿using VContainer.Unity;
+﻿using FTRGames.Alpaseh.Services;
+using VContainer.Unity;
 
-namespace FTRGames.Alpaseh.Core
+namespace FTRGames.Alpaseh.Presenters
 {
     public class GamePresenter : ITickable, IStartable
     {

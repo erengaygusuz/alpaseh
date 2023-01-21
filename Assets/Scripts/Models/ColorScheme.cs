@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace FTRGames.Alpaseh.Model
+namespace FTRGames.Alpaseh.Models
 {
     public class ColorScheme
     {

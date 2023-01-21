@@ -1,41 +1,46 @@
+using FTRGames.Alpaseh.Views;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ControlService
+namespace FTRGames.Alpaseh.Services
 {
-    private readonly AudioView audioView;
-
-    public ControlService(AudioView audioView)
+    public class ControlService
     {
-        this.audioView = audioView;
-    }
+        private readonly AudioView audioView;
 
-    public void CheckKeys()
-    {
-        if (PlayerPrefs.HasKey("Alpaseh-Username") && PlayerPrefs.HasKey("Alpaseh-Language"))
+        public ControlService(AudioView audioView)
         {
-            SceneManager.LoadScene("MainMenu");
+            this.audioView = audioView;
         }
 
-        else
+        public void CheckKeys()
         {
-            SceneManager.LoadScene("Intro");
-        }
-    }
+            if (PlayerPrefs.HasKey("Alpaseh-Username") && PlayerPrefs.HasKey("Alpaseh-Language"))
+            {
+                SceneManager.LoadScene("MainMenu");
+            }
 
-    public void AudioLevelKeyInit()
-    {
-        if (!PlayerPrefs.HasKey("Alpaseh-AudioLevelSliderValue"))
-        {
-            PlayerPrefs.SetFloat("Alpaseh-AudioLevelSliderValue", 1.0f);
-            PlayerPrefs.Save();
+            else
+            {
+                SceneManager.LoadScene("Intro");
+            }
         }
 
-        else
+        public void AudioLevelKeyInit()
         {
-            audioView.loopAudioSource.volume = PlayerPrefs.GetFloat("Alpaseh-AudioLevelSliderValue");
-            audioView.answerAudioSource.volume = PlayerPrefs.GetFloat("Alpaseh-AudioLevelSliderValue");
-            audioView.timeTickAudioSource.volume = PlayerPrefs.GetFloat("Alpaseh-AudioLevelSliderValue");
+            if (!PlayerPrefs.HasKey("Alpaseh-AudioLevelSliderValue"))
+            {
+                PlayerPrefs.SetFloat("Alpaseh-AudioLevelSliderValue", 1.0f);
+                PlayerPrefs.Save();
+            }
+
+            else
+            {
+                audioView.loopAudioSource.volume = PlayerPrefs.GetFloat("Alpaseh-AudioLevelSliderValue");
+                audioView.answerAudioSource.volume = PlayerPrefs.GetFloat("Alpaseh-AudioLevelSliderValue");
+                audioView.timeTickAudioSource.volume = PlayerPrefs.GetFloat("Alpaseh-AudioLevelSliderValue");
+            }
         }
     }
 }
+

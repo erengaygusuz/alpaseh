@@ -1,6 +1,6 @@
 using System;
 
-namespace FTRGames.Alpaseh.Model
+namespace FTRGames.Alpaseh.Models
 {
     [Serializable]
     public class ScoreInfo

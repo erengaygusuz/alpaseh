@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace FTRGames.Alpaseh.Core
+namespace FTRGames.Alpaseh.Services
 {
     public class TweenService
     {

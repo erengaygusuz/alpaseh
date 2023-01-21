@@ -1,20 +1,25 @@
-using FTRGames.Alpaseh.Core;
-using FTRGames.Alpaseh.Scenes;
+using FTRGames.Alpaseh.Presenters;
+using FTRGames.Alpaseh.Services;
+using FTRGames.Alpaseh.Views;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class HowToPlayLifetimeScope : LifetimeScope
+namespace FTRGames.Alpaseh.LifeTimeScopes
 {
-    [SerializeField]
-    private HowToPlayView howToPlayView;
-
-    protected override void Configure(IContainerBuilder builder)
+    public class HowToPlayLifetimeScope : LifetimeScope
     {
-        builder.RegisterEntryPoint<HowToPlayPresenter>();
+        [SerializeField]
+        private HowToPlayView howToPlayView;
 
-        builder.Register<HowToPlayService>(Lifetime.Scoped);
+        protected override void Configure(IContainerBuilder builder)
+        {
+            builder.RegisterEntryPoint<HowToPlayPresenter>();
 
-        builder.RegisterComponent(howToPlayView);
+            builder.Register<HowToPlayService>(Lifetime.Scoped);
+
+            builder.RegisterComponent(howToPlayView);
+        }
     }
 }
+

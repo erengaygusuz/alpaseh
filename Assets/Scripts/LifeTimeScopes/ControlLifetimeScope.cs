@@ -1,15 +1,19 @@
-using FTRGames.Alpaseh.Core;
-using UnityEngine;
+using FTRGames.Alpaseh.Presenters;
+using FTRGames.Alpaseh.Services;
 using VContainer;
 using VContainer.Unity;
 
-public class ControlLifetimeScope : LifetimeScope
+namespace FTRGames.Alpaseh.LifeTimeScopes
 {
-    protected override void Configure(IContainerBuilder builder)
+    public class ControlLifetimeScope : LifetimeScope
     {
-        builder.RegisterEntryPoint<ControlPresenter>();
+        protected override void Configure(IContainerBuilder builder)
+        {
+            builder.RegisterEntryPoint<ControlPresenter>();
 
-        builder.Register<AudioService>(Lifetime.Scoped);
-        builder.Register<ControlService>(Lifetime.Scoped);
+            builder.Register<AudioService>(Lifetime.Scoped);
+            builder.Register<ControlService>(Lifetime.Scoped);
+        }
     }
 }
+

@@ -1,4 +1,4 @@
-﻿using FTRGames.Alpaseh.Model;
+﻿using FTRGames.Alpaseh.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace FTRGames.Alpaseh.Core
+namespace FTRGames.Alpaseh.Services
 {
     public class ScoreService
     {

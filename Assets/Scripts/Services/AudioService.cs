@@ -1,6 +1,7 @@
+using FTRGames.Alpaseh.Views;
 using UnityEngine;
 
-namespace FTRGames.Alpaseh.Core
+namespace FTRGames.Alpaseh.Services
 {
     public class AudioService
     {

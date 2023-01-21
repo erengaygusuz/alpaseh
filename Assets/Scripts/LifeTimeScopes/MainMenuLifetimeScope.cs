@@ -1,19 +1,25 @@
-using FTRGames.Alpaseh.Scenes;
+using FTRGames.Alpaseh.Presenters;
+using FTRGames.Alpaseh.Services;
+using FTRGames.Alpaseh.Views;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class MainMenuLifetimeScope : LifetimeScope
+namespace FTRGames.Alpaseh.LifeTimeScopes
 {
-    [SerializeField]
-    private MainMenuView mainMenuView;
-
-    protected override void Configure(IContainerBuilder builder)
+    public class MainMenuLifetimeScope : LifetimeScope
     {
-        builder.RegisterEntryPoint<MainMenuPresenter>(Lifetime.Scoped);
+        [SerializeField]
+        private MainMenuView mainMenuView;
 
-        builder.Register<MainMenuService>(Lifetime.Scoped);
+        protected override void Configure(IContainerBuilder builder)
+        {
+            builder.RegisterEntryPoint<MainMenuPresenter>(Lifetime.Scoped);
 
-        builder.RegisterComponent(mainMenuView);
+            builder.Register<MainMenuService>(Lifetime.Scoped);
+
+            builder.RegisterComponent(mainMenuView);
+        }
     }
 }
+

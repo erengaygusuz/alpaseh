@@ -1,19 +1,25 @@
-using FTRGames.Alpaseh.Scenes;
+using FTRGames.Alpaseh.Presenters;
+using FTRGames.Alpaseh.Services;
+using FTRGames.Alpaseh.Views;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class CreditsLifetimeScope : LifetimeScope
+namespace FTRGames.Alpaseh.LifeTimeScopes
 {
-    [SerializeField]
-    private CreditsView creditsView;
-
-    protected override void Configure(IContainerBuilder builder)
+    public class CreditsLifetimeScope : LifetimeScope
     {
-        builder.RegisterEntryPoint<CreditsPresenter>();
+        [SerializeField]
+        private CreditsView creditsView;
 
-        builder.Register<CreditsService>(Lifetime.Scoped);
+        protected override void Configure(IContainerBuilder builder)
+        {
+            builder.RegisterEntryPoint<CreditsPresenter>();
 
-        builder.RegisterComponent(creditsView);
+            builder.Register<CreditsService>(Lifetime.Scoped);
+
+            builder.RegisterComponent(creditsView);
+        }
     }
 }
+

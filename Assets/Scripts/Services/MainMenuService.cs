@@ -1,89 +1,93 @@
-using FTRGames.Alpaseh.Core;
+using FTRGames.Alpaseh.Views;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenuService
+namespace FTRGames.Alpaseh.Services
 {
-    private readonly MainMenuView mainMenuView;
-    private readonly AudioView audioView;
-    private readonly AudioService audioService;
-    private readonly LocalizationService localizationService;
-
-    public MainMenuService(MainMenuView mainMenuView, AudioService audioService, LocalizationService localizationService, AudioView audioView)
+    public class MainMenuService
     {
-        this.mainMenuView = mainMenuView;
-        this.audioService = audioService;
-        this.localizationService = localizationService;
-        this.audioView = audioView;
-    }
+        private readonly MainMenuView mainMenuView;
+        private readonly AudioView audioView;
+        private readonly AudioService audioService;
+        private readonly LocalizationService localizationService;
 
-    public void Initialization()
-    {
-        UIEventBinding();
-        PlayBackgroundAudio();
-        AssignTranslatedValues();
-    }
-
-    private void PlayBackgroundAudio()
-    {
-        if (audioView.loopAudioSource.clip != null)
+        public MainMenuService(MainMenuView mainMenuView, AudioService audioService, LocalizationService localizationService, AudioView audioView)
         {
-            if (audioView.loopAudioSource.clip.name != "main-menu")
-            {
-                audioService.StopAudio(audioView.loopAudioSource);
-            }
+            this.mainMenuView = mainMenuView;
+            this.audioService = audioService;
+            this.localizationService = localizationService;
+            this.audioView = audioView;
         }
 
-        audioService.PlayMainMenuAudio();
-    }
+        public void Initialization()
+        {
+            UIEventBinding();
+            PlayBackgroundAudio();
+            AssignTranslatedValues();
+        }
 
-    private void UIEventBinding()
-    {
-        mainMenuView.startGameButton.onClick.AddListener(StartGameBtnClick);
-        mainMenuView.howToPlayButton.onClick.AddListener(HowToPlayBtnClick);
-        mainMenuView.settingsButton.onClick.AddListener(SettingsBtnClick);
-        mainMenuView.highScoresButton.onClick.AddListener(HighScoresBtnClick);
-        mainMenuView.creditsButton.onClick.AddListener(CreditsBtnClick);
-        mainMenuView.exitButton.onClick.AddListener(ExitBtnClick);
-    }
+        private void PlayBackgroundAudio()
+        {
+            if (audioView.loopAudioSource.clip != null)
+            {
+                if (audioView.loopAudioSource.clip.name != "main-menu")
+                {
+                    audioService.StopAudio(audioView.loopAudioSource);
+                }
+            }
 
-    private void StartGameBtnClick()
-    {
-        SceneManager.LoadScene("Game");
-    }
+            audioService.PlayMainMenuAudio();
+        }
 
-    private void HowToPlayBtnClick()
-    {
-        SceneManager.LoadScene("HowToPlay");
-    }
+        private void UIEventBinding()
+        {
+            mainMenuView.startGameButton.onClick.AddListener(StartGameBtnClick);
+            mainMenuView.howToPlayButton.onClick.AddListener(HowToPlayBtnClick);
+            mainMenuView.settingsButton.onClick.AddListener(SettingsBtnClick);
+            mainMenuView.highScoresButton.onClick.AddListener(HighScoresBtnClick);
+            mainMenuView.creditsButton.onClick.AddListener(CreditsBtnClick);
+            mainMenuView.exitButton.onClick.AddListener(ExitBtnClick);
+        }
 
-    private void SettingsBtnClick()
-    {
-        SceneManager.LoadScene("Settings");
-    }
+        private void StartGameBtnClick()
+        {
+            SceneManager.LoadScene("Game");
+        }
 
-    private void HighScoresBtnClick()
-    {
-        SceneManager.LoadScene("HighScores");
-    }
+        private void HowToPlayBtnClick()
+        {
+            SceneManager.LoadScene("HowToPlay");
+        }
 
-    private void CreditsBtnClick()
-    {
-        SceneManager.LoadScene("Credits");
-    }
+        private void SettingsBtnClick()
+        {
+            SceneManager.LoadScene("Settings");
+        }
 
-    private void ExitBtnClick()
-    {
-        Application.Quit();
-    }
+        private void HighScoresBtnClick()
+        {
+            SceneManager.LoadScene("HighScores");
+        }
 
-    private void AssignTranslatedValues()
-    {
-        mainMenuView.startGameButtonText.text = localizationService.GetLocalizationData().MainMenu.StartGameButtonText;
-        mainMenuView.howToPlayButtonText.text = localizationService.GetLocalizationData().MainMenu.HowToPlayButtonText;
-        mainMenuView.settingsButtonText.text = localizationService.GetLocalizationData().MainMenu.SettingsButtonText;
-        mainMenuView.highScoresButtonText.text = localizationService.GetLocalizationData().MainMenu.HighScoresButtonText;
-        mainMenuView.creditsButtonText.text = localizationService.GetLocalizationData().MainMenu.CreditsButtonText;
-        mainMenuView.exitButtonText.text = localizationService.GetLocalizationData().MainMenu.ExitButtonText;
+        private void CreditsBtnClick()
+        {
+            SceneManager.LoadScene("Credits");
+        }
+
+        private void ExitBtnClick()
+        {
+            Application.Quit();
+        }
+
+        private void AssignTranslatedValues()
+        {
+            mainMenuView.startGameButtonText.text = localizationService.GetLocalizationData().MainMenu.StartGameButtonText;
+            mainMenuView.howToPlayButtonText.text = localizationService.GetLocalizationData().MainMenu.HowToPlayButtonText;
+            mainMenuView.settingsButtonText.text = localizationService.GetLocalizationData().MainMenu.SettingsButtonText;
+            mainMenuView.highScoresButtonText.text = localizationService.GetLocalizationData().MainMenu.HighScoresButtonText;
+            mainMenuView.creditsButtonText.text = localizationService.GetLocalizationData().MainMenu.CreditsButtonText;
+            mainMenuView.exitButtonText.text = localizationService.GetLocalizationData().MainMenu.ExitButtonText;
+        }
     }
 }
+

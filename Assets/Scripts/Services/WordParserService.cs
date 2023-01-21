@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using FTRGames.Alpaseh.Models;
+using UnityEngine;
 
-namespace FTRGames.Alpaseh.Core
+namespace FTRGames.Alpaseh.Services
 {
-    public class WordParser
+    public class WordParserService
     {
         private TextAsset[] wordText;
         private char[] IdentifiedLetters { get; set; }
