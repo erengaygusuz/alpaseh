@@ -1,0 +1,18 @@
+{
+    "name": "FTRGames.Alpaseh.Presenters",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0ed5d6361b453fb46b6ae1956a6719e3",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:212b47d39d1e94844bee19d615dd714f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

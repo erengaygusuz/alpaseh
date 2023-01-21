@@ -1,0 +1,21 @@
+{
+    "name": "FTRGames.Alpaseh.Services",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b6d3f1b6173b116419657283fa8b3da5",
+        "GUID:212b47d39d1e94844bee19d615dd714f",
+        "GUID:801218998929ed048a0aa433ab6e035d",
+        "GUID:f6a855a1a6db6bf43b308443f2a709cf",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:7866815ad2d88914b96c5498f962b435"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

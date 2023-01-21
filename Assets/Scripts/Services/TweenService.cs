@@ -26,7 +26,11 @@ namespace FTRGames.Alpaseh.Services
 
             LeanTween.value(tweenObject, 1.0f, 0.0f, 1.5f).setOnUpdate((value) =>
             {
-                tweenObject.GetComponent<Text>().color = new Color(tweenObject.GetComponent<Text>().color.r, tweenObject.GetComponent<Text>().color.g, tweenObject.GetComponent<Text>().color.b, value);
+                tweenObject.GetComponent<Text>().color = new Color(
+                    tweenObject.GetComponent<Text>().color.r, 
+                    tweenObject.GetComponent<Text>().color.g, 
+                    tweenObject.GetComponent<Text>().color.b, value);
+
             }).setOnComplete(() =>
             {
                 tweenObject.SetActive(false);

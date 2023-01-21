@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
-namespace FTRGames.Alpaseh.Helpers
+namespace FTRGames.Alpaseh.Services
 {
     public class ColorAssigner : MonoBehaviour
     {

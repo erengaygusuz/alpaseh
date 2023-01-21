@@ -1,0 +1,19 @@
+{
+    "name": "FTRGames.Alpaseh.LifeTimeScopes",
+    "rootNamespace": "",
+    "references": [
+        "FTRGames.Alpaseh.Views",
+        "FTRGames.Alpaseh.Services",
+        "FTRGames.Alpaseh.Presenters",
+        "VContainer"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
