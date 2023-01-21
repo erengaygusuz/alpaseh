@@ -9,70 +9,30 @@ namespace FTRGames.Alpaseh.Services
 {
     public class SettingsService
     {
-        private readonly SettingsView settingsView;
         private readonly AudioView audioView;
         private readonly LocalizationService localizationService;
 
-        public SettingsService(SettingsView settingsView, LocalizationService localizationService, AudioView audioView)
+        public SettingsService(LocalizationService localizationService, AudioView audioView)
         {
-            this.settingsView = settingsView;
             this.localizationService = localizationService;
             this.audioView = audioView;
         }
 
-        public void Initialization()
+        public void Initialization(SettingsView settingsView)
         {
-            GetUserNameValue();
-            FillLanguageDropdown();
-            GetLanguageValues();
-            AssignTranslatedValues();
-            GetAudioLevelValues();
-            UIEventBinding();
+            GetUserNameValue(settingsView);
+            FillLanguageDropdown(settingsView);
+            GetLanguageValues(settingsView);
+            AssignTranslatedValues(settingsView);
+            GetAudioLevelValues(settingsView);
         }
 
-        private void UIEventBinding()
-        {
-            settingsView.generalTab.GetComponent<Button>().onClick.AddListener(GeneralTabClick);
-            settingsView.personalTab.GetComponent<Button>().onClick.AddListener(PersonalTabClick);
-            settingsView.mainMenuButton.onClick.AddListener(GoToMainMenuBtnClick);
-
-            settingsView.themesToggles[0].onValueChanged.AddListener(delegate
-            {
-                SetSelectedColorIndex0();
-            });
-
-            settingsView.themesToggles[1].onValueChanged.AddListener(delegate
-            {
-                SetSelectedColorIndex1();
-            });
-
-            settingsView.themesToggles[2].onValueChanged.AddListener(delegate
-            {
-                SetSelectedColorIndex2();
-            });
-
-            settingsView.themesToggles[3].onValueChanged.AddListener(delegate
-            {
-                SetSelectedColorIndex3();
-            });
-
-            settingsView.audioLevelSlider.onValueChanged.AddListener(delegate
-            {
-                SetAudioLevelValues();
-            });
-
-            settingsView.languageOptions.onValueChanged.AddListener(delegate
-            {
-                SaveLanguageOption();
-            });
-        }
-
-        private void GetUserNameValue()
+        public void GetUserNameValue(SettingsView settingsView)
         {
             settingsView.usernameValue.text = PlayerPrefs.GetString("Alpaseh-Username");
         }
 
-        private void GetLanguageValues()
+        public void GetLanguageValues(SettingsView settingsView)
         {
             if (PlayerPrefs.HasKey("Alpaseh-SelectedLanguageIndex") == true)
             {
@@ -85,7 +45,7 @@ namespace FTRGames.Alpaseh.Services
             }
         }
 
-        private void FillLanguageDropdown()
+        public void FillLanguageDropdown(SettingsView settingsView)
         {
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
 
@@ -97,10 +57,10 @@ namespace FTRGames.Alpaseh.Services
 
             settingsView.languageOptions.AddOptions(list);
 
-            GetLanguageValues();
+            GetLanguageValues(settingsView);
         }
 
-        private void PersonalTabClick()
+        public void PersonalTabClick(SettingsView settingsView)
         {
             settingsView.personalTab.GetComponent<Image>().color = new Color32(219, 219, 219, 255);
             settingsView.generalTab.GetComponent<Image>().color = new Color32(188, 188, 188, 255);
@@ -108,17 +68,17 @@ namespace FTRGames.Alpaseh.Services
             settingsView.generalTabContent.SetActive(false);
         }
 
-        private void GeneralTabClick()
+        public void GeneralTabClick(SettingsView settingsView)
         {
             settingsView.personalTab.GetComponent<Image>().color = new Color32(188, 188, 188, 255);
             settingsView.generalTab.GetComponent<Image>().color = new Color32(219, 219, 219, 255);
             settingsView.personalTabContent.SetActive(false);
             settingsView.generalTabContent.SetActive(true);
 
-            ActivateSelectedThemeToggle();
+            ActivateSelectedThemeToggle(settingsView);
         }
 
-        private void AssignTranslatedValues()
+        public void AssignTranslatedValues(SettingsView settingsView)
         {
             settingsView.generalTabText.text = localizationService.GetLocalizationData().Settings.GeneralTabText;
             settingsView.personalTabText.text = localizationService.GetLocalizationData().Settings.PersonalTabText;
@@ -130,7 +90,7 @@ namespace FTRGames.Alpaseh.Services
             settingsView.mainMenuButtonText.text = localizationService.GetLocalizationData().Settings.MainMenuButtonText;
         }
 
-        private void SaveLanguageOption()
+        public void SaveLanguageOption(SettingsView settingsView)
         {
             PlayerPrefs.SetInt("Alpaseh-SelectedLanguageIndex", settingsView.languageOptions.value);
             PlayerPrefs.Save();
@@ -145,52 +105,52 @@ namespace FTRGames.Alpaseh.Services
             localizationService.IsLanguageChanged = true;
         }
 
-        private void GoToMainMenuBtnClick()
+        public void GoToMainMenuBtnClick(SettingsView settingsView)
         {
-            SaveUsernameValue();
+            SaveUsernameValue(settingsView);
 
             SceneManager.LoadScene("MainMenu");
         }
 
-        private void SaveUsernameValue()
+        private void SaveUsernameValue(SettingsView settingsView)
         {
             PlayerPrefs.SetString("Alpaseh-Username", settingsView.usernameValue.text);
         }
 
-        private void SetAudioLevelValues()
+        public void SetAudioLevelValues(SettingsView settingsView)
         {
             audioView.loopAudioSource.volume = settingsView.audioLevelSlider.value;
             audioView.answerAudioSource.volume = settingsView.audioLevelSlider.value;
             audioView.timeTickAudioSource.volume = settingsView.audioLevelSlider.value;
 
-            SetAudioLevelLabelValue();
+            SetAudioLevelLabelValue(settingsView);
 
-            SaveAudioLevelValue();
+            SaveAudioLevelValue(settingsView);
         }
 
-        private void SetAudioLevelLabelValue()
+        private void SetAudioLevelLabelValue(SettingsView settingsView)
         {
             settingsView.audioLevelLabelValue.text = Mathf.RoundToInt(audioView.loopAudioSource.volume * 100).ToString();
         }
 
-        private void SaveAudioLevelValue()
+        private void SaveAudioLevelValue(SettingsView settingsView)
         {
             PlayerPrefs.SetFloat("Alpaseh-AudioLevelSliderValue", settingsView.audioLevelSlider.value);
             PlayerPrefs.Save();
         }
 
-        private void GetAudioLevelValues()
+        private void GetAudioLevelValues(SettingsView settingsView)
         {
             audioView.loopAudioSource.volume = PlayerPrefs.GetFloat("Alpaseh-AudioLevelSliderValue");
             audioView.answerAudioSource.volume = PlayerPrefs.GetFloat("Alpaseh-AudioLevelSliderValue");
             audioView.timeTickAudioSource.volume = PlayerPrefs.GetFloat("Alpaseh-AudioLevelSliderValue");
 
-            SetAudioLevelLabelValue();
+            SetAudioLevelLabelValue(settingsView);
 
             settingsView.audioLevelSlider.value = audioView.loopAudioSource.volume;
         }
 
-        private void SetSelectedColorIndex0()
+        public void SetSelectedColorIndex0()
         {
             int activeToggleIndex = 0;
 
@@ -204,7 +164,7 @@ namespace FTRGames.Alpaseh.Services
             }
         }
 
-        private void SetSelectedColorIndex1()
+        public void SetSelectedColorIndex1()
         {
             int activeToggleIndex = 1;
 
@@ -218,7 +178,7 @@ namespace FTRGames.Alpaseh.Services
             }
         }
 
-        private void SetSelectedColorIndex2()
+        public void SetSelectedColorIndex2()
         {
             int activeToggleIndex = 2;
 
@@ -232,7 +192,7 @@ namespace FTRGames.Alpaseh.Services
             }
         }
 
-        private void SetSelectedColorIndex3()
+        public void SetSelectedColorIndex3()
         {
             int activeToggleIndex = 3;
 
@@ -246,16 +206,16 @@ namespace FTRGames.Alpaseh.Services
             }
         }
 
-        private void ActivateSelectedThemeToggle()
+        private void ActivateSelectedThemeToggle(SettingsView settingsView)
         {
             settingsView.themesToggles[PlayerPrefs.GetInt("Alpaseh-SelectedColorSchemeIndex", 0)].isOn = true;
         }
 
-        public void LanguageCheck()
+        public void LanguageCheck(SettingsView settingsView)
         {
             if (localizationService.IsLanguageChanged == true)
             {
-                AssignTranslatedValues();
+                AssignTranslatedValues(settingsView);
 
                 localizationService.IsLanguageChanged = false;
             }

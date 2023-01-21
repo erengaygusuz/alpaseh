@@ -6,24 +6,21 @@ namespace FTRGames.Alpaseh.Services
 {
     public class MainMenuService
     {
-        private readonly MainMenuView mainMenuView;
         private readonly AudioView audioView;
         private readonly AudioService audioService;
         private readonly LocalizationService localizationService;
 
-        public MainMenuService(MainMenuView mainMenuView, AudioService audioService, LocalizationService localizationService, AudioView audioView)
+        public MainMenuService(AudioService audioService, LocalizationService localizationService, AudioView audioView)
         {
-            this.mainMenuView = mainMenuView;
             this.audioService = audioService;
             this.localizationService = localizationService;
             this.audioView = audioView;
         }
 
-        public void Initialization()
+        public void Initialization(MainMenuView mainMenuView)
         {
-            UIEventBinding();
             PlayBackgroundAudio();
-            AssignTranslatedValues();
+            AssignTranslatedValues(mainMenuView);
         }
 
         private void PlayBackgroundAudio()
@@ -39,47 +36,37 @@ namespace FTRGames.Alpaseh.Services
             audioService.PlayMainMenuAudio();
         }
 
-        private void UIEventBinding()
-        {
-            mainMenuView.startGameButton.onClick.AddListener(StartGameBtnClick);
-            mainMenuView.howToPlayButton.onClick.AddListener(HowToPlayBtnClick);
-            mainMenuView.settingsButton.onClick.AddListener(SettingsBtnClick);
-            mainMenuView.highScoresButton.onClick.AddListener(HighScoresBtnClick);
-            mainMenuView.creditsButton.onClick.AddListener(CreditsBtnClick);
-            mainMenuView.exitButton.onClick.AddListener(ExitBtnClick);
-        }
-
-        private void StartGameBtnClick()
+        public void StartGameBtnClick()
         {
             SceneManager.LoadScene("Game");
         }
 
-        private void HowToPlayBtnClick()
+        public void HowToPlayBtnClick()
         {
             SceneManager.LoadScene("HowToPlay");
         }
 
-        private void SettingsBtnClick()
+        public void SettingsBtnClick()
         {
             SceneManager.LoadScene("Settings");
         }
 
-        private void HighScoresBtnClick()
+        public void HighScoresBtnClick()
         {
             SceneManager.LoadScene("HighScores");
         }
 
-        private void CreditsBtnClick()
+        public void CreditsBtnClick()
         {
             SceneManager.LoadScene("Credits");
         }
 
-        private void ExitBtnClick()
+        public void ExitBtnClick()
         {
             Application.Quit();
         }
 
-        private void AssignTranslatedValues()
+        private void AssignTranslatedValues(MainMenuView mainMenuView)
         {
             mainMenuView.startGameButtonText.text = localizationService.GetLocalizationData().MainMenu.StartGameButtonText;
             mainMenuView.howToPlayButtonText.text = localizationService.GetLocalizationData().MainMenu.HowToPlayButtonText;
