@@ -8,35 +8,19 @@ namespace FTRGames.Alpaseh.Services
 {
     public class IntroService
     {
-        private readonly IntroView introView;
         private readonly LocalizationService localizationService;
 
-        public IntroService(IntroView introView, LocalizationService localizationService)
+        public IntroService(LocalizationService localizationService)
         {
-            this.introView = introView;
             this.localizationService = localizationService;
         }
 
-        public void Initialization()
+        public void Initialization(IntroView introView)
         {
-            UIEventBinding();
-            GetLanguageValues();
-            FillLanguageDropdown();
+            FillLanguageDropdown(introView);
         }
 
-        private void UIEventBinding()
-        {
-            introView.nextButton.onClick.AddListener(NextBtnClick);
-
-            introView.messageBoxOkButton.onClick.AddListener(WarningPanelOKBtnClick);
-
-            introView.languageOptions.onValueChanged.AddListener(delegate
-            {
-                SaveLanguageOption();
-            });
-        }
-
-        private void GetLanguageValues()
+        private void GetLanguageValues(IntroView introView)
         {
             if (PlayerPrefs.HasKey("Alpaseh-SelectedLanguageIndex") == true)
             {
@@ -49,7 +33,7 @@ namespace FTRGames.Alpaseh.Services
             }
         }
 
-        private void FillLanguageDropdown()
+        private void FillLanguageDropdown(IntroView introView)
         {
             List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
 
@@ -61,20 +45,20 @@ namespace FTRGames.Alpaseh.Services
 
             introView.languageOptions.AddOptions(list);
 
-            GetLanguageValues();
+            GetLanguageValues(introView);
         }
 
-        public void CheckLanguageState()
+        public void CheckLanguageState(IntroView introView)
         {
             if (localizationService.IsLanguageChanged == true)
             {
-                AssignTranslatedValues();
+                AssignTranslatedValues(introView);
 
                 localizationService.IsLanguageChanged = false;
             }
         }
 
-        private void AssignTranslatedValues()
+        private void AssignTranslatedValues(IntroView introView)
         {
             introView.usernameLabel.text = localizationService.GetLocalizationData().Intro.UsernameLabel;
             introView.usernameInputFieldPlaceholder.text = localizationService.GetLocalizationData().Intro.UsernameInputFieldPlaceholder;
@@ -84,7 +68,7 @@ namespace FTRGames.Alpaseh.Services
             introView.messageBoxOkButtonText.text = localizationService.GetLocalizationData().Intro.MessageBoxOkButtonText;
         }
 
-        private void NextBtnClick()
+        public void NextBtnClick(IntroView introView)
         {
             if (introView.username.text == "")
             {
@@ -99,12 +83,12 @@ namespace FTRGames.Alpaseh.Services
             }
         }
 
-        private void WarningPanelOKBtnClick()
+        public void WarningPanelOKBtnClick(IntroView introView)
         {
             introView.warningPanel.SetActive(false);
         }
 
-        private void SaveLanguageOption()
+        public void SaveLanguageOption(IntroView introView)
         {
             PlayerPrefs.SetInt("Alpaseh-SelectedLanguageIndex", introView.languageOptions.value);
             PlayerPrefs.Save();
