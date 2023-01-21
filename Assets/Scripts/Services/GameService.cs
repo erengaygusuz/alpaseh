@@ -118,7 +118,7 @@ namespace FTRGames.Alpaseh.Services
 
         private void GetActiveQuestionText()
         {
-            int activeQuestionIndex = levelService.Levels[levelService.ActiveLevelIndex].activeQuestionIndex;
+            int activeQuestionIndex = levelService.Levels[levelService.ActiveLevelIndex].ActiveQuestionIndex;
 
             string question = levelService.Levels[levelService.ActiveLevelIndex].WordList[activeQuestionIndex].ToString();
 
@@ -149,7 +149,7 @@ namespace FTRGames.Alpaseh.Services
                 wordNumberConverterService.GetNumbersFromWord(gameView.questionText.text));
         
             levelService.CalculateTimeScoreLifeAmount(ref totalTime, ref totalScore, ref totalLife);
-            levelService.CalculateActiveLevelAndQuestionIndex();
+            levelService.CalculateActiveLevelAndQuestionIndex(ref totalLife);
 
             gameView.totalTimeText.text = Mathf.Round(totalTime).ToString();
             gameView.totalLifeText.text = totalLife.ToString("F2");
@@ -266,25 +266,25 @@ namespace FTRGames.Alpaseh.Services
         private void EarnScoreTextEffect()
         {
             gameView.scoreIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.scoreIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].GetEarnedScoreAmount.ToString(), Color.green, true);
+            tweenService.TweenText(gameView.scoreIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].EarnedScoreAmount.ToString(), Color.green, true);
         }
 
         private void EarnTimeTextEffect()
         {
             gameView.timeIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].GetEarnedTimeAmount.ToString(), Color.green, true);
+            tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].EarnedTimeAmount.ToString(), Color.green, true);
         }
 
         private void LooseTimeTextEffect()
         {
             gameView.timeIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].GetLoseTimeAmount.ToString(), Color.red, false);
+            tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LoseTimeAmount.ToString(), Color.red, false);
         }
 
         private void LooseLifeTextEffect()
         {
             gameView.lifeIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.lifeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].GetLoseLifeAmount.ToString(), Color.red, false);
+            tweenService.TweenText(gameView.lifeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LoseLifeAmount.ToString(), Color.red, false);
         }
 
         public void GameCheck()

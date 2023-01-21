@@ -1,17 +1,16 @@
 using System.Collections.Generic;
-using VContainer;
 
 namespace FTRGames.Alpaseh.Models
 {
     public class Level
     {
         private float lifeIncreaseAmount;
-        public int earnedScoreAmount;
-        public float loseLifeAmount;
-        public float earnedTimeAmount;
-        public float loseTimeAmount;
-        public bool correctAnswer;
-        public int activeQuestionIndex;
+        private int earnedScoreAmount;
+        private float loseLifeAmount;
+        private float earnedTimeAmount;
+        private float loseTimeAmount;
+        private bool correctAnswer;
+        private int activeQuestionIndex;
 
         public List<string> WordList { get; set; }
 
@@ -24,24 +23,40 @@ namespace FTRGames.Alpaseh.Models
             this.loseTimeAmount = loseTimeAmount;
         }
 
-        public float GetLoseLifeAmount
+        public float LifeIncreaseAmount
+        {
+            get { return lifeIncreaseAmount; }
+        }
+
+        public int EarnedScoreAmount
+        {
+            get { return earnedScoreAmount; }
+        }
+
+        public float LoseLifeAmount
         {
             get { return loseLifeAmount; }
         }
 
-        public float GetEarnedTimeAmount
+        public float EarnedTimeAmount
         {
             get { return earnedTimeAmount; }
         }
 
-        public float GetLoseTimeAmount
+        public float LoseTimeAmount
         {
             get { return loseTimeAmount; }
         }
 
-        public float GetEarnedScoreAmount
+        public bool CorrectAnswer
         {
-            get { return earnedScoreAmount; }
+            get { return correctAnswer; }
+        }
+
+        public int ActiveQuestionIndex
+        {
+            get { return activeQuestionIndex; }
+            set { activeQuestionIndex = value; }
         }
 
         public bool CheckEnteredNumberWord(string enteredNumberWord, string activeQuestionNumberWord)
@@ -72,9 +87,5 @@ namespace FTRGames.Alpaseh.Models
             return correctAnswer;
         }        
 
-        public void IncreaseLife(ref float totalLife)
-        {
-            totalLife += lifeIncreaseAmount;
-        }
     }
 }

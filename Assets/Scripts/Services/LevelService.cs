@@ -71,10 +71,10 @@ namespace FTRGames.Alpaseh.Services
 
         public void CalculateTimeScoreLifeAmount(ref float totalTime, ref int totalScore, ref float totalLife)
         {
-            if (Levels[ActiveLevelIndex].correctAnswer)
+            if (Levels[ActiveLevelIndex].CorrectAnswer)
             {
-                totalScore += Levels[ActiveLevelIndex].earnedScoreAmount;
-                totalTime += Levels[ActiveLevelIndex].earnedTimeAmount;
+                totalScore += Levels[ActiveLevelIndex].EarnedScoreAmount;
+                totalTime += Levels[ActiveLevelIndex].EarnedTimeAmount;
 
                 EarnTime.Invoke();
                 EarnScore.Invoke();
@@ -82,23 +82,30 @@ namespace FTRGames.Alpaseh.Services
 
             else
             {
-                totalLife -= Levels[ActiveLevelIndex].loseLifeAmount;
-                totalTime -= Levels[ActiveLevelIndex].loseTimeAmount;
+                totalLife -= Levels[ActiveLevelIndex].LoseLifeAmount;
+                totalTime -= Levels[ActiveLevelIndex].LoseTimeAmount;
 
                 LooseLife.Invoke();
                 LooseTime.Invoke();
             }
 
-            Levels[ActiveLevelIndex].activeQuestionIndex++;
+            Levels[ActiveLevelIndex].ActiveQuestionIndex++;
         }
 
-        public void CalculateActiveLevelAndQuestionIndex()
+        public void IncreaseLife(ref float totalLife)
         {
-            if (Levels[ActiveLevelIndex].activeQuestionIndex == GetActiveLevel().WordList.Count)
+            totalLife += Levels[ActiveLevelIndex].LifeIncreaseAmount;
+        }
+
+        public void CalculateActiveLevelAndQuestionIndex(ref float totalLife)
+        {
+            if (Levels[ActiveLevelIndex].ActiveQuestionIndex == GetActiveLevel().WordList.Count)
             {
+                IncreaseLife(ref totalLife);
+
                 ActiveLevelIndex++;
 
-                Levels[ActiveLevelIndex].activeQuestionIndex = 0;
+                Levels[ActiveLevelIndex].ActiveQuestionIndex = 0;
             }
         }
     }

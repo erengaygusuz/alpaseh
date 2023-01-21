@@ -1,7 +1,7 @@
 
 using System;
 
-namespace FTRGames.Alpaseh.Models
+namespace FTRGames.Alpaseh.Models.LocalizationData
 {
     [Serializable]
     public class MainMenu

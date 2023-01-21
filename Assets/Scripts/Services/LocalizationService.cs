@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using FTRGames.Alpaseh.Models;
 using Newtonsoft.Json.Linq;
+using FTRGames.Alpaseh.Models.LocalizationData;
 
 namespace FTRGames.Alpaseh.Services
 {
