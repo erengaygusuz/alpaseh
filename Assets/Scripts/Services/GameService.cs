@@ -10,7 +10,6 @@ namespace FTRGames.Alpaseh.Services
     public class GameService 
     {
         private readonly AudioService audioService;
-        private readonly LocalizationService localizationService;
         private readonly TweenService tweenService;
         private readonly ScoreService scoreService;
 
@@ -26,10 +25,9 @@ namespace FTRGames.Alpaseh.Services
 
         public bool IsGotoMainMenuBtnClick;
 
-        public GameService(AudioService audioService, LocalizationService localizationService, TweenService tweenService, ScoreService scoreService)
+        public GameService(AudioService audioService, TweenService tweenService, ScoreService scoreService)
         {
             this.audioService = audioService;
-            this.localizationService = localizationService;
             this.tweenService = tweenService;
             this.scoreService = scoreService;
         }
@@ -44,8 +42,6 @@ namespace FTRGames.Alpaseh.Services
 
             PlayAmbienceSound(audioView);
             PlayTimeTickSound();
-
-            AssignTranslatedValues(gameView);
         }
 
         #region Sound Functions
@@ -357,26 +353,6 @@ namespace FTRGames.Alpaseh.Services
         }
 
         #endregion
-
-        private void AssignTranslatedValues(GameView gameView)
-        {
-            gameView.topBarTotalTimeText.text = localizationService.GetLocalizationData().Game.TopBarTotalTimeText;
-            gameView.topBarTotalLifeText.text = localizationService.GetLocalizationData().Game.TopBarTotalLifeText;
-            gameView.topBarActiveLevelText.text = localizationService.GetLocalizationData().Game.TopBarActiveLevelText;
-            gameView.topBarTotalScoreText.text = localizationService.GetLocalizationData().Game.TopBarTotalScoreText;
-            gameView.processButtonsCheckButtonText.text = localizationService.GetLocalizationData().Game.ProcessButtonsCheckButtonText;
-            gameView.processButtonsDeleteButtonText.text = localizationService.GetLocalizationData().Game.ProcessButtonsDeleteButtonText;
-            gameView.processButtonsMainMenuButtonText.text = localizationService.GetLocalizationData().Game.ProcessButtonsMainMenuButtonText;
-            gameView.gameOverPanelInfoText.text = localizationService.GetLocalizationData().Game.GameOverPanelInfoText;
-            gameView.gameOverPanelMessageBox1InfoText.text = localizationService.GetLocalizationData().Game.GameOverPanelMessageBox1InfoText;
-            gameView.gameOverPanelMessageBox1YesBtnText.text = localizationService.GetLocalizationData().Game.GameOverPanelMessageBox1YesBtnText;
-            gameView.gameOverPanelMessageBox1NoBtnText.text = localizationService.GetLocalizationData().Game.GameOverPanelMessageBox1NoBtnText;
-            gameView.gameOverPanelMessageBox2InfoText.text = localizationService.GetLocalizationData().Game.GameOverPanelMessageBox2InfoText;
-            gameView.gameOverPanelMessageBox2OkBtnText.text = localizationService.GetLocalizationData().Game.GameOverPanelMessageBox2OkBtnText;
-            gameView.gameOverPanelPlayAgainButtonText.text = localizationService.GetLocalizationData().Game.GameOverPanelPlayAgainButtonText;
-            gameView.gameOverPanelMainMenuButtonText.text = localizationService.GetLocalizationData().Game.GameOverPanelMainMenuButtonText;
-            gameView.gameOverPanelExitGameButtonText.text = localizationService.GetLocalizationData().Game.GameOverPanelExitGameButtonText;
-        }
     }
 }
 

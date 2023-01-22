@@ -378,6 +378,7 @@ GameObject:
   - component: {fileID: 124293553}
   - component: {fileID: 124293552}
   - component: {fileID: 124293554}
+  - component: {fileID: 124293555}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -460,6 +461,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &124293555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124293550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: GameOverPanelExitGameButtonText
 --- !u!1 &173170163
 GameObject:
   m_ObjectHideFlags: 0
@@ -1046,6 +1061,7 @@ GameObject:
   - component: {fileID: 362508349}
   - component: {fileID: 362508348}
   - component: {fileID: 362508347}
+  - component: {fileID: 362508350}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -1128,6 +1144,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 362508345}
   m_CullTransparentMesh: 1
+--- !u!114 &362508350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362508345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: GameOverPanelMessageBox1YesBtnText
 --- !u!1 &441792272
 GameObject:
   m_ObjectHideFlags: 0
@@ -2846,6 +2876,7 @@ GameObject:
   - component: {fileID: 748215121}
   - component: {fileID: 748215120}
   - component: {fileID: 748215119}
+  - component: {fileID: 748215122}
   m_Layer: 5
   m_Name: InfoText
   m_TagString: Untagged
@@ -2928,6 +2959,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 748215117}
   m_CullTransparentMesh: 1
+--- !u!114 &748215122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748215117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: GameOverPanelMessageBox2InfoText
 --- !u!1 &764256523
 GameObject:
   m_ObjectHideFlags: 0
@@ -3109,6 +3154,7 @@ GameObject:
   - component: {fileID: 809330690}
   - component: {fileID: 809330689}
   - component: {fileID: 809330691}
+  - component: {fileID: 809330692}
   m_Layer: 5
   m_Name: TotalLifeText
   m_TagString: Untagged
@@ -3191,6 +3237,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &809330692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809330687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: TopBarTotalLifeText
 --- !u!1 &835700698
 GameObject:
   m_ObjectHideFlags: 0
@@ -3536,6 +3596,7 @@ GameObject:
   - component: {fileID: 956318213}
   - component: {fileID: 956318212}
   - component: {fileID: 956318214}
+  - component: {fileID: 956318215}
   m_Layer: 5
   m_Name: InfoText
   m_TagString: Untagged
@@ -3618,6 +3679,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &956318215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 956318210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: GameOverPanelInfoText
 --- !u!1 &958819002
 GameObject:
   m_ObjectHideFlags: 0
@@ -3778,6 +3853,7 @@ GameObject:
   - component: {fileID: 981642486}
   - component: {fileID: 981642485}
   - component: {fileID: 981642484}
+  - component: {fileID: 981642487}
   m_Layer: 5
   m_Name: InfoText
   m_TagString: Untagged
@@ -3862,6 +3938,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 981642482}
   m_CullTransparentMesh: 1
+--- !u!114 &981642487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981642482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: GameOverPanelMessageBox1InfoText
 --- !u!1 &1029375802
 GameObject:
   m_ObjectHideFlags: 0
@@ -4240,6 +4330,7 @@ GameObject:
   - component: {fileID: 1151897231}
   - component: {fileID: 1151897230}
   - component: {fileID: 1151897232}
+  - component: {fileID: 1151897233}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -4322,6 +4413,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1151897233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151897228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: ProcessButtonsCheckButtonText
 --- !u!1 &1196676770
 GameObject:
   m_ObjectHideFlags: 0
@@ -4688,6 +4793,7 @@ GameObject:
   - component: {fileID: 1290403926}
   - component: {fileID: 1290403925}
   - component: {fileID: 1290403927}
+  - component: {fileID: 1290403928}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -4770,6 +4876,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1290403928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290403923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: ProcessButtonsDeleteButtonText
 --- !u!1 &1292418525
 GameObject:
   m_ObjectHideFlags: 0
@@ -4782,6 +4902,7 @@ GameObject:
   - component: {fileID: 1292418529}
   - component: {fileID: 1292418528}
   - component: {fileID: 1292418527}
+  - component: {fileID: 1292418530}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -4864,6 +4985,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1292418525}
   m_CullTransparentMesh: 1
+--- !u!114 &1292418530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292418525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: GameOverPanelMessageBox2OkBtnText
 --- !u!1 &1295129187
 GameObject:
   m_ObjectHideFlags: 0
@@ -4876,6 +5011,7 @@ GameObject:
   - component: {fileID: 1295129190}
   - component: {fileID: 1295129189}
   - component: {fileID: 1295129191}
+  - component: {fileID: 1295129192}
   m_Layer: 5
   m_Name: TotalScoreText
   m_TagString: Untagged
@@ -4958,6 +5094,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1295129192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295129187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: TopBarTotalScoreText
 --- !u!1 &1312281894
 GameObject:
   m_ObjectHideFlags: 0
@@ -5064,6 +5214,7 @@ GameObject:
   - component: {fileID: 1323405534}
   - component: {fileID: 1323405533}
   - component: {fileID: 1323405535}
+  - component: {fileID: 1323405536}
   m_Layer: 5
   m_Name: TotalTimeText
   m_TagString: Untagged
@@ -5146,6 +5297,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1323405536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323405531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: TopBarTotalTimeText
 --- !u!1 &1337017372
 GameObject:
   m_ObjectHideFlags: 0
@@ -5728,6 +5893,7 @@ GameObject:
   - component: {fileID: 1517950954}
   - component: {fileID: 1517950953}
   - component: {fileID: 1517950952}
+  - component: {fileID: 1517950955}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -5810,6 +5976,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1517950950}
   m_CullTransparentMesh: 1
+--- !u!114 &1517950955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517950950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: GameOverPanelMessageBox1NoBtnText
 --- !u!1 &1527566641
 GameObject:
   m_ObjectHideFlags: 0
@@ -6030,6 +6210,7 @@ GameObject:
   - component: {fileID: 1567267764}
   - component: {fileID: 1567267763}
   - component: {fileID: 1567267765}
+  - component: {fileID: 1567267766}
   m_Layer: 5
   m_Name: ActiveLevelText
   m_TagString: Untagged
@@ -6112,6 +6293,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1567267766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567267761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: TopBarActiveLevelText
 --- !u!1 &1571848568
 GameObject:
   m_ObjectHideFlags: 0
@@ -6218,6 +6413,7 @@ GameObject:
   - component: {fileID: 1573480604}
   - component: {fileID: 1573480603}
   - component: {fileID: 1573480605}
+  - component: {fileID: 1573480606}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -6300,6 +6496,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1573480606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573480601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: ProcessButtonsMainMenuButtonText
 --- !u!1 &1575166732
 GameObject:
   m_ObjectHideFlags: 0
@@ -6858,6 +7068,7 @@ GameObject:
   - component: {fileID: 1843254198}
   - component: {fileID: 1843254197}
   - component: {fileID: 1843254199}
+  - component: {fileID: 1843254200}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -6940,6 +7151,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1843254200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843254195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: GameOverPanelPlayAgainButtonText
 --- !u!1 &1859433599
 GameObject:
   m_ObjectHideFlags: 0
@@ -7021,17 +7246,6 @@ MonoBehaviour:
   - {fileID: 958819004}
   - {fileID: 173170165}
   - {fileID: 110674845}
-  numberButtonsTexts:
-  - {fileID: 478406681}
-  - {fileID: 764256525}
-  - {fileID: 641099097}
-  - {fileID: 1737804176}
-  - {fileID: 207426804}
-  - {fileID: 1758118803}
-  - {fileID: 353232788}
-  - {fileID: 1571848570}
-  - {fileID: 1430783818}
-  - {fileID: 517315433}
   checkButton: {fileID: 1081066356}
   deleteButton: {fileID: 487897879}
   mainMenuButton: {fileID: 1837126142}
@@ -7666,6 +7880,7 @@ GameObject:
   - component: {fileID: 2136187964}
   - component: {fileID: 2136187963}
   - component: {fileID: 2136187965}
+  - component: {fileID: 2136187966}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -7748,3 +7963,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &2136187966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2136187961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 6
+  languageKey: GameOverPanelMainMenuButtonText

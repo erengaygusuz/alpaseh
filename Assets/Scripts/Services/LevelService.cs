@@ -46,9 +46,6 @@ namespace FTRGames.Alpaseh.Services
 
             Levels[4] = new Level(1.25f, 50, 0.25f, 7, 5);
             Levels[4].WordList = wordParserService.WordDatas.LevelWordList[4];
-
-            Levels[5] = new Level(1.50f, 60, 0.25f, 8, 5);
-            Levels[5].WordList = wordParserService.WordDatas.LevelWordList[5];
         }
 
         private void InitEvents()

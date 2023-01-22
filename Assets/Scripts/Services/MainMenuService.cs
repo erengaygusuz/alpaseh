@@ -8,19 +8,16 @@ namespace FTRGames.Alpaseh.Services
     {
         private readonly AudioView audioView;
         private readonly AudioService audioService;
-        private readonly LocalizationService localizationService;
 
-        public MainMenuService(AudioService audioService, LocalizationService localizationService, AudioView audioView)
+        public MainMenuService(AudioService audioService, AudioView audioView)
         {
             this.audioService = audioService;
-            this.localizationService = localizationService;
             this.audioView = audioView;
         }
 
         public void Initialization(MainMenuView mainMenuView)
         {
             PlayBackgroundAudio();
-            AssignTranslatedValues(mainMenuView);
         }
 
         private void PlayBackgroundAudio()
@@ -64,16 +61,6 @@ namespace FTRGames.Alpaseh.Services
         public void ExitBtnClick()
         {
             Application.Quit();
-        }
-
-        private void AssignTranslatedValues(MainMenuView mainMenuView)
-        {
-            mainMenuView.startGameButtonText.text = localizationService.GetLocalizationData().MainMenu.StartGameButtonText;
-            mainMenuView.howToPlayButtonText.text = localizationService.GetLocalizationData().MainMenu.HowToPlayButtonText;
-            mainMenuView.settingsButtonText.text = localizationService.GetLocalizationData().MainMenu.SettingsButtonText;
-            mainMenuView.highScoresButtonText.text = localizationService.GetLocalizationData().MainMenu.HighScoresButtonText;
-            mainMenuView.creditsButtonText.text = localizationService.GetLocalizationData().MainMenu.CreditsButtonText;
-            mainMenuView.exitButtonText.text = localizationService.GetLocalizationData().MainMenu.ExitButtonText;
         }
     }
 }

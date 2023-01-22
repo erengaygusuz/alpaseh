@@ -8,12 +8,10 @@ namespace FTRGames.Alpaseh.Services
 {
     public class HighScoresService
     {
-        private readonly LocalizationService localizationService;
         private readonly ScoreService scoreService;
 
-        public HighScoresService(LocalizationService localizationService, ScoreService scoreService)
+        public HighScoresService(ScoreService scoreService)
         {
-            this.localizationService = localizationService;
             this.scoreService = scoreService;
         }
 
@@ -101,21 +99,6 @@ namespace FTRGames.Alpaseh.Services
         public void GoToMainMenuBtnClick()
         {
             SceneManager.LoadScene("MainMenu");
-        }
-
-        public void AssignTranslatedValues(HighScoresView highScoresView)
-        {
-            highScoresView.scoreLabelsUsernameText.text = localizationService.GetLocalizationData().HighScores.ScoreLabelsUsernameText;
-            highScoresView.scoreLabelsScoreText.text = localizationService.GetLocalizationData().HighScores.ScoreLabelsScoreText;
-            highScoresView.messageBox1InfoText.text = localizationService.GetLocalizationData().HighScores.MessageBox1InfoText;
-            highScoresView.messageBox1YesButtonText.text = localizationService.GetLocalizationData().HighScores.MessageBox1YesButtonText;
-            highScoresView.messageBox1NoButtonText.text = localizationService.GetLocalizationData().HighScores.MessageBox1NoButtonText;
-            highScoresView.messageBox2InfoText.text = localizationService.GetLocalizationData().HighScores.MessageBox2InfoText;
-            highScoresView.messageBox2OkButtonText.text = localizationService.GetLocalizationData().HighScores.MessageBox2OkButtonText;
-            highScoresView.messageBox3InfoText.text = localizationService.GetLocalizationData().HighScores.MessageBox3InfoText;
-            highScoresView.messageBox3OkButtonText.text = localizationService.GetLocalizationData().HighScores.MessageBox3OkButtonText;
-            highScoresView.mainMenuButtonText.text = localizationService.GetLocalizationData().HighScores.MainMenuButtonText;
-            highScoresView.deleteAllButtonText.text = localizationService.GetLocalizationData().HighScores.DeleteAllButtonText;
         }
     }
 }

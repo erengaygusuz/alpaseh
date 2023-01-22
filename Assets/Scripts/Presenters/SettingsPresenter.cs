@@ -5,7 +5,7 @@ using VContainer.Unity;
 
 namespace FTRGames.Alpaseh.Presenters
 {
-    public class SettingsPresenter : IStartable, ITickable
+    public class SettingsPresenter : IStartable
     {
         private readonly SettingsView settingsView;
         private readonly SettingsService settingsService;
@@ -21,11 +21,6 @@ namespace FTRGames.Alpaseh.Presenters
             settingsService.Initialization(settingsView);
 
             EventBinding(settingsView);
-        }
-
-        public void Tick()
-        {
-            settingsService.LanguageCheck(settingsView);
         }
 
         private void EventBinding(SettingsView settingsView)

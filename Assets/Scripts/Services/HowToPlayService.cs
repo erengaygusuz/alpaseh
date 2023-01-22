@@ -5,13 +5,11 @@ namespace FTRGames.Alpaseh.Services
 {
     public class HowToPlayService
     {
-        private readonly LocalizationService localizationService;
-
         private int activeInfoIndex;
 
-        public HowToPlayService(LocalizationService localizationService)
+        public HowToPlayService()
         {
-            this.localizationService = localizationService;
+
         }
 
         public void Initialization(HowToPlayView howToPlayView)
@@ -19,7 +17,6 @@ namespace FTRGames.Alpaseh.Services
             InitActiveInfoIndex();
             ActivateNavigationButtons(howToPlayView);
             ActivateInfo(howToPlayView, activeInfoIndex);
-            AssignTranslatedValues(howToPlayView);
         }
 
         private void InitActiveInfoIndex()
@@ -82,36 +79,9 @@ namespace FTRGames.Alpaseh.Services
             ActivateInfo(howToPlayView, activeInfoIndex);
         }
 
-        public void GoToMainMenuBtnClick(HowToPlayView howToPlayView)
+        public void GoToMainMenuBtnClick()
         {
             SceneManager.LoadScene("MainMenu");
-        }
-
-        private void AssignTranslatedValues(HowToPlayView howToPlayView)
-        {
-            howToPlayView.infoPanelInfo1Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo1Text;
-            howToPlayView.infoPanelInfo2Text1.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo2Text1;
-            howToPlayView.infoPanelInfo2Text2.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo2Text2;
-            howToPlayView.infoPanelInfo3Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo3Text;
-            howToPlayView.infoPanelInfo3ButtonSetNumber0Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo3ButtonSetNumber0Text;
-            howToPlayView.infoPanelInfo3ButtonSetNumber1Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo3ButtonSetNumber1Text;
-            howToPlayView.infoPanelInfo3ButtonSetNumber2Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo3ButtonSetNumber2Text;
-            howToPlayView.infoPanelInfo3ButtonSetNumber3Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo3ButtonSetNumber3Text;
-            howToPlayView.infoPanelInfo3ButtonSetNumber4Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo3ButtonSetNumber4Text;
-            howToPlayView.infoPanelInfo3ButtonSetNumber5Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo3ButtonSetNumber5Text;
-            howToPlayView.infoPanelInfo3ButtonSetNumber6Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo3ButtonSetNumber6Text;
-            howToPlayView.infoPanelInfo3ButtonSetNumber7Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo3ButtonSetNumber7Text;
-            howToPlayView.infoPanelInfo3ButtonSetNumber8Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo3ButtonSetNumber8Text;
-            howToPlayView.infoPanelInfo3ButtonSetNumber9Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo3ButtonSetNumber9Text;
-            howToPlayView.infoPanelInfo4Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo4Text;
-            howToPlayView.infoPanelInfo4ButtonSetNumber1Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo4ButtonSetNumber1Text;
-            howToPlayView.infoPanelInfo4ButtonSetNumber3Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo4ButtonSetNumber3Text;
-            howToPlayView.infoPanelInfo4ButtonSetNumber7Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo4ButtonSetNumber7Text;
-            howToPlayView.infoPanelInfo4ButtonSetNumber8Text.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo4ButtonSetNumber8Text;
-            howToPlayView.infoPanelInfo5Text1.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo5Text1;
-            howToPlayView.infoPanelInfo5Text2.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo5Text2;
-            howToPlayView.infoPanelInfo5Text3.text = localizationService.GetLocalizationData().HowToPlay.InfoPanelInfo5Text3;
-            howToPlayView.mainMenuButtonText.text = localizationService.GetLocalizationData().HowToPlay.MainMenuButtonText;
         }
     }
 }

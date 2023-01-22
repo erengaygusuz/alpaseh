@@ -324,6 +324,7 @@ GameObject:
   - component: {fileID: 47686621}
   - component: {fileID: 47686620}
   - component: {fileID: 47686622}
+  - component: {fileID: 47686623}
   m_Layer: 5
   m_Name: Number1Text
   m_TagString: Untagged
@@ -406,6 +407,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &47686623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 47686618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo3ButtonSetNumber1Text
 --- !u!1 &82185375
 GameObject:
   m_ObjectHideFlags: 0
@@ -942,6 +957,7 @@ GameObject:
   - component: {fileID: 139072264}
   - component: {fileID: 139072263}
   - component: {fileID: 139072265}
+  - component: {fileID: 139072266}
   m_Layer: 5
   m_Name: Number7Text
   m_TagString: Untagged
@@ -1024,6 +1040,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &139072266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139072261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo3ButtonSetNumber7Text
 --- !u!1001 &154124453
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2120,6 +2150,7 @@ GameObject:
   - component: {fileID: 410693177}
   - component: {fileID: 410693176}
   - component: {fileID: 410693178}
+  - component: {fileID: 410693179}
   m_Layer: 5
   m_Name: Text1
   m_TagString: Untagged
@@ -2203,6 +2234,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &410693179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410693174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo5Text1
 --- !u!1 &420080204
 GameObject:
   m_ObjectHideFlags: 0
@@ -2309,6 +2354,7 @@ GameObject:
   - component: {fileID: 427059605}
   - component: {fileID: 427059604}
   - component: {fileID: 427059606}
+  - component: {fileID: 427059607}
   m_Layer: 5
   m_Name: Number6Text
   m_TagString: Untagged
@@ -2391,6 +2437,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &427059607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 427059602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo3ButtonSetNumber6Text
 --- !u!1 &441792272
 GameObject:
   m_ObjectHideFlags: 0
@@ -4411,6 +4471,7 @@ GameObject:
   - component: {fileID: 749838092}
   - component: {fileID: 749838091}
   - component: {fileID: 749838093}
+  - component: {fileID: 749838094}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -4498,6 +4559,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &749838094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749838089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo1Text
 --- !u!1 &757353018
 GameObject:
   m_ObjectHideFlags: 0
@@ -4774,6 +4849,7 @@ GameObject:
   - component: {fileID: 812373996}
   - component: {fileID: 812373995}
   - component: {fileID: 812373997}
+  - component: {fileID: 812373998}
   m_Layer: 5
   m_Name: Text2
   m_TagString: Untagged
@@ -4857,6 +4933,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &812373998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812373993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo5Text2
 --- !u!1 &818962610
 GameObject:
   m_ObjectHideFlags: 0
@@ -5907,6 +5997,7 @@ GameObject:
   - component: {fileID: 1049188027}
   - component: {fileID: 1049188026}
   - component: {fileID: 1049188028}
+  - component: {fileID: 1049188029}
   m_Layer: 5
   m_Name: Number4Text
   m_TagString: Untagged
@@ -5989,6 +6080,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1049188029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049188024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo3ButtonSetNumber4Text
 --- !u!1 &1055123600
 GameObject:
   m_ObjectHideFlags: 0
@@ -6305,6 +6410,7 @@ GameObject:
   - component: {fileID: 1180117201}
   - component: {fileID: 1180117200}
   - component: {fileID: 1180117202}
+  - component: {fileID: 1180117203}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -6387,6 +6493,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1180117203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1180117198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: MainMenuButtonText
 --- !u!1 &1189529960
 GameObject:
   m_ObjectHideFlags: 0
@@ -6721,6 +6841,7 @@ GameObject:
   - component: {fileID: 1240666033}
   - component: {fileID: 1240666032}
   - component: {fileID: 1240666034}
+  - component: {fileID: 1240666035}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -6804,6 +6925,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1240666035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240666030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo3Text
 --- !u!1 &1261731234
 GameObject:
   m_ObjectHideFlags: 0
@@ -6986,6 +7121,7 @@ GameObject:
   - component: {fileID: 1275713081}
   - component: {fileID: 1275713080}
   - component: {fileID: 1275713082}
+  - component: {fileID: 1275713083}
   m_Layer: 5
   m_Name: Number8Text
   m_TagString: Untagged
@@ -7068,6 +7204,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1275713083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1275713078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo3ButtonSetNumber8Text
 --- !u!1 &1304359087
 GameObject:
   m_ObjectHideFlags: 0
@@ -7250,6 +7400,7 @@ GameObject:
   - component: {fileID: 1337241450}
   - component: {fileID: 1337241449}
   - component: {fileID: 1337241451}
+  - component: {fileID: 1337241452}
   m_Layer: 5
   m_Name: Number7Text
   m_TagString: Untagged
@@ -7332,6 +7483,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1337241452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1337241447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo4ButtonSetNumber7Text
 --- !u!1 &1352088637
 GameObject:
   m_ObjectHideFlags: 0
@@ -7420,6 +7585,7 @@ GameObject:
   - component: {fileID: 1355343710}
   - component: {fileID: 1355343709}
   - component: {fileID: 1355343711}
+  - component: {fileID: 1355343712}
   m_Layer: 5
   m_Name: Text2
   m_TagString: Untagged
@@ -7503,6 +7669,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1355343712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355343707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo2Text2
 --- !u!1 &1370604804
 GameObject:
   m_ObjectHideFlags: 0
@@ -7757,6 +7937,7 @@ GameObject:
   - component: {fileID: 1425338833}
   - component: {fileID: 1425338832}
   - component: {fileID: 1425338834}
+  - component: {fileID: 1425338835}
   m_Layer: 5
   m_Name: Number8Text
   m_TagString: Untagged
@@ -7839,6 +8020,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1425338835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1425338830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo4ButtonSetNumber8Text
 --- !u!1 &1450371676
 GameObject:
   m_ObjectHideFlags: 0
@@ -7851,6 +8046,7 @@ GameObject:
   - component: {fileID: 1450371679}
   - component: {fileID: 1450371678}
   - component: {fileID: 1450371680}
+  - component: {fileID: 1450371681}
   m_Layer: 5
   m_Name: Text1
   m_TagString: Untagged
@@ -7934,6 +8130,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1450371681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1450371676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo2Text1
 --- !u!1 &1452006813
 GameObject:
   m_ObjectHideFlags: 0
@@ -7946,6 +8156,7 @@ GameObject:
   - component: {fileID: 1452006816}
   - component: {fileID: 1452006815}
   - component: {fileID: 1452006817}
+  - component: {fileID: 1452006818}
   m_Layer: 5
   m_Name: Number9Text
   m_TagString: Untagged
@@ -8028,6 +8239,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1452006818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452006813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo3ButtonSetNumber9Text
 --- !u!1 &1487217418
 GameObject:
   m_ObjectHideFlags: 0
@@ -9590,6 +9815,7 @@ GameObject:
   - component: {fileID: 1771498094}
   - component: {fileID: 1771498093}
   - component: {fileID: 1771498095}
+  - component: {fileID: 1771498096}
   m_Layer: 5
   m_Name: Number3Text
   m_TagString: Untagged
@@ -9672,6 +9898,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1771498096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1771498091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo3ButtonSetNumber3Text
 --- !u!1 &1781412994
 GameObject:
   m_ObjectHideFlags: 0
@@ -9975,6 +10215,7 @@ GameObject:
   - component: {fileID: 1830503944}
   - component: {fileID: 1830503943}
   - component: {fileID: 1830503945}
+  - component: {fileID: 1830503946}
   m_Layer: 5
   m_Name: Number0Text
   m_TagString: Untagged
@@ -10057,6 +10298,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1830503946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830503941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo3ButtonSetNumber0Text
 --- !u!1 &1843136447
 GameObject:
   m_ObjectHideFlags: 0
@@ -10145,6 +10400,7 @@ GameObject:
   - component: {fileID: 1885686946}
   - component: {fileID: 1885686945}
   - component: {fileID: 1885686947}
+  - component: {fileID: 1885686948}
   m_Layer: 5
   m_Name: Number2Text
   m_TagString: Untagged
@@ -10227,6 +10483,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1885686948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885686943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo3ButtonSetNumber2Text
 --- !u!1 &1903005206
 GameObject:
   m_ObjectHideFlags: 0
@@ -10239,6 +10509,7 @@ GameObject:
   - component: {fileID: 1903005209}
   - component: {fileID: 1903005208}
   - component: {fileID: 1903005210}
+  - component: {fileID: 1903005211}
   m_Layer: 5
   m_Name: Number5Text
   m_TagString: Untagged
@@ -10321,6 +10592,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1903005211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903005206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo3ButtonSetNumber5Text
 --- !u!1 &1904779667
 GameObject:
   m_ObjectHideFlags: 0
@@ -10691,6 +10976,7 @@ GameObject:
   - component: {fileID: 1974353740}
   - component: {fileID: 1974353739}
   - component: {fileID: 1974353741}
+  - component: {fileID: 1974353742}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -10774,6 +11060,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &1974353742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974353737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo4Text
 --- !u!1 &1981897760
 GameObject:
   m_ObjectHideFlags: 0
@@ -10997,6 +11297,7 @@ GameObject:
   - component: {fileID: 2024987427}
   - component: {fileID: 2024987426}
   - component: {fileID: 2024987428}
+  - component: {fileID: 2024987429}
   m_Layer: 5
   m_Name: Number1Text
   m_TagString: Untagged
@@ -11079,6 +11380,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &2024987429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024987424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo4ButtonSetNumber1Text
 --- !u!1 &2027241282
 GameObject:
   m_ObjectHideFlags: 0
@@ -11091,6 +11406,7 @@ GameObject:
   - component: {fileID: 2027241285}
   - component: {fileID: 2027241284}
   - component: {fileID: 2027241286}
+  - component: {fileID: 2027241287}
   m_Layer: 5
   m_Name: Text3
   m_TagString: Untagged
@@ -11173,6 +11489,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &2027241287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027241282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo5Text3
 --- !u!1 &2027283455
 GameObject:
   m_ObjectHideFlags: 0
@@ -11452,6 +11782,7 @@ GameObject:
   - component: {fileID: 2128168047}
   - component: {fileID: 2128168046}
   - component: {fileID: 2128168048}
+  - component: {fileID: 2128168049}
   m_Layer: 5
   m_Name: Number3Text
   m_TagString: Untagged
@@ -11534,6 +11865,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectedObjectType: 0
   IsColorSchemeChanged: 0
+--- !u!114 &2128168049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128168044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a63f58eba28458449814d5e6e738e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectedLanguageObject: 2
+  languageKey: InfoPanelInfo4ButtonSetNumber3Text
 --- !u!1 &2136041026
 GameObject:
   m_ObjectHideFlags: 0

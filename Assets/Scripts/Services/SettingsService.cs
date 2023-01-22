@@ -22,7 +22,6 @@ namespace FTRGames.Alpaseh.Services
             GetUserNameValue(settingsView);
             FillLanguageDropdown(settingsView);
             GetLanguageValues(settingsView);
-            AssignTranslatedValues(settingsView);
             GetAudioLevelValues(settingsView);
         }
 
@@ -77,18 +76,6 @@ namespace FTRGames.Alpaseh.Services
             ActivateSelectedThemeToggle(settingsView);
         }
 
-        public void AssignTranslatedValues(SettingsView settingsView)
-        {
-            settingsView.generalTabText.text = localizationService.GetLocalizationData().Settings.GeneralTabText;
-            settingsView.personalTabText.text = localizationService.GetLocalizationData().Settings.PersonalTabText;
-            settingsView.generalContentAudioLabel.text = localizationService.GetLocalizationData().Settings.GeneralContentAudioLabel;
-            settingsView.generalContentThemesLabel.text = localizationService.GetLocalizationData().Settings.GeneralContentThemesLabel;
-            settingsView.personalContentUsernameLabel.text = localizationService.GetLocalizationData().Settings.PersonalContentUsernameLabel;
-            settingsView.personalContentUsernameInputFieldPlaceholder.text = localizationService.GetLocalizationData().Settings.PersonalContentUsernameInputFieldPlaceholder;
-            settingsView.personalContentLanguageLabel.text = localizationService.GetLocalizationData().Settings.PersonalContentLanguageLabel;
-            settingsView.mainMenuButtonText.text = localizationService.GetLocalizationData().Settings.MainMenuButtonText;
-        }
-
         public void SaveLanguageOption(SettingsView settingsView)
         {
             PlayerPrefs.SetInt("Alpaseh-SelectedLanguageIndex", settingsView.languageOptions.value);
@@ -101,7 +88,7 @@ namespace FTRGames.Alpaseh.Services
 
             settingsView.languageOptions.captionText.text = settingsView.languageOptions.options[settingsView.languageOptions.value].text;
 
-            localizationService.IsLanguageChanged = true;
+            localizationService.languageChangedEvent.Invoke();
         }
 
         public void GoToMainMenuBtnClick(SettingsView settingsView)
@@ -209,16 +196,5 @@ namespace FTRGames.Alpaseh.Services
         {
             settingsView.themesToggles[PlayerPrefs.GetInt("Alpaseh-SelectedColorSchemeIndex", 0)].isOn = true;
         }
-
-        public void LanguageCheck(SettingsView settingsView)
-        {
-            if (localizationService.IsLanguageChanged == true)
-            {
-                AssignTranslatedValues(settingsView);
-
-                localizationService.IsLanguageChanged = false;
-            }
-        }
     }
 }
-

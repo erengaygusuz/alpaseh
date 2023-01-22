@@ -48,26 +48,6 @@ namespace FTRGames.Alpaseh.Services
             GetLanguageValues(introView);
         }
 
-        public void CheckLanguageState(IntroView introView)
-        {
-            if (localizationService.IsLanguageChanged == true)
-            {
-                AssignTranslatedValues(introView);
-
-                localizationService.IsLanguageChanged = false;
-            }
-        }
-
-        private void AssignTranslatedValues(IntroView introView)
-        {
-            introView.usernameLabel.text = localizationService.GetLocalizationData().Intro.UsernameLabel;
-            introView.usernameInputFieldPlaceholder.text = localizationService.GetLocalizationData().Intro.UsernameInputFieldPlaceholder;
-            introView.languageLabel.text = localizationService.GetLocalizationData().Intro.LanguageLabel;
-            introView.nextButtonText.text = localizationService.GetLocalizationData().Intro.NextButtonText;
-            introView.messageBoxInfoText.text = localizationService.GetLocalizationData().Intro.MessageBoxInfoText;
-            introView.messageBoxOkButtonText.text = localizationService.GetLocalizationData().Intro.MessageBoxOkButtonText;
-        }
-
         public void NextBtnClick(IntroView introView)
         {
             if (introView.username.text == "")
@@ -100,7 +80,7 @@ namespace FTRGames.Alpaseh.Services
 
             introView.languageOptions.captionText.text = introView.languageOptions.options[introView.languageOptions.value].text;
 
-            localizationService.IsLanguageChanged = true;
+            localizationService.languageChangedEvent.Invoke();
         }
     }
 }

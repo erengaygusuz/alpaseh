@@ -7,19 +7,17 @@ namespace FTRGames.Alpaseh.Presenters
     public class CreditsPresenter : IStartable
     {
         private readonly CreditsService creditsService;
-        private readonly LocalizationService localizationService;
         private readonly CreditsView creditsView;
 
-        public CreditsPresenter(LocalizationService localizationService, CreditsView creditsView, CreditsService creditsService)
+        public CreditsPresenter(CreditsView creditsView, CreditsService creditsService)
         {
             this.creditsService = creditsService;
-            this.localizationService = localizationService;
             this.creditsView = creditsView;
         }
 
         void IStartable.Start()
         {
-            creditsService.Initialization(creditsView, localizationService);
+            creditsService.SetVersionValue(creditsView);
 
             EventBinding();
         }

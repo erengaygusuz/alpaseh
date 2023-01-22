@@ -8,7 +8,7 @@ namespace FTRGames.Alpaseh.Models
 
         public WordData(string wordText, char[] identifiedLetters)
         {
-            for (int i = 3; i < 9; i++)
+            for (int i = 3; i < 8; i++)
             {
                 AddWordsToList(wordText.Split('\n'), i, IdentifiedLetters(identifiedLetters));
             }
@@ -32,59 +32,43 @@ namespace FTRGames.Alpaseh.Models
 
         private void AddWordsToList(string[] wordList, int wordSize, List<Letter> selectedLetters)
         {
-            var count = 0;
-
             var tempList = new List<string>();
 
             for (int i = 0; i < wordList.Length; i++)
             {
-                var isSuitableWord = false;
-
-                var selectedWord = wordList[i].Substring(0, wordList[i].Length - 1);
-
-                var selectedWordListCount = selectedWord.Length;
-
-                if (selectedWordListCount == wordSize)
+                if (wordList[i].Length > 0)
                 {
-                    var wordLetterCount = 0;
+                    var selectedWord = wordList[i].Substring(0, wordList[i].Length - 1);
 
-                    for (int k = 0; k < selectedWordListCount; k++)
+                    var selectedWordListCount = selectedWord.Length;
+
+                    if (selectedWordListCount == wordSize)
                     {
-                        for (int j = 0; j < selectedLetters.Count; j++)
+                        var wordLetterCount = 0;
+
+                        for (int k = 0; k < selectedWordListCount; k++)
                         {
-                            var selectedWordLetter = wordList[i][k];
-                            var selectedLetter = selectedLetters[j];
-
-                            if (selectedWordLetter == selectedLetter.UpperCase || selectedWordLetter == selectedLetter.LowerCase)
+                            for (int j = 0; j < selectedLetters.Count; j++)
                             {
-                                wordLetterCount++;
-                            }
-                        }
-                    }
+                                wordList[i] = wordList[i].ToLower();
 
-                    if (wordLetterCount == selectedWordListCount)
-                    {
-                        if (tempList.Count > 0)
-                        {
-                            var lastAddedItem = tempList[tempList.Count - 1];
+                                var selectedWordLetter = wordList[i][k];
+                                var selectedLetter = selectedLetters[j];
 
-                            if ((lastAddedItem != wordList[i]) && i != 0)
-                            {
-                                isSuitableWord = true;
+                                if (selectedWordLetter == selectedLetter.LowerCase)
+                                {
+                                    wordLetterCount++;
+                                }
                             }
                         }
 
-                        else
+                        if (wordLetterCount == selectedWordListCount)
                         {
-                            isSuitableWord = true;
+                            if (!tempList.Contains(wordList[i]))
+                            {
+                                tempList.Add(wordList[i]);
+                            }
                         }
-                    }
-
-                    if (isSuitableWord == true)
-                    {
-                        count++;
-
-                        tempList.Add(wordList[i]);
                     }
                 }
             }

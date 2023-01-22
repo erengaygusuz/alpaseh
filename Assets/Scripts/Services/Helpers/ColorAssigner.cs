@@ -1,5 +1,4 @@
 ﻿using FTRGames.Alpaseh.Enums;
-using FTRGames.Alpaseh.Services;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

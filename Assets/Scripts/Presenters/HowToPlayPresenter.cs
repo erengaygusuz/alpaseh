@@ -26,7 +26,7 @@ namespace FTRGames.Alpaseh.Presenters
         {
             howToPlayView.leftArrowButton.onClick.AddListener(() => howToPlayService.LeftArrowBtnClick(howToPlayView));
             howToPlayView.rightArrowButton.onClick.AddListener(() => howToPlayService.RightArrowBtnClick(howToPlayView));
-            howToPlayView.mainMenuButton.onClick.AddListener(() => howToPlayService.GoToMainMenuBtnClick(howToPlayView));
+            howToPlayView.mainMenuButton.onClick.AddListener(() => howToPlayService.GoToMainMenuBtnClick());
         }
     }
 }

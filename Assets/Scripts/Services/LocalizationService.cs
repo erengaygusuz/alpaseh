@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using FTRGames.Alpaseh.Models.LocalizationData;
+using UnityEngine.Events;
+using FTRGames.Alpaseh.Enums;
 
 namespace FTRGames.Alpaseh.Services
 {
@@ -9,7 +11,9 @@ namespace FTRGames.Alpaseh.Services
     {
         private TextAsset[] languageFiles;
         private List<Localization> LocalizationDatas { get; set; }
-        public bool IsLanguageChanged { get; set; }
+
+        public UnityEvent languageChangedEvent;
+
         public int GetLanguageCount
         {
             get
@@ -27,6 +31,7 @@ namespace FTRGames.Alpaseh.Services
         private void LocalizationDataInit()
         {
             LocalizationDatas = new List<Localization>();
+            languageChangedEvent = new UnityEvent();
         }
 
         private void GetAllLocalizationDatas()
@@ -41,16 +46,16 @@ namespace FTRGames.Alpaseh.Services
 
         private void SetLocalizationData(int selectedLanguageIndex)
         {
-            JObject rss = JObject.Parse(languageFiles[selectedLanguageIndex].text);
+            var languageData = JObject.Parse(languageFiles[selectedLanguageIndex].text);
 
-            var introLocal = rss["Intro"].ToObject<Intro>();
-            var mainMenuLocal = rss["MainMenu"].ToObject<MainMenu>();
-            var howToPlayLocal = rss["HowToPlay"].ToObject<HowToPlay>();
-            var settingsLocal = rss["Settings"].ToObject<Settings>();
-            var highScoresLocal = rss["HighScores"].ToObject<HighScores>();
-            var creditsLocal = rss["Credits"].ToObject<Credits>();
-            var gameLocal = rss["Game"].ToObject<Game>();
-            var languageLocal = ((JArray)rss["Language"]).ToObject<List<Language>>().ToArray();
+            var introLocal = languageData["Intro"].ToObject<Intro>();
+            var mainMenuLocal = languageData["MainMenu"].ToObject<MainMenu>();
+            var howToPlayLocal = languageData["HowToPlay"].ToObject<HowToPlay>();
+            var settingsLocal = languageData["Settings"].ToObject<Settings>();
+            var highScoresLocal = languageData["HighScores"].ToObject<HighScores>();
+            var creditsLocal = languageData["Credits"].ToObject<Credits>();
+            var gameLocal = languageData["Game"].ToObject<Game>();
+            var languageLocal = ((JArray)languageData["Language"]).ToObject<List<Language>>().ToArray();
 
             LocalizationDatas.Add(new Localization { 
                 Intro = introLocal,
@@ -67,6 +72,13 @@ namespace FTRGames.Alpaseh.Services
         public Localization GetLocalizationData()
         {
             return LocalizationDatas[PlayerPrefs.GetInt("Alpaseh-SelectedLanguageIndex")];
+        }
+
+        public string GetLocalizationData(LanguageObject languageObject, string key)
+        {
+            var languageData = JObject.Parse(languageFiles[PlayerPrefs.GetInt("Alpaseh-SelectedLanguageIndex")].text);
+
+            return languageData[languageObject.ToString()][key].ToObject<string>();
         }
 
         public List<string> GetLanguageFlagFileNames()

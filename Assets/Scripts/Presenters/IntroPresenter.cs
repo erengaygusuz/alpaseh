@@ -4,7 +4,7 @@ using VContainer.Unity;
 
 namespace FTRGames.Alpaseh.Presenters
 {
-    public class IntroPresenter : IStartable, ITickable
+    public class IntroPresenter : IStartable
     {
         private readonly IntroView introView;
         private readonly IntroService introService;
@@ -20,11 +20,6 @@ namespace FTRGames.Alpaseh.Presenters
             introService.Initialization(introView);
 
             EventBinding();
-        }
-
-        public void Tick()
-        {
-            introService.CheckLanguageState(introView);
         }
 
         private void EventBinding()
