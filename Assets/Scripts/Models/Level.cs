@@ -68,6 +68,11 @@ namespace FTRGames.Alpaseh.Models
                 correctAnswer = false;
             }
 
+            else if (enteredNumberWord.Length != activeQuestionNumberWord.Length)
+            {
+                correctAnswer = false;
+            }
+
             else
             {
                 for (int i = 0; i < enteredNumberWord.Length; i++)
@@ -80,12 +85,18 @@ namespace FTRGames.Alpaseh.Models
 
                             break;
                         }
+
+                        else
+                        {
+                            correctAnswer = false;
+
+                            break;
+                        }
                     }
                 }
             }
 
             return correctAnswer;
-        }        
-
+        }  
     }
 }
