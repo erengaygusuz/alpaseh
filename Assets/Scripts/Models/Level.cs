@@ -75,24 +75,9 @@ namespace FTRGames.Alpaseh.Models
 
             else
             {
-                for (int i = 0; i < enteredNumberWord.Length; i++)
+                if (enteredNumberWord != activeQuestionNumberWord)
                 {
-                    if (enteredNumberWord[i] != activeQuestionNumberWord[i])
-                    {
-                        if (!((activeQuestionNumberWord[i] == '6' && enteredNumberWord[i] == '9') || (activeQuestionNumberWord[i] == '9' && enteredNumberWord[i] == '6')))
-                        {
-                            correctAnswer = false;
-
-                            break;
-                        }
-
-                        else
-                        {
-                            correctAnswer = false;
-
-                            break;
-                        }
-                    }
+                    correctAnswer = false;
                 }
             }
 

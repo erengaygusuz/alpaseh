@@ -23,12 +23,8 @@ namespace FTRGames.Alpaseh.Services
             WordNumberPairs.Add('Z', '2');
             WordNumberPairs.Add('ı', '1');
             WordNumberPairs.Add('I', '1');
-            WordNumberPairs.Add('i', '1');
-            WordNumberPairs.Add('İ', '1');
             WordNumberPairs.Add('s', '5');
             WordNumberPairs.Add('S', '5');
-            WordNumberPairs.Add('ş', '5');
-            WordNumberPairs.Add('Ş', '5');
             WordNumberPairs.Add('g', '6');
             WordNumberPairs.Add('G', '9');
             WordNumberPairs.Add('b', '8');

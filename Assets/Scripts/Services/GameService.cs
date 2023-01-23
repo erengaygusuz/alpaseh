@@ -225,7 +225,7 @@ namespace FTRGames.Alpaseh.Services
         {
             if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
             {
-                gameView.enteredNumberWordText.text += "9";
+                gameView.enteredNumberWordText.text += "6";
             }
         }
 
