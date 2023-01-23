@@ -21,6 +21,8 @@ namespace FTRGames.Alpaseh.Services
 
         private bool isGameOver;
 
+        private bool isGamePaused;
+
         private bool isWaitedForTimeTick;
 
         public bool IsGotoMainMenuBtnClick;
@@ -72,7 +74,7 @@ namespace FTRGames.Alpaseh.Services
         private void InitLifeAndTime()
         {
             totalLife = 10;
-            totalTime = 120;
+            totalTime = 200;
         }
 
         private void GameOverEventInit()
@@ -114,7 +116,7 @@ namespace FTRGames.Alpaseh.Services
 
         public void GameCheck(GameView gameView)
         {
-            if (!isGameOver)
+            if (!isGameOver && !isGamePaused)
             {
                 totalTime -= Time.deltaTime;
 
@@ -141,7 +143,12 @@ namespace FTRGames.Alpaseh.Services
         {
             isWaitedForTimeTick = false;
             yield return new WaitForSeconds(1.0f);
-            audioService.PlayTimeTickAudio();
+
+            if (!isGamePaused)
+            {
+                audioService.PlayTimeTickAudio();
+            }
+            
             isWaitedForTimeTick = true;
         }
 
@@ -234,6 +241,10 @@ namespace FTRGames.Alpaseh.Services
             bool isCorrectAnswer = levelService.Levels[levelService.ActiveLevelIndex].CheckEnteredNumberWord(gameView.enteredNumberWordText.text,
                 wordNumberConverterService.GetNumbersFromWord(gameView.questionText.text));
 
+            isGamePaused = true;
+
+            audioService.StopTimeTickAudio();
+
             if (isCorrectAnswer)
             {
                 tweenService.PlayCorrectAnswerAnim(gameView.enteredNumberWordText, gameView.checkButton);
@@ -261,6 +272,11 @@ namespace FTRGames.Alpaseh.Services
 
             GetActiveQuestionText(levelService, gameView);
             ClearEnteredNumberWordText(gameView);
+        }
+
+        public void ContinueTheGame()
+        {
+            isGamePaused = false;
         }
 
         public void DeleteBtnClick(GameView gameView)

@@ -87,6 +87,7 @@ namespace FTRGames.Alpaseh.Presenters
 
             tweenService.playWrongAnswerAnimEvent.AddListener(() => audioService.PlayWrongAnswerAudio());
             tweenService.playWrongAnswerAnimEvent.AddListener(() => gameService.PrepareScreenForNextQuestion(gameView, levelService));
+            tweenService.tweenTextEvent.AddListener(() => gameService.ContinueTheGame());
         }
     }
 }

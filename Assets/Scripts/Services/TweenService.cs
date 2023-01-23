@@ -9,11 +9,13 @@ namespace FTRGames.Alpaseh.Services
     {
         public UnityEvent playWrongAnswerAnimEvent;
         public UnityEvent playCorrectAnswerAnimEvent;
+        public UnityEvent tweenTextEvent;
 
         public void Initialization()
         {
             playCorrectAnswerAnimEvent = new UnityEvent();
             playWrongAnswerAnimEvent = new UnityEvent();
+            tweenTextEvent = new UnityEvent();
         }
 
         public void TweenText(GameObject tweenObject, string textValue, Color colorValue, bool isEarned, Button checkButton)
@@ -46,6 +48,8 @@ namespace FTRGames.Alpaseh.Services
             {
                 tweenObject.SetActive(false);
                 checkButton.interactable = true;
+
+                tweenTextEvent.Invoke();
             });
         }
 

@@ -59,5 +59,10 @@ namespace FTRGames.Alpaseh.Services
         {
             PlayAudio(audioView.loopAudioSource, audioView.gameSceneAudio);
         }
+
+        public void StopTimeTickAudio()
+        {
+            StopAudio(audioView.timeTickAudioSource);
+        }
     }
 }
