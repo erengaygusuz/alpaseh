@@ -151,52 +151,82 @@ namespace FTRGames.Alpaseh.Services
 
         public void Number0BtnClick(GameView gameView)
         {
-            gameView.enteredNumberWordText.text += "0";
+            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
+            {
+                gameView.enteredNumberWordText.text += "0";
+            }
         }
 
         public void Number1BtnClick(GameView gameView)
         {
-            gameView.enteredNumberWordText.text += "1";
+            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
+            {
+                gameView.enteredNumberWordText.text += "1";
+            }
         }
 
         public void Number2BtnClick(GameView gameView)
         {
-            gameView.enteredNumberWordText.text += "2";
+            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
+            {
+                gameView.enteredNumberWordText.text += "2";
+            }
         }
 
         public void Number3BtnClick(GameView gameView)
         {
-            gameView.enteredNumberWordText.text += "3";
+            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
+            {
+                gameView.enteredNumberWordText.text += "3";
+            }
         }
 
         public void Number4BtnClick(GameView gameView)
         {
-            gameView.enteredNumberWordText.text += "4";
+            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
+            {
+                gameView.enteredNumberWordText.text += "4";
+            }
         }
 
         public void Number5BtnClick(GameView gameView)
         {
-            gameView.enteredNumberWordText.text += "5";
+            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
+            {
+                gameView.enteredNumberWordText.text += "5";
+            }
         }
 
         public void Number6BtnClick(GameView gameView)
         {
-            gameView.enteredNumberWordText.text += "6";
+            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
+            {
+                gameView.enteredNumberWordText.text += "6";
+            }
         }
 
         public void Number7BtnClick(GameView gameView)
         {
-            gameView.enteredNumberWordText.text += "7";
+            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
+            {
+                gameView.enteredNumberWordText.text += "7";
+            }
         }
 
         public void Number8BtnClick(GameView gameView)
         {
-            gameView.enteredNumberWordText.text += "8";
+            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
+            {
+                gameView.enteredNumberWordText.text += "8";
+            }
         }
 
         public void Number9BtnClick(GameView gameView)
         {
-            gameView.enteredNumberWordText.text += "9";
+            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
+            {
+                gameView.enteredNumberWordText.text += "9";
+            }
         }
 
         public void ControlBtnClick(GameView gameView, LevelService levelService, WordNumberConverterService wordNumberConverterService)
@@ -291,32 +321,37 @@ namespace FTRGames.Alpaseh.Services
 
         public void EarnScoreTextEffect(GameView gameView, LevelService levelService)
         {
+            gameView.checkButton.interactable = false;
             gameView.scoreIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.scoreIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].EarnedScoreAmount.ToString(), Color.green, true);
+            tweenService.TweenText(gameView.scoreIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].EarnedScoreAmount.ToString(), Color.green, true, gameView.checkButton);
         }
 
         public void EarnTimeTextEffect(GameView gameView, LevelService levelService)
         {
+            gameView.checkButton.interactable = false;
             gameView.timeIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].EarnedTimeAmount.ToString(), Color.green, true);
+            tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].EarnedTimeAmount.ToString(), Color.green, true, gameView.checkButton);
         }
 
         public void EarnLifeTextEffect(GameView gameView, LevelService levelService)
         {
+            gameView.checkButton.interactable = false;
             gameView.lifeIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.lifeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LifeIncreaseAmount.ToString(), Color.green, true);
+            tweenService.TweenText(gameView.lifeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LifeIncreaseAmount.ToString(), Color.green, true, gameView.checkButton);
         }
 
         public void LooseTimeTextEffect(GameView gameView, LevelService levelService)
         {
+            gameView.checkButton.interactable = false;
             gameView.timeIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LoseTimeAmount.ToString(), Color.red, false);
+            tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LoseTimeAmount.ToString(), Color.red, false, gameView.checkButton);
         }
 
         public void LooseLifeTextEffect(GameView gameView, LevelService levelService)
         {
+            gameView.checkButton.interactable = false;
             gameView.lifeIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.lifeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LoseLifeAmount.ToString(), Color.red, false);
+            tweenService.TweenText(gameView.lifeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LoseLifeAmount.ToString(), Color.red, false, gameView.checkButton);
         }
 
         public void ShowInfoPanelUI(GameView gameView)

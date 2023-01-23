@@ -5,7 +5,7 @@ namespace FTRGames.Alpaseh.Services
 {
     public class TweenService
     {
-        public void TweenText(GameObject tweenObject, string textValue, Color colorValue, bool isEarned)
+        public void TweenText(GameObject tweenObject, string textValue, Color colorValue, bool isEarned, Button checkButton)
         {
             if (isEarned)
             {
@@ -34,6 +34,7 @@ namespace FTRGames.Alpaseh.Services
             }).setOnComplete(() =>
             {
                 tweenObject.SetActive(false);
+                checkButton.interactable = true;
             });
         }
     }

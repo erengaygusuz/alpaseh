@@ -50,9 +50,9 @@ namespace FTRGames.Alpaseh.Models
                         {
                             for (int j = 0; j < selectedLetters.Count; j++)
                             {
-                                wordList[i] = wordList[i].ToLower();
+                                selectedWord = selectedWord.ToLower();
 
-                                var selectedWordLetter = wordList[i][k];
+                                var selectedWordLetter = selectedWord[k];
                                 var selectedLetter = selectedLetters[j];
 
                                 if (selectedWordLetter == selectedLetter.LowerCase)
@@ -64,9 +64,9 @@ namespace FTRGames.Alpaseh.Models
 
                         if (wordLetterCount == selectedWordListCount)
                         {
-                            if (!tempList.Contains(wordList[i]))
+                            if (!tempList.Contains(selectedWord))
                             {
-                                tempList.Add(wordList[i]);
+                                tempList.Add(selectedWord);
                             }
                         }
                     }
