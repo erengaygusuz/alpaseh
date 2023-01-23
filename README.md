@@ -18,7 +18,7 @@ We can derive the word goggles using these numbers.
 
 You can see that when we turned these number 180 degree in clockwise, we obtain the letters as below.
 
-# resim1
+![Alt text](/images/calculator-with-letters.png)
 
 As a result, I tried to find all words which includes these letters in English and Turkish Language and put them inside the game.
 
@@ -42,7 +42,7 @@ In this project, I decided to use a dependency injection tool named VContainer t
 
 The project architecture at below:
 
-# resim2
+![Alt text](/images/project-architecture.png)
 
 The project assemblies at below:
 
@@ -104,4 +104,11 @@ The MIT License (MIT)
 
 ## Screenshots
 
-# resim3
+![Alt text](/images/screenshots/1.jpg)
+![Alt text](/images/screenshots/2.jpg)
+![Alt text](/images/screenshots/3.jpg)
+![Alt text](/images/screenshots/4.jpg)
+![Alt text](/images/screenshots/5.jpg)
+![Alt text](/images/screenshots/6.jpg)
+![Alt text](/images/screenshots/8.jpg)
+![Alt text](/images/screenshots/10.jpg)
