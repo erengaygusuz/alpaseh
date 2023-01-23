@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FTRGames.Alpaseh.Models
 {
@@ -73,7 +75,12 @@ namespace FTRGames.Alpaseh.Models
                 }
             }
 
-            LevelWordList.Add(tempList);
+            LevelWordList.Add(ShuffleList(tempList));
+        }
+
+        private List<string> ShuffleList(List<string> list)
+        {
+            return list.OrderBy(a => Guid.NewGuid()).ToList();
         }
     }
 }
