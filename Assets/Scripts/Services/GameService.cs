@@ -18,10 +18,12 @@ namespace FTRGames.Alpaseh.Services
         private int totalScore;
 
         public UnityEvent GameOver { get; set; }
+        public UnityEvent GameCompleted { get; set; }
 
         private bool isGameOver;
 
         private bool isGamePaused;
+        private bool isGameCompleted;
 
         private bool isWaitedForTimeTick;
 
@@ -36,7 +38,7 @@ namespace FTRGames.Alpaseh.Services
 
         public void Initialization(AudioView audioView, LevelService levelService, GameView gameView)
         {
-            GameOverEventInit();
+            GameEventsInit();
             InitLifeAndTime();
             InitGameUI(gameView, levelService);
 
@@ -77,11 +79,16 @@ namespace FTRGames.Alpaseh.Services
             totalTime = 200;
         }
 
-        private void GameOverEventInit()
+        private void GameEventsInit()
         {
             if (GameOver == null)
             {
                 GameOver = new UnityEvent();
+            }
+
+            if (GameCompleted == null)
+            {
+                GameCompleted = new UnityEvent();
             }
         }
 
@@ -114,7 +121,7 @@ namespace FTRGames.Alpaseh.Services
 
         #region Tick Event Functions
 
-        public void GameCheck(GameView gameView)
+        public void GameCheck(GameView gameView, LevelService levelService)
         {
             if (!isGameOver && !isGamePaused)
             {
@@ -144,7 +151,7 @@ namespace FTRGames.Alpaseh.Services
             isWaitedForTimeTick = false;
             yield return new WaitForSeconds(1.0f);
 
-            if (!isGamePaused)
+            if (!isGamePaused && !isGameCompleted)
             {
                 audioService.PlayTimeTickAudio();
             }
@@ -254,10 +261,44 @@ namespace FTRGames.Alpaseh.Services
             {
                 tweenService.PlayWrongAnswerAnim(gameView.enteredNumberWordText, gameView.checkButton);
             }
+
+            int levelCount = levelService.Levels.Length;
+            var lastLevel = levelService.Levels[levelCount - 1];
+
+            if (lastLevel.WordList.Count > 0)
+            {
+                if (levelService.ActiveLevelIndex == levelCount - 1) // last level
+                {
+                    int lastLevelWordListLastItemIndex = lastLevel.WordList.Count - 1;
+
+                    if (lastLevel.ActiveQuestionIndex == lastLevelWordListLastItemIndex) // last level last item
+                    {
+                        GameCompleted.Invoke();
+
+                        isGameCompleted = true;
+                    }
+                }
+            }
         }
 
         public void PrepareScreenForNextQuestion(GameView gameView, LevelService levelService)
         {
+            int levelCount = levelService.Levels.Length;
+            var lastLevel = levelService.Levels[levelCount - 1];
+
+            if (lastLevel.WordList.Count > 0)
+            {
+                if (levelService.ActiveLevelIndex == levelCount - 1) // last level
+                {
+                    int lastLevelWordListLastItemIndex = lastLevel.WordList.Count - 1;
+
+                    if (lastLevel.ActiveQuestionIndex == lastLevelWordListLastItemIndex) // last level last item
+                    {
+                        return;
+                    }
+                }
+            }
+
             levelService.CalculateTimeScoreLifeAmount(ref totalTime, ref totalScore, ref totalLife);
             levelService.CalculateActiveLevelAndQuestionIndex(ref totalLife);
 
@@ -398,7 +439,6 @@ namespace FTRGames.Alpaseh.Services
         public void ShowGameOverPanel(GameView gameView)
         {
             gameView.gameOverPanel.SetActive(true);
-            gameView.gameOverPanel.transform.GetChild(1).GetComponent<Text>().text = "Game Over";
         }
 
         public void StopGameLoopAudio(AudioView audioView)
@@ -409,6 +449,16 @@ namespace FTRGames.Alpaseh.Services
         public void PlayGameOverAudio()
         {
             audioService.PlayGameOverAudio();
+        }
+
+        public void ShowGameCompletedPanel(GameView gameView)
+        {
+            gameView.gameOverPanel.SetActive(true);
+        }
+
+        public void PlayGameCompletedAudio()
+        {
+            audioService.PlayGameCompletedAudio();
         }
 
         #endregion

@@ -46,7 +46,7 @@ namespace FTRGames.Alpaseh.Presenters
         public void Tick()
         {
             scoreService.UpdateScoreValues();
-            gameService.GameCheck(gameView);
+            gameService.GameCheck(gameView, levelService);
         }
 
         private void EventBinding()
@@ -80,7 +80,13 @@ namespace FTRGames.Alpaseh.Presenters
 
             gameService.GameOver.AddListener(() => gameService.ShowGameOverPanel(gameView));
             gameService.GameOver.AddListener(() => gameService.StopGameLoopAudio(audioView));
+            gameService.GameOver.AddListener(() => audioService.StopTimeTickAudio());
             gameService.GameOver.AddListener(() => gameService.PlayGameOverAudio());
+
+            gameService.GameCompleted.AddListener(() => gameService.ShowGameCompletedPanel(gameView));
+            gameService.GameCompleted.AddListener(() => gameService.StopGameLoopAudio(audioView));
+            gameService.GameCompleted.AddListener(() => audioService.StopTimeTickAudio());
+            gameService.GameCompleted.AddListener(() => gameService.PlayGameCompletedAudio());
 
             tweenService.playCorrectAnswerAnimEvent.AddListener(() => audioService.PlayCorrectAnswerAudio());
             tweenService.playCorrectAnswerAnimEvent.AddListener(() => gameService.PrepareScreenForNextQuestion(gameView, levelService));

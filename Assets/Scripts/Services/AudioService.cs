@@ -55,6 +55,11 @@ namespace FTRGames.Alpaseh.Services
             PlayAudio(audioView.gameOverAudioSource, audioView.gameOverAudio);
         }
 
+        public void PlayGameCompletedAudio()
+        {
+            PlayAudio(audioView.gameCompletedAudioSource, audioView.gameCompletedAudio);
+        }
+
         public void PlayGameSceneAudio()
         {
             PlayAudio(audioView.loopAudioSource, audioView.gameSceneAudio);

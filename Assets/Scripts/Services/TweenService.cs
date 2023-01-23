@@ -55,62 +55,82 @@ namespace FTRGames.Alpaseh.Services
 
         public void PlayWrongAnswerAnim(Text animatedText, Button checkButton)
         {
-            checkButton.interactable = false;
-
-            LeanTween.rotate(animatedText.gameObject, new Vector3(0, 0, 180), 1.0f);
-
-            LeanTween.value(animatedText.gameObject, 0.1f, 1.0f, 1.0f).setOnUpdate((value) =>
+            if (!string.IsNullOrEmpty(animatedText.text))
             {
-                animatedText.color = Color.Lerp(animatedText.color, new Color32(189, 56, 4, 255), value);
+                checkButton.interactable = false;
 
-            }).setOnComplete(() =>
-            {
-                LeanTween.rotate(animatedText.gameObject, new Vector3(0, 0, 125), 1.0f).setDelay(0.5f).setEasePunch();
+                LeanTween.rotate(animatedText.gameObject, new Vector3(0, 0, 180), 1.0f);
 
-                LeanTween.value(animatedText.gameObject, 1.0f, 0.0f, 1.5f).setDelay(0.5f).setOnUpdate((value) =>
+                LeanTween.value(animatedText.gameObject, 0.1f, 1.0f, 1.0f).setOnUpdate((value) =>
                 {
-                    animatedText.color = new Color(
-                        animatedText.color.r,
-                        animatedText.color.g,
-                        animatedText.color.b, value);
+                    animatedText.color = Color.Lerp(animatedText.color, new Color32(189, 56, 4, 255), value);
 
                 }).setOnComplete(() =>
                 {
-                    animatedText.gameObject.SetActive(false);
+                    LeanTween.rotate(animatedText.gameObject, new Vector3(0, 0, 125), 1.0f).setDelay(0.5f).setEasePunch();
 
-                    playWrongAnswerAnimEvent.Invoke();
+                    LeanTween.value(animatedText.gameObject, 1.0f, 0.0f, 1.5f).setDelay(0.5f).setOnUpdate((value) =>
+                    {
+                        animatedText.color = new Color(
+                            animatedText.color.r,
+                            animatedText.color.g,
+                            animatedText.color.b, value);
+
+                    }).setOnComplete(() =>
+                    {
+                        animatedText.gameObject.SetActive(false);
+
+                        playWrongAnswerAnimEvent.Invoke();
+                    });
                 });
-            });
+            }
+
+            else
+            {
+                checkButton.interactable = false;
+                animatedText.gameObject.SetActive(false);
+                playWrongAnswerAnimEvent.Invoke();
+            }
         }
 
         public void PlayCorrectAnswerAnim(Text animatedText, Button checkButton)
         {
-            checkButton.interactable = false;
-
-            LeanTween.rotate(animatedText.gameObject, new Vector3(0, 0, 180), 1.0f);
-
-            LeanTween.value(animatedText.gameObject, 0.1f, 1.0f, 1.0f).setOnUpdate((value) =>
+            if (!string.IsNullOrEmpty(animatedText.text))
             {
-                animatedText.color = Color.Lerp(animatedText.color, new Color32(33, 173, 70, 255), value);
+                checkButton.interactable = false;
 
-            }).setOnComplete(() =>
-            {
-                LeanTween.scale(animatedText.gameObject, Vector3.one * 2, 2.0f).setEasePunch();
+                LeanTween.rotate(animatedText.gameObject, new Vector3(0, 0, 180), 1.0f);
 
-                LeanTween.value(animatedText.gameObject, 1.0f, 0.0f, 1.5f).setDelay(0.5f).setOnUpdate((value) =>
+                LeanTween.value(animatedText.gameObject, 0.1f, 1.0f, 1.0f).setOnUpdate((value) =>
                 {
-                    animatedText.color = new Color(
-                        animatedText.color.r,
-                        animatedText.color.g,
-                        animatedText.color.b, value);
+                    animatedText.color = Color.Lerp(animatedText.color, new Color32(33, 173, 70, 255), value);
 
                 }).setOnComplete(() =>
                 {
-                    animatedText.gameObject.SetActive(false);
+                    LeanTween.scale(animatedText.gameObject, Vector3.one * 2, 2.0f).setEasePunch();
 
-                    playCorrectAnswerAnimEvent.Invoke();
+                    LeanTween.value(animatedText.gameObject, 1.0f, 0.0f, 1.5f).setDelay(0.5f).setOnUpdate((value) =>
+                    {
+                        animatedText.color = new Color(
+                            animatedText.color.r,
+                            animatedText.color.g,
+                            animatedText.color.b, value);
+
+                    }).setOnComplete(() =>
+                    {
+                        animatedText.gameObject.SetActive(false);
+
+                        playCorrectAnswerAnimEvent.Invoke();
+                    });
                 });
-            });
+            }
+
+            else
+            {
+                checkButton.interactable = false;
+                animatedText.gameObject.SetActive(false);
+                playCorrectAnswerAnimEvent.Invoke();
+            }
         }
     }
 }

@@ -31,7 +31,7 @@ namespace FTRGames.Alpaseh.Services
 
         private void InitLevels()
         {
-            Levels = new Level[6];
+            Levels = new Level[5];
 
             Levels[0] = new Level(1f, 10, 1.0f, 3, 5);
             Levels[0].WordList = wordParserService.WordDatas.LevelWordList[0];
@@ -100,6 +100,16 @@ namespace FTRGames.Alpaseh.Services
         {
             if (Levels[ActiveLevelIndex].ActiveQuestionIndex == GetActiveLevel().WordList.Count)
             {
+                int levelCount = Levels.Length;
+                var lastLevel = Levels[levelCount - 1];
+
+                int lastLevelWordListLastItemIndex = lastLevel.WordList.Count - 1;
+
+                if (ActiveLevelIndex == levelCount - 1 && Levels[ActiveLevelIndex].ActiveQuestionIndex != lastLevelWordListLastItemIndex) 
+                {
+                    return;
+                }
+
                 IncreaseLife(ref totalLife);
 
                 EarnLife.Invoke();

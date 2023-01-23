@@ -14,6 +14,8 @@ namespace FTRGames.Alpaseh.Views
         public AudioSource timeTickAudioSource;
         public AudioClip gameOverAudio;
         public AudioSource gameOverAudioSource;
+        public AudioClip gameCompletedAudio;
+        public AudioSource gameCompletedAudioSource;
     }
 }
 
