@@ -1,35 +1,107 @@
-# ALPASEH
-Sıradışı bir kelime oyunu
+# Alpaseh (Hesapla)
 
-Küçükken hesap makinesinin rakamlarını harflere benzetirdim. Hesap makinesini ters tutup leblebi adlı kelimeyi yazardım. 
+## Description
 
-Bir gün bu şekilde kaç tane kelime yazılır diye merak ettim. İnternetten ingilizce ve türkçe kelime listeleri araştırdım. İki adet liste buldum. Hesap makinesinde harflere benzeyen rakamları da ayrıca bir yere not ettim. 
+When I was a child, I usually used calculator for my education. Sometimes, I thought that these numbers looks like letters in my mind. 
 
-Rakamlar ve rakamlara benzeyen harflerin eşleşmesi aşağıdaki gibi:
+I turned the calculator 180 degrees clockwise and realise that some word can be derived with using these numbers. 
 
-- 0: o, O
-- 1: ı, I, i
-- 2: z, Z
-- 3: e, E
-- 4: h, H
-- 5: s, S
-- 6: g
-- 7: l, L
-- 8: b, B
-- 9: G
+We can derive the word goggles using these numbers.
 
-Kendimce bu eşleştirme listesini kullanarak ortaya çıkabilecek tüm kelimelerle bir oyun yazmaya karar verdim. Bunun için Unity oyun motorunu kullandım.
+* G : 9 or 6
+* O : 0
+* G : 9 or 6
+* G : 9 or 6
+* L : 1
+* E : 3
+* S : s
 
-- Oyunda 3 harfliden 9 harfli kelimelere kadar kelime listeleri bulunuyor.
-- Harf miktarı seviyeyi ifade ediyor. Örneğin: birinci seviye üç harfli, ikinci seviye dört harfli gibi.
-- Her seviye için can azalma, seviye bitimi can kazanma, puan alma, süre azalma, süre kazanma gibi özellikler tanımladım.
-- Oyuna internetten ücretsiz bir şekilde bulduğum ses dosyaları ekledim.
-- Bir tween eklentisi olan LeanTween ile ufak bir animasyon yaptım.
-- Oyundaki yüksek skorların kaydedilebilmesini sağladım.
-- Dört adet tema renk seçeneği ekledim.
-- İki adet dil seçeneği ekledim. Dil seçimine göre kelimeler de değişiyor.
+You can see that when we turned these number 180 degree in clockwise, we obtain the letters as below.
 
-Oyunda kullandığım eklentiler:
-LeanTween, Newtonsoft Json 
+# resim1
 
-Oyunun APK dosyası: https://drive.google.com/file/d/1x6OmMNnUPYTm6iRVQcoO3EBP0wcQ_CVf/view?usp=sharing
+As a result, I tried to find all words which includes these letters in English and Turkish Language and put them inside the game.
+
+## Tools That I Used During Development
+
+* VContainer Dependency Injection Tool (For Dependency Injection)
+* Visual Studio Community Edition 2019 (as a code editor)
+* Gimp & Power Point (To create some ui images)
+* Vectezy and Flaticon (To add some ui icons and images)
+* Audacity (To edit sound files)
+
+## Project Usage
+
+* Be sure that Unity 2020.3.37f1 version is installed in your PC.
+* Clone the project using this command: ``` https://github.com/erengaygusuz/alpaseh.git ```
+* Run the project with Unity.
+
+## Project Architecture and Folder Structure
+
+In this project, I decided to use a dependency injection tool named VContainer to seperate concerns, to make project more understandable, readable, expandable.
+
+The project architecture at below:
+
+# resim2
+
+The project assemblies at below:
+
+* FTRGames.Alpaseh.Enums.asmdef
+* FTRGames.Alpaseh.LifeTimeScopes.asmdef
+* FTRGames.Alpaseh.Models.asmdef
+* FTRGames.Alpaseh.Models.LocalizationData.asmdef
+* FTRGames.Alpaseh.Presenters.asmdef
+* FTRGames.Alpaseh.Services.asmdef
+* FTRGames.Alpaseh.Views.asmdef
+
+The project folder structure at below:
+
+* Audios
+* Fonts
+* Images
+* Plugins
+* Prefabs
+* Resources
+* Scenes
+* Scripts
+  * Enums
+  * LifeTimeScopes
+  * Models
+  * Presenters
+  * Services
+  * Views
+
+## Game Rules
+
+In this game, there are five levels. In every level, there is a word list. All word list count can be differ from each other. For example: first list has five words, second list twelve words etc.
+
+Word letter count also differ from each other. It begins with three and ends with seven. For example: see (3) and goggles (7).
+
+First level word list start with three letters words and other comes increasingly.
+
+In every level, there are some situations can be change when level increase. These are earning score, loosing time, loosing life, earning life, earning time etc.
+
+You can see the matching list of numbers and letters is at below.
+
+* 0 : O, o
+* 1 : I, ı
+* 2 : Z, z
+* 3 : E, e
+* 4 : H, h
+* 5 : S, s
+* 6 : G, g
+* 7 : L, l
+* 8 : B, b
+* 9 : G, g 
+
+## Related Links
+
+-- 
+
+## License
+
+The MIT License (MIT)
+
+## Screenshots
+
+# resim3
