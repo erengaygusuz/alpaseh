@@ -71,6 +71,7 @@ namespace FTRGames.Alpaseh.Presenters
             levelService.EarnTime.AddListener(() => gameService.EarnTimeTextEffect(gameView, levelService));
             levelService.LooseLife.AddListener(() => gameService.LooseLifeTextEffect(gameView, levelService));
             levelService.LooseTime.AddListener(() => gameService.LooseTimeTextEffect(gameView, levelService));
+            levelService.EarnLife.AddListener(() => gameService.EarnLifeTextEffect(gameView, levelService));
 
             gameService.GameOver.AddListener(() => gameService.ShowGameOverPanel(gameView));
             gameService.GameOver.AddListener(() => gameService.StopGameLoopAudio(audioView));

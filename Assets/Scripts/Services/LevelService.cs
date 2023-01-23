@@ -13,6 +13,7 @@ namespace FTRGames.Alpaseh.Services
         public UnityEvent LooseLife { get; set; }
         public UnityEvent LooseTime { get; set; }
         public UnityEvent EarnTime { get; set; }
+        public UnityEvent EarnLife { get; set; }
 
         private readonly WordParserService wordParserService;
 
@@ -54,6 +55,7 @@ namespace FTRGames.Alpaseh.Services
             LooseLife = new UnityEvent();
             LooseTime = new UnityEvent();
             EarnTime = new UnityEvent();
+            EarnLife = new UnityEvent();
         }
 
         private void InitActiveLevel()
@@ -99,6 +101,8 @@ namespace FTRGames.Alpaseh.Services
             if (Levels[ActiveLevelIndex].ActiveQuestionIndex == GetActiveLevel().WordList.Count)
             {
                 IncreaseLife(ref totalLife);
+
+                EarnLife.Invoke();
 
                 ActiveLevelIndex++;
 

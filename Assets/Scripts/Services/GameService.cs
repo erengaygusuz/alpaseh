@@ -301,6 +301,12 @@ namespace FTRGames.Alpaseh.Services
             tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].EarnedTimeAmount.ToString(), Color.green, true);
         }
 
+        public void EarnLifeTextEffect(GameView gameView, LevelService levelService)
+        {
+            gameView.lifeIncDecObj.SetActive(true);
+            tweenService.TweenText(gameView.lifeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LifeIncreaseAmount.ToString(), Color.green, true);
+        }
+
         public void LooseTimeTextEffect(GameView gameView, LevelService levelService)
         {
             gameView.timeIncDecObj.SetActive(true);
