@@ -13,9 +13,11 @@ namespace FTRGames.Alpaseh.Presenters
         private readonly LevelService levelService;
         private readonly WordNumberConverterService wordNumberConverterService;
         private readonly WordParserService wordParserService;
+        private readonly TweenService tweenService;
+        private readonly AudioService audioService;
 
         public GamePresenter(GameService gameService, ScoreService scoreService, GameView gameView, AudioView audioView, LevelService levelService,
-            WordParserService wordParserService, WordNumberConverterService wordNumberConverterService)
+            WordParserService wordParserService, WordNumberConverterService wordNumberConverterService, TweenService tweenService, AudioService audioService)
         {
             this.gameService = gameService;
             this.scoreService = scoreService;
@@ -24,6 +26,8 @@ namespace FTRGames.Alpaseh.Presenters
             this.levelService = levelService;
             this.wordNumberConverterService = wordNumberConverterService;
             this.wordParserService = wordParserService;
+            this.audioService = audioService;
+            this.tweenService = tweenService;
         }
 
         void IStartable.Start()
@@ -32,6 +36,7 @@ namespace FTRGames.Alpaseh.Presenters
             wordParserService.Initialization();
             wordNumberConverterService.Initialization();
             levelService.Initialization();
+            tweenService.Initialization();
 
             gameService.Initialization(audioView, levelService, gameView);
 
@@ -76,6 +81,12 @@ namespace FTRGames.Alpaseh.Presenters
             gameService.GameOver.AddListener(() => gameService.ShowGameOverPanel(gameView));
             gameService.GameOver.AddListener(() => gameService.StopGameLoopAudio(audioView));
             gameService.GameOver.AddListener(() => gameService.PlayGameOverAudio());
+
+            tweenService.playCorrectAnswerAnimEvent.AddListener(() => audioService.PlayCorrectAnswerAudio());
+            tweenService.playCorrectAnswerAnimEvent.AddListener(() => gameService.PrepareScreenForNextQuestion(gameView, levelService));
+
+            tweenService.playWrongAnswerAnimEvent.AddListener(() => audioService.PlayWrongAnswerAudio());
+            tweenService.playWrongAnswerAnimEvent.AddListener(() => gameService.PrepareScreenForNextQuestion(gameView, levelService));
         }
     }
 }

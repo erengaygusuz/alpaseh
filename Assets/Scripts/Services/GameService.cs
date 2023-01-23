@@ -64,15 +64,15 @@ namespace FTRGames.Alpaseh.Services
             gameView.enteredNumberWordText.text = "";
 
             gameView.totalTimeText.text = Mathf.Round(totalTime).ToString();
-            gameView.totalLifeText.text = totalLife.ToString("F2");
+            gameView.totalLifeText.text = totalLife.ToString();
             gameView.totalScoreText.text = totalScore.ToString();
             gameView.activeLevelText.text = (levelService.ActiveLevelIndex + 1).ToString();
         }
 
         private void InitLifeAndTime()
         {
-            totalLife = 6;
-            totalTime = 1200;
+            totalLife = 10;
+            totalTime = 120;
         }
 
         private void GameOverEventInit()
@@ -234,26 +234,33 @@ namespace FTRGames.Alpaseh.Services
             bool isCorrectAnswer = levelService.Levels[levelService.ActiveLevelIndex].CheckEnteredNumberWord(gameView.enteredNumberWordText.text,
                 wordNumberConverterService.GetNumbersFromWord(gameView.questionText.text));
 
-            levelService.CalculateTimeScoreLifeAmount(ref totalTime, ref totalScore, ref totalLife);
-            levelService.CalculateActiveLevelAndQuestionIndex(ref totalLife);
-
-            gameView.totalTimeText.text = Mathf.Round(totalTime).ToString();
-            gameView.totalLifeText.text = totalLife.ToString("F2");
-            gameView.totalScoreText.text = totalScore.ToString();
-            gameView.activeLevelText.text = (levelService.ActiveLevelIndex + 1).ToString();
-
-            GetActiveQuestionText(levelService, gameView);
-            ClearEnteredNumberWordText(gameView);
-
             if (isCorrectAnswer)
             {
-                audioService.PlayCorrectAnswerAudio();
+                tweenService.PlayCorrectAnswerAnim(gameView.enteredNumberWordText, gameView.checkButton);
             }
 
             else
             {
-                audioService.PlayWrongAnswerAudio();
+                tweenService.PlayWrongAnswerAnim(gameView.enteredNumberWordText, gameView.checkButton);
             }
+        }
+
+        public void PrepareScreenForNextQuestion(GameView gameView, LevelService levelService)
+        {
+            levelService.CalculateTimeScoreLifeAmount(ref totalTime, ref totalScore, ref totalLife);
+            levelService.CalculateActiveLevelAndQuestionIndex(ref totalLife);
+
+            gameView.totalTimeText.text = Mathf.Round(totalTime).ToString();
+            gameView.totalLifeText.text = totalLife.ToString();
+            gameView.totalScoreText.text = totalScore.ToString();
+            gameView.activeLevelText.text = (levelService.ActiveLevelIndex + 1).ToString();
+
+            gameView.enteredNumberWordText.gameObject.SetActive(true);
+            gameView.enteredNumberWordText.transform.rotation = Quaternion.Euler(0, 0, 0);
+            gameView.enteredNumberWordText.color = new Color32(0, 0, 0, 255);
+
+            GetActiveQuestionText(levelService, gameView);
+            ClearEnteredNumberWordText(gameView);
         }
 
         public void DeleteBtnClick(GameView gameView)
@@ -321,35 +328,30 @@ namespace FTRGames.Alpaseh.Services
 
         public void EarnScoreTextEffect(GameView gameView, LevelService levelService)
         {
-            gameView.checkButton.interactable = false;
             gameView.scoreIncDecObj.SetActive(true);
             tweenService.TweenText(gameView.scoreIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].EarnedScoreAmount.ToString(), Color.green, true, gameView.checkButton);
         }
 
         public void EarnTimeTextEffect(GameView gameView, LevelService levelService)
         {
-            gameView.checkButton.interactable = false;
             gameView.timeIncDecObj.SetActive(true);
             tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].EarnedTimeAmount.ToString(), Color.green, true, gameView.checkButton);
         }
 
         public void EarnLifeTextEffect(GameView gameView, LevelService levelService)
         {
-            gameView.checkButton.interactable = false;
             gameView.lifeIncDecObj.SetActive(true);
             tweenService.TweenText(gameView.lifeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LifeIncreaseAmount.ToString(), Color.green, true, gameView.checkButton);
         }
 
         public void LooseTimeTextEffect(GameView gameView, LevelService levelService)
         {
-            gameView.checkButton.interactable = false;
             gameView.timeIncDecObj.SetActive(true);
             tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LoseTimeAmount.ToString(), Color.red, false, gameView.checkButton);
         }
 
         public void LooseLifeTextEffect(GameView gameView, LevelService levelService)
         {
-            gameView.checkButton.interactable = false;
             gameView.lifeIncDecObj.SetActive(true);
             tweenService.TweenText(gameView.lifeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LoseLifeAmount.ToString(), Color.red, false, gameView.checkButton);
         }

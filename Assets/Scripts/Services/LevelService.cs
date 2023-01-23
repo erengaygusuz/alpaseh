@@ -33,19 +33,19 @@ namespace FTRGames.Alpaseh.Services
         {
             Levels = new Level[6];
 
-            Levels[0] = new Level(0.25f, 10, 0.25f, 3, 5);
+            Levels[0] = new Level(1f, 10, 1.0f, 3, 5);
             Levels[0].WordList = wordParserService.WordDatas.LevelWordList[0];
 
-            Levels[1] = new Level(0.50f, 20, 0.25f, 4, 5);
+            Levels[1] = new Level(2f, 20, 1.0f, 4, 5);
             Levels[1].WordList = wordParserService.WordDatas.LevelWordList[1];
 
-            Levels[2] = new Level(0.75f, 30, 0.25f, 5, 5);
+            Levels[2] = new Level(3f, 30, 1.0f, 5, 5);
             Levels[2].WordList = wordParserService.WordDatas.LevelWordList[2];
 
-            Levels[3] = new Level(1.00f, 40, 0.25f, 6, 5);
+            Levels[3] = new Level(4f, 40, 1.0f, 6, 5);
             Levels[3].WordList = wordParserService.WordDatas.LevelWordList[3];
 
-            Levels[4] = new Level(1.25f, 50, 0.25f, 7, 5);
+            Levels[4] = new Level(5f, 50, 1.0f, 7, 5);
             Levels[4].WordList = wordParserService.WordDatas.LevelWordList[4];
         }
 
