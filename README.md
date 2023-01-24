@@ -12,9 +12,9 @@ We can derive the word goggles using these numbers.
 * O : 0
 * G : 9 or 6
 * G : 9 or 6
-* L : 1
+* L : 7
 * E : 3
-* S : s
+* S : 5
 
 You can see that when we turned these number 180 degree in clockwise, we obtain the letters as below.
 
