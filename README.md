@@ -96,7 +96,8 @@ You can see the matching list of numbers and letters is at below.
 
 ## Related Links
 
--- 
+* Youtube: https://www.youtube.com/watch?v=y3-j4QP8TLg
+* Google Play: https://play.google.com/store/apps/details?id=com.FTRGames.Alpaseh
 
 ## License
 
