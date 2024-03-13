@@ -33,7 +33,7 @@ As a result, I tried to find all words which includes these letters in English a
 ## Project Usage
 
 * Be sure that Unity 2020.3.37f1 version is installed in your PC.
-* Clone the project using this command: ``` https://github.com/erengaygusuz/alpaseh.git ```
+* Clone the project using this command: ``` git clone https://github.com/erengaygusuz/alpaseh.git ```
 * Run the project with Unity.
 
 ## Project Architecture and Folder Structure
