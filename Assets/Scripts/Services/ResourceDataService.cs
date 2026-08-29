@@ -6,9 +6,6 @@ namespace FTRGames.Alpaseh.Services
 {
     public sealed class ResourceDataService
     {
-        public const string EnglishLanguageId = "english";
-        public const string TurkishLanguageId = "turkish";
-
         private readonly LanguageCatalog languageCatalog;
 
         public ResourceDataService(LanguageCatalog languageCatalog)
@@ -61,6 +58,19 @@ namespace FTRGames.Alpaseh.Services
                 GetLanguage(languageIndex).Flag,
                 "flag",
                 languageIndex);
+        }
+
+        public string GetAllowedLetters(int languageIndex)
+        {
+            LanguageCatalogEntry language = GetLanguage(languageIndex);
+
+            if (string.IsNullOrWhiteSpace(language.AllowedLetters))
+            {
+                throw new InvalidOperationException(
+                    $"Language '{language.Id}' is missing its allowed letters in the language catalog.");
+            }
+
+            return language.AllowedLetters;
         }
 
         private LanguageCatalogEntry GetLanguage(int languageIndex)

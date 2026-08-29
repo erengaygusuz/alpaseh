@@ -6,8 +6,7 @@ namespace FTRGames.Alpaseh.Services
     {
         private readonly ResourceDataService resourceDataService;
 
-        private char[] IdentifiedLetters { get; set; }
-        public WordData WordDatas { get; set; }
+        public WordData WordDatas { get; private set; }
 
         public WordParserService(ResourceDataService resourceDataService)
         {
@@ -18,48 +17,9 @@ namespace FTRGames.Alpaseh.Services
         {
             int selectedLanguageIndex = resourceDataService.SelectedLanguageIndex;
 
-            LetterIdentification(resourceDataService.GetLanguageId(selectedLanguageIndex));
-            ProcessData(selectedLanguageIndex);
-        }
-
-        private void LetterIdentification(string languageId)
-        {
-            if (languageId == ResourceDataService.TurkishLanguageId)
-            {
-                IdentifiedLetters = new char[]
-                {
-                    'o', 'O',
-                    'e', 'E',
-                    'z', 'Z',
-                    'ı', 'I',
-                    's', 'S',
-                    'g', 'G',
-                    'b', 'B',
-                    'l', 'L',
-                    'h', 'H'
-                };
-
-                return;
-            }
-
-            IdentifiedLetters = new char[]
-            {
-                'o', 'O',
-                'e', 'E',
-                'z', 'Z',
-                's', 'S',
-                'g', 'G',
-                'b', 'B',
-                'l', 'L',
-                'h', 'H'
-            };
-        }
-
-        private void ProcessData(int selectedLanguageIndex)
-        {
             WordDatas = new WordData(
                 resourceDataService.GetWordListFile(selectedLanguageIndex).text,
-                IdentifiedLetters);
+                resourceDataService.GetAllowedLetters(selectedLanguageIndex));
         }
     }
 }

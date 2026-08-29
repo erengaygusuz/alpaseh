@@ -48,9 +48,13 @@ namespace FTRGames.Alpaseh.Services
         [SerializeField]
         private Sprite flag;
 
+        [SerializeField]
+        private string allowedLetters;
+
         public string Id => id;
         public TextAsset LocalizationFile => localizationFile;
         public TextAsset WordListFile => wordListFile;
         public Sprite Flag => flag;
+        public string AllowedLetters => allowedLetters;
     }
 }

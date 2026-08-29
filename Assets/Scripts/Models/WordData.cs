@@ -12,44 +12,49 @@ namespace FTRGames.Alpaseh.Models
 
         public List<List<string>> LevelWordList { get; } = new List<List<string>>();
 
-        public WordData(string wordText, char[] identifiedLetters)
+        public WordData(string wordText, string allowedLetters)
         {
             if (wordText == null)
             {
                 throw new ArgumentNullException(nameof(wordText));
             }
 
-            HashSet<char> allowedLetters = BuildAllowedLetters(identifiedLetters);
+            HashSet<char> allowedLetterSet = BuildAllowedLetters(allowedLetters);
             string[] words = ParseWords(wordText);
 
             for (int wordLength = MinimumWordLength; wordLength <= MaximumWordLength; wordLength++)
             {
-                LevelWordList.Add(BuildWordList(words, wordLength, allowedLetters));
+                LevelWordList.Add(BuildWordList(words, wordLength, allowedLetterSet));
             }
         }
 
-        private static HashSet<char> BuildAllowedLetters(char[] identifiedLetters)
+        private static HashSet<char> BuildAllowedLetters(string allowedLetters)
         {
-            if (identifiedLetters == null)
-            {
-                throw new ArgumentNullException(nameof(identifiedLetters));
-            }
-
-            if (identifiedLetters.Length % 2 != 0)
+            if (string.IsNullOrWhiteSpace(allowedLetters))
             {
                 throw new ArgumentException(
-                    "Identified letters must contain lower/upper case pairs.",
-                    nameof(identifiedLetters));
+                    "Allowed letters cannot be null or empty.",
+                    nameof(allowedLetters));
             }
 
-            var allowedLetters = new HashSet<char>();
+            var allowedLetterSet = new HashSet<char>();
 
-            for (int i = 0; i < identifiedLetters.Length; i += 2)
+            foreach (char letter in allowedLetters.Trim().ToLowerInvariant())
             {
-                allowedLetters.Add(identifiedLetters[i]);
+                if (!char.IsWhiteSpace(letter))
+                {
+                    allowedLetterSet.Add(letter);
+                }
             }
 
-            return allowedLetters;
+            if (allowedLetterSet.Count == 0)
+            {
+                throw new ArgumentException(
+                    "Allowed letters must contain at least one character.",
+                    nameof(allowedLetters));
+            }
+
+            return allowedLetterSet;
         }
 
         private static string[] ParseWords(string wordText)

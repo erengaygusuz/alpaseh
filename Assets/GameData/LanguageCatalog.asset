@@ -17,7 +17,9 @@ MonoBehaviour:
     localizationFile: {fileID: 4900000, guid: c795af854dcee114ca5ce3579d35eeeb, type: 3}
     wordListFile: {fileID: 4900000, guid: 8921738eef8ff504284be2f3c412508c, type: 3}
     flag: {fileID: 21300000, guid: a5dca27fbba14c746b7c9f3772922033, type: 3}
+    allowedLetters: oezsgblh
   - id: turkish
     localizationFile: {fileID: 4900000, guid: 44d36ac374b4ba1469d1e83a2b682d10, type: 3}
     wordListFile: {fileID: 4900000, guid: 4d6e02f7dc3f17c40909eec3fb4581f0, type: 3}
     flag: {fileID: 21300000, guid: 0c62981423f7321429b7876913094840, type: 3}
+    allowedLetters: oezısgblh
