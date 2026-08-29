@@ -19,7 +19,6 @@ namespace FTRGames.Alpaseh.Presenters
         void IStartable.Start()
         {
             settingsService.Initialization(settingsView);
-
             EventBinding(settingsView);
         }
 
@@ -29,32 +28,25 @@ namespace FTRGames.Alpaseh.Presenters
             settingsView.personalTab.GetComponent<Button>().onClick.AddListener(() => settingsService.PersonalTabClick(settingsView));
             settingsView.mainMenuButton.onClick.AddListener(() => settingsService.GoToMainMenuBtnClick(settingsView));
 
-            settingsView.themesToggles[0].onValueChanged.AddListener(delegate
+            for (int i = 0; i < settingsView.themesToggles.Length; i++)
             {
-                settingsService.SetSelectedColorIndex0();
-            });
+                var themeIndex = i;
 
-            settingsView.themesToggles[1].onValueChanged.AddListener(delegate
-            {
-                settingsService.SetSelectedColorIndex1();
-            });
+                settingsView.themesToggles[i].onValueChanged.AddListener(isOn =>
+                {
+                    if (isOn)
+                    {
+                        settingsService.SetSelectedColorIndex(themeIndex);
+                    }
+                });
+            }
 
-            settingsView.themesToggles[2].onValueChanged.AddListener(delegate
-            {
-                settingsService.SetSelectedColorIndex2();
-            });
-
-            settingsView.themesToggles[3].onValueChanged.AddListener(delegate
-            {
-                settingsService.SetSelectedColorIndex3();
-            });
-
-            settingsView.audioLevelSlider.onValueChanged.AddListener(delegate
+            settingsView.audioLevelSlider.onValueChanged.AddListener(_ =>
             {
                 settingsService.SetAudioLevelValues(settingsView);
             });
 
-            settingsView.languageOptions.onValueChanged.AddListener(delegate
+            settingsView.languageOptions.onValueChanged.AddListener(_ =>
             {
                 settingsService.SaveLanguageOption(settingsView);
             });
