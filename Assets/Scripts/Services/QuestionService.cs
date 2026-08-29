@@ -2,6 +2,13 @@ namespace FTRGames.Alpaseh.Services
 {
     public sealed class QuestionService
     {
+        private readonly ResourceDataService resourceDataService;
+
+        public QuestionService(ResourceDataService resourceDataService)
+        {
+            this.resourceDataService = resourceDataService;
+        }
+
         public string GetActiveQuestion(LevelService levelService)
         {
             var activeLevel = levelService.GetActiveLevel();
@@ -27,14 +34,15 @@ namespace FTRGames.Alpaseh.Services
             return lastLevel.ActiveQuestionIndex == lastLevel.WordList.Count - 1;
         }
 
-        private static string NormalizeQuestion(string text)
+        private string NormalizeQuestion(string text)
         {
-            char[] turkishChars = { 'ı', 'ğ', 'İ', 'Ğ', 'ç', 'Ç', 'ş', 'Ş', 'ö', 'Ö', 'ü', 'Ü' };
-            char[] englishChars = { 'i', 'g', 'I', 'G', 'c', 'C', 's', 'S', 'o', 'O', 'u', 'U' };
+            int languageIndex = resourceDataService.SelectedLanguageIndex;
+            string sourceCharacters = resourceDataService.GetQuestionNormalizationSourceCharacters(languageIndex);
+            string targetCharacters = resourceDataService.GetQuestionNormalizationTargetCharacters(languageIndex);
 
-            for (int i = 0; i < turkishChars.Length; i++)
+            for (int i = 0; i < sourceCharacters.Length; i++)
             {
-                text = text.Replace(turkishChars[i], englishChars[i]);
+                text = text.Replace(sourceCharacters[i], targetCharacters[i]);
             }
 
             return text;
