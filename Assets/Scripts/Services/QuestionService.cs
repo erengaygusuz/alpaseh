@@ -36,16 +36,9 @@ namespace FTRGames.Alpaseh.Services
 
         private string NormalizeQuestion(string text)
         {
-            int languageIndex = resourceDataService.SelectedLanguageIndex;
-            string sourceCharacters = resourceDataService.GetQuestionNormalizationSourceCharacters(languageIndex);
-            string targetCharacters = resourceDataService.GetQuestionNormalizationTargetCharacters(languageIndex);
-
-            for (int i = 0; i < sourceCharacters.Length; i++)
-            {
-                text = text.Replace(sourceCharacters[i], targetCharacters[i]);
-            }
-
-            return text;
+            return resourceDataService
+                .GetQuestionNormalizationMapping(resourceDataService.SelectedLanguageIndex)
+                .ReplaceCharacters(text);
         }
     }
 }
