@@ -1,3 +1,4 @@
+using System;
 using FTRGames.Alpaseh.Models;
 using UnityEngine.Events;
 
@@ -16,10 +17,12 @@ namespace FTRGames.Alpaseh.Services
         public UnityEvent EarnLife { get; set; }
 
         private readonly WordParserService wordParserService;
+        private readonly LevelCatalog levelCatalog;
 
-        public LevelService(WordParserService wordParserService)
+        public LevelService(WordParserService wordParserService, LevelCatalog levelCatalog)
         {
             this.wordParserService = wordParserService;
+            this.levelCatalog = levelCatalog;
         }
 
         public void Initialization()
@@ -31,22 +34,29 @@ namespace FTRGames.Alpaseh.Services
 
         private void InitLevels()
         {
-            Levels = new Level[5];
+            int wordLevelCount = wordParserService.WordDatas.LevelWordList.Count;
 
-            Levels[0] = new Level(1f, 10, 1.0f, 3, 5);
-            Levels[0].WordList = wordParserService.WordDatas.LevelWordList[0];
+            if (levelCatalog.Count != wordLevelCount)
+            {
+                throw new InvalidOperationException(
+                    $"Level catalog count ({levelCatalog.Count}) does not match word level count ({wordLevelCount}).");
+            }
 
-            Levels[1] = new Level(2f, 20, 1.0f, 4, 5);
-            Levels[1].WordList = wordParserService.WordDatas.LevelWordList[1];
+            Levels = new Level[levelCatalog.Count];
 
-            Levels[2] = new Level(3f, 30, 1.0f, 5, 5);
-            Levels[2].WordList = wordParserService.WordDatas.LevelWordList[2];
+            for (int i = 0; i < levelCatalog.Count; i++)
+            {
+                LevelConfig config = levelCatalog.GetLevel(i);
 
-            Levels[3] = new Level(4f, 40, 1.0f, 6, 5);
-            Levels[3].WordList = wordParserService.WordDatas.LevelWordList[3];
+                Levels[i] = new Level(
+                    config.LifeIncreaseAmount,
+                    config.EarnedScoreAmount,
+                    config.LoseLifeAmount,
+                    config.EarnedTimeAmount,
+                    config.LoseTimeAmount);
 
-            Levels[4] = new Level(5f, 50, 1.0f, 7, 5);
-            Levels[4].WordList = wordParserService.WordDatas.LevelWordList[4];
+                Levels[i].WordList = wordParserService.WordDatas.LevelWordList[i];
+            }
         }
 
         private void InitEvents()
