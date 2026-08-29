@@ -20,6 +20,8 @@ MonoBehaviour:
     allowedLetters: oezsgblh
     questionNormalizationSourceCharacters: 
     questionNormalizationTargetCharacters: 
+    wordNumberSourceCharacters: oOeEzZıIiİsSgGbBlLhH
+    wordNumberTargetCharacters: 00332211115569887744
   - id: turkish
     localizationFile: {fileID: 4900000, guid: 44d36ac374b4ba1469d1e83a2b682d10, type: 3}
     wordListFile: {fileID: 4900000, guid: 4d6e02f7dc3f17c40909eec3fb4581f0, type: 3}
@@ -27,3 +29,5 @@ MonoBehaviour:
     allowedLetters: oezısgblh
     questionNormalizationSourceCharacters: ığİĞçÇşŞöÖüÜ
     questionNormalizationTargetCharacters: igIGcCsSoOuU
+    wordNumberSourceCharacters: oOeEzZıIiİsSgGbBlLhH
+    wordNumberTargetCharacters: 00332211115569887744
