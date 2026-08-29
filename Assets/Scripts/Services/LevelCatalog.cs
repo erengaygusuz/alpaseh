@@ -47,15 +47,15 @@ namespace FTRGames.Alpaseh.Services
         private float loseLifeAmount;
 
         [SerializeField]
-        private float earnedTimeAmount;
+        private int earnedTimeAmount;
 
         [SerializeField]
-        private float loseTimeAmount;
+        private int loseTimeAmount;
 
         public float LifeIncreaseAmount => lifeIncreaseAmount;
         public int EarnedScoreAmount => earnedScoreAmount;
         public float LoseLifeAmount => loseLifeAmount;
-        public float EarnedTimeAmount => earnedTimeAmount;
-        public float LoseTimeAmount => loseTimeAmount;
+        public int EarnedTimeAmount => earnedTimeAmount;
+        public int LoseTimeAmount => loseTimeAmount;
     }
 }
