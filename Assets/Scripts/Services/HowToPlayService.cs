@@ -1,15 +1,15 @@
 using FTRGames.Alpaseh.Views;
-using UnityEngine.SceneManagement;
 
 namespace FTRGames.Alpaseh.Services
 {
     public class HowToPlayService
     {
+        private readonly SceneNavigationService sceneNavigationService;
         private int activeInfoIndex;
 
-        public HowToPlayService()
+        public HowToPlayService(SceneNavigationService sceneNavigationService)
         {
-
+            this.sceneNavigationService = sceneNavigationService;
         }
 
         public void Initialization(HowToPlayView howToPlayView)
@@ -81,9 +81,7 @@ namespace FTRGames.Alpaseh.Services
 
         public void GoToMainMenuBtnClick()
         {
-            SceneManager.LoadScene("MainMenu");
+            sceneNavigationService.Load(SceneNames.MainMenu);
         }
     }
 }
-
-
