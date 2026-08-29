@@ -1,39 +1,43 @@
 ﻿using FTRGames.Alpaseh.Views;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace FTRGames.Alpaseh.Services
 {
-    public class GameService 
+    public class GameService
     {
+        private const float TimeTickInterval = 1.0f;
+
         private readonly AudioService audioService;
         private readonly TweenService tweenService;
         private readonly ScoreService scoreService;
+        private readonly SceneNavigationService sceneNavigationService;
 
         private float totalTime;
         private float totalLife;
         private int totalScore;
+        private float timeTickElapsed;
 
         public UnityEvent GameOver { get; set; }
         public UnityEvent GameCompleted { get; set; }
 
         private bool isGameOver;
-
         private bool isGamePaused;
         private bool isGameCompleted;
 
-        private bool isWaitedForTimeTick;
-
         public bool IsGotoMainMenuBtnClick;
 
-        public GameService(AudioService audioService, TweenService tweenService, ScoreService scoreService)
+        public GameService(
+            AudioService audioService,
+            TweenService tweenService,
+            ScoreService scoreService,
+            SceneNavigationService sceneNavigationService)
         {
             this.audioService = audioService;
             this.tweenService = tweenService;
             this.scoreService = scoreService;
+            this.sceneNavigationService = sceneNavigationService;
         }
 
         public void Initialization(AudioView audioView, LevelService levelService, GameView gameView)
@@ -45,20 +49,32 @@ namespace FTRGames.Alpaseh.Services
             GetActiveQuestionText(levelService, gameView);
 
             PlayAmbienceSound(audioView);
-            PlayTimeTickSound();
+            timeTickElapsed = 0.0f;
         }
 
         #region Sound Functions
-
-        private void PlayTimeTickSound()
-        {
-            isWaitedForTimeTick = true;
-        }
 
         private void PlayAmbienceSound(AudioView audioView)
         {
             audioService.StopAudio(audioView.loopAudioSource);
             audioService.PlayGameSceneAudio();
+        }
+
+        private void UpdateTimeTick(float deltaTime)
+        {
+            timeTickElapsed += deltaTime;
+
+            if (timeTickElapsed < TimeTickInterval)
+            {
+                return;
+            }
+
+            timeTickElapsed -= TimeTickInterval;
+
+            if (!isGameCompleted)
+            {
+                audioService.PlayTimeTickAudio();
+            }
         }
 
         #endregion
@@ -126,12 +142,7 @@ namespace FTRGames.Alpaseh.Services
             if (!isGameOver && !isGamePaused)
             {
                 totalTime -= Time.deltaTime;
-
-                if (isWaitedForTimeTick)
-                {
-                    MonoBehaviour mono = GameObject.FindObjectOfType<MonoBehaviour>();
-                    mono.StartCoroutine(PlayTimeTickEverySecond());
-                }
+                UpdateTimeTick(Time.deltaTime);
             }
 
             gameView.totalTimeText.text = Mathf.Round(totalTime).ToString();
@@ -144,19 +155,6 @@ namespace FTRGames.Alpaseh.Services
 
                 GameOver.Invoke();
             }
-        }
-
-        private IEnumerator PlayTimeTickEverySecond()
-        {
-            isWaitedForTimeTick = false;
-            yield return new WaitForSeconds(1.0f);
-
-            if (!isGamePaused && !isGameCompleted)
-            {
-                audioService.PlayTimeTickAudio();
-            }
-            
-            isWaitedForTimeTick = true;
         }
 
         #endregion
@@ -245,7 +243,8 @@ namespace FTRGames.Alpaseh.Services
 
         public void ControlBtnClick(GameView gameView, LevelService levelService, WordNumberConverterService wordNumberConverterService)
         {
-            bool isCorrectAnswer = levelService.Levels[levelService.ActiveLevelIndex].CheckEnteredNumberWord(gameView.enteredNumberWordText.text,
+            bool isCorrectAnswer = levelService.Levels[levelService.ActiveLevelIndex].CheckEnteredNumberWord(
+                gameView.enteredNumberWordText.text,
                 wordNumberConverterService.GetNumbersFromWord(gameView.questionText.text));
 
             isGamePaused = true;
@@ -256,7 +255,6 @@ namespace FTRGames.Alpaseh.Services
             {
                 tweenService.PlayCorrectAnswerAnim(gameView.enteredNumberWordText, gameView.checkButton);
             }
-
             else
             {
                 tweenService.PlayWrongAnswerAnim(gameView.enteredNumberWordText, gameView.checkButton);
@@ -267,14 +265,13 @@ namespace FTRGames.Alpaseh.Services
 
             if (lastLevel.WordList.Count > 0)
             {
-                if (levelService.ActiveLevelIndex == levelCount - 1) // last level
+                if (levelService.ActiveLevelIndex == levelCount - 1)
                 {
                     int lastLevelWordListLastItemIndex = lastLevel.WordList.Count - 1;
 
-                    if (lastLevel.ActiveQuestionIndex == lastLevelWordListLastItemIndex) // last level last item
+                    if (lastLevel.ActiveQuestionIndex == lastLevelWordListLastItemIndex)
                     {
                         GameCompleted.Invoke();
-
                         isGameCompleted = true;
                     }
                 }
@@ -288,11 +285,11 @@ namespace FTRGames.Alpaseh.Services
 
             if (lastLevel.WordList.Count > 0)
             {
-                if (levelService.ActiveLevelIndex == levelCount - 1) // last level
+                if (levelService.ActiveLevelIndex == levelCount - 1)
                 {
                     int lastLevelWordListLastItemIndex = lastLevel.WordList.Count - 1;
 
-                    if (lastLevel.ActiveQuestionIndex == lastLevelWordListLastItemIndex) // last level last item
+                    if (lastLevel.ActiveQuestionIndex == lastLevelWordListLastItemIndex)
                     {
                         return;
                     }
@@ -324,13 +321,14 @@ namespace FTRGames.Alpaseh.Services
         {
             if (gameView.enteredNumberWordText.text != "")
             {
-                gameView.enteredNumberWordText.text = gameView.enteredNumberWordText.text.Remove(gameView.enteredNumberWordText.text.Length - 1);
+                gameView.enteredNumberWordText.text = gameView.enteredNumberWordText.text.Remove(
+                    gameView.enteredNumberWordText.text.Length - 1);
             }
         }
 
         public void PlayAgainBtnClick()
         {
-            SceneManager.LoadScene("Game");
+            sceneNavigationService.Load(SceneNames.Game);
         }
 
         public void ExitGameBtnClick()
@@ -341,7 +339,6 @@ namespace FTRGames.Alpaseh.Services
         public void GoToMainMenuBtnClick(GameView gameView)
         {
             IsGotoMainMenuBtnClick = true;
-
             ShowInfoPanelUI(gameView);
         }
 
@@ -362,15 +359,13 @@ namespace FTRGames.Alpaseh.Services
                 Time.timeScale = 1;
                 IsGotoMainMenuBtnClick = false;
 
-                SceneManager.LoadScene("MainMenu");
+                sceneNavigationService.Load(SceneNames.MainMenu);
             }
         }
 
         public void InfoPanelOkBtnClick(GameView gameView)
         {
             gameView.infoPanel.transform.GetChild(0).gameObject.SetActive(true);
-            gameView.infoPanel.transform.GetChild(1).gameObject.SetActive(false);
-
             gameView.infoPanel.transform.GetChild(1).gameObject.SetActive(false);
             gameView.infoPanel.SetActive(false);
 
@@ -379,38 +374,63 @@ namespace FTRGames.Alpaseh.Services
                 Time.timeScale = 1;
                 IsGotoMainMenuBtnClick = false;
 
-                SceneManager.LoadScene("MainMenu");
+                sceneNavigationService.Load(SceneNames.MainMenu);
             }
         }
 
         public void EarnScoreTextEffect(GameView gameView, LevelService levelService)
         {
             gameView.scoreIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.scoreIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].EarnedScoreAmount.ToString(), Color.green, true, gameView.checkButton);
+            tweenService.TweenText(
+                gameView.scoreIncDecObj,
+                levelService.Levels[levelService.ActiveLevelIndex].EarnedScoreAmount.ToString(),
+                Color.green,
+                true,
+                gameView.checkButton);
         }
 
         public void EarnTimeTextEffect(GameView gameView, LevelService levelService)
         {
             gameView.timeIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].EarnedTimeAmount.ToString(), Color.green, true, gameView.checkButton);
+            tweenService.TweenText(
+                gameView.timeIncDecObj,
+                levelService.Levels[levelService.ActiveLevelIndex].EarnedTimeAmount.ToString(),
+                Color.green,
+                true,
+                gameView.checkButton);
         }
 
         public void EarnLifeTextEffect(GameView gameView, LevelService levelService)
         {
             gameView.lifeIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.lifeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LifeIncreaseAmount.ToString(), Color.green, true, gameView.checkButton);
+            tweenService.TweenText(
+                gameView.lifeIncDecObj,
+                levelService.Levels[levelService.ActiveLevelIndex].LifeIncreaseAmount.ToString(),
+                Color.green,
+                true,
+                gameView.checkButton);
         }
 
         public void LooseTimeTextEffect(GameView gameView, LevelService levelService)
         {
             gameView.timeIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.timeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LoseTimeAmount.ToString(), Color.red, false, gameView.checkButton);
+            tweenService.TweenText(
+                gameView.timeIncDecObj,
+                levelService.Levels[levelService.ActiveLevelIndex].LoseTimeAmount.ToString(),
+                Color.red,
+                false,
+                gameView.checkButton);
         }
 
         public void LooseLifeTextEffect(GameView gameView, LevelService levelService)
         {
             gameView.lifeIncDecObj.SetActive(true);
-            tweenService.TweenText(gameView.lifeIncDecObj, levelService.Levels[levelService.ActiveLevelIndex].LoseLifeAmount.ToString(), Color.red, false, gameView.checkButton);
+            tweenService.TweenText(
+                gameView.lifeIncDecObj,
+                levelService.Levels[levelService.ActiveLevelIndex].LoseLifeAmount.ToString(),
+                Color.red,
+                false,
+                gameView.checkButton);
         }
 
         public void ShowInfoPanelUI(GameView gameView)
@@ -423,16 +443,12 @@ namespace FTRGames.Alpaseh.Services
                 gameView.infoPanel.transform.GetChild(0).gameObject.SetActive(true);
                 gameView.infoPanel.transform.GetChild(1).gameObject.SetActive(false);
             }
-
-            else
+            else if (IsGotoMainMenuBtnClick)
             {
-                if (IsGotoMainMenuBtnClick)
-                {
-                    Time.timeScale = 1;
-                    IsGotoMainMenuBtnClick = false;
+                Time.timeScale = 1;
+                IsGotoMainMenuBtnClick = false;
 
-                    SceneManager.LoadScene("MainMenu");
-                }
+                sceneNavigationService.Load(SceneNames.MainMenu);
             }
         }
 
@@ -464,4 +480,3 @@ namespace FTRGames.Alpaseh.Services
         #endregion
     }
 }
-
