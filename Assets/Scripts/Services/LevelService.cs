@@ -1,122 +1,124 @@
+using System;
 using FTRGames.Alpaseh.Models;
 using UnityEngine.Events;
 
 namespace FTRGames.Alpaseh.Services
 {
-    public class LevelService
+    public sealed class LevelService
     {
-        public Level[] Levels { get; set; }
-
-        public int ActiveLevelIndex { get; set; }
-
-        public UnityEvent EarnScore { get; set; }
-        public UnityEvent LooseLife { get; set; }
-        public UnityEvent LooseTime { get; set; }
-        public UnityEvent EarnTime { get; set; }
-        public UnityEvent EarnLife { get; set; }
-
         private readonly WordParserService wordParserService;
+        private readonly LevelCatalog levelCatalog;
 
-        public LevelService (WordParserService wordParserService)
+        private Level[] levels = Array.Empty<Level>();
+
+        public int LevelCount => levels.Length;
+        public int ActiveLevelIndex { get; private set; }
+        public bool IsLastLevel => LevelCount > 0 && ActiveLevelIndex == LevelCount - 1;
+
+        public UnityEvent EarnScore { get; } = new UnityEvent();
+        public UnityEvent LoseLife { get; } = new UnityEvent();
+        public UnityEvent LoseTime { get; } = new UnityEvent();
+        public UnityEvent EarnTime { get; } = new UnityEvent();
+        public UnityEvent EarnLife { get; } = new UnityEvent();
+
+        public LevelService(WordParserService wordParserService, LevelCatalog levelCatalog)
         {
             this.wordParserService = wordParserService;
+            this.levelCatalog = levelCatalog;
         }
 
         public void Initialization()
         {
             InitLevels();
-            InitActiveLevel();
-            InitEvents();
-        }
-
-        private void InitLevels()
-        {
-            Levels = new Level[5];
-
-            Levels[0] = new Level(1f, 10, 1.0f, 3, 5);
-            Levels[0].WordList = wordParserService.WordDatas.LevelWordList[0];
-
-            Levels[1] = new Level(2f, 20, 1.0f, 4, 5);
-            Levels[1].WordList = wordParserService.WordDatas.LevelWordList[1];
-
-            Levels[2] = new Level(3f, 30, 1.0f, 5, 5);
-            Levels[2].WordList = wordParserService.WordDatas.LevelWordList[2];
-
-            Levels[3] = new Level(4f, 40, 1.0f, 6, 5);
-            Levels[3].WordList = wordParserService.WordDatas.LevelWordList[3];
-
-            Levels[4] = new Level(5f, 50, 1.0f, 7, 5);
-            Levels[4].WordList = wordParserService.WordDatas.LevelWordList[4];
-        }
-
-        private void InitEvents()
-        {
-            EarnScore = new UnityEvent();
-            LooseLife = new UnityEvent();
-            LooseTime = new UnityEvent();
-            EarnTime = new UnityEvent();
-            EarnLife = new UnityEvent();
-        }
-
-        private void InitActiveLevel()
-        {
             ActiveLevelIndex = 0;
         }
 
         public Level GetActiveLevel()
         {
-            return Levels[ActiveLevelIndex];
+            if (LevelCount == 0)
+            {
+                throw new InvalidOperationException("Level service has not been initialized.");
+            }
+
+            return levels[ActiveLevelIndex];
         }
 
-        public void CalculateTimeScoreLifeAmount(ref float totalTime, ref int totalScore, ref float totalLife)
+        public void CalculateTimeScoreLifeAmount(GameSessionService gameSessionService)
         {
-            if (Levels[ActiveLevelIndex].CorrectAnswer)
+            Level activeLevel = GetActiveLevel();
+
+            if (activeLevel.CorrectAnswer)
             {
-                totalScore += Levels[ActiveLevelIndex].EarnedScoreAmount;
-                totalTime += Levels[ActiveLevelIndex].EarnedTimeAmount;
+                gameSessionService.AddScore(activeLevel.EarnedScoreAmount);
+                gameSessionService.AddTime(activeLevel.EarnedTimeAmount);
 
                 EarnTime.Invoke();
                 EarnScore.Invoke();
             }
-
             else
             {
-                totalLife -= Levels[ActiveLevelIndex].LoseLifeAmount;
-                totalTime -= Levels[ActiveLevelIndex].LoseTimeAmount;
+                gameSessionService.LoseLife(activeLevel.LoseLifeAmount);
+                gameSessionService.LoseTime(activeLevel.LoseTimeAmount);
 
-                LooseLife.Invoke();
-                LooseTime.Invoke();
+                LoseLife.Invoke();
+                LoseTime.Invoke();
             }
 
-            Levels[ActiveLevelIndex].ActiveQuestionIndex++;
+            activeLevel.AdvanceQuestion();
         }
 
-        public void IncreaseLife(ref float totalLife)
+        public void IncreaseLife(GameSessionService gameSessionService)
         {
-            totalLife += Levels[ActiveLevelIndex].LifeIncreaseAmount;
+            gameSessionService.AddLife(GetActiveLevel().LifeIncreaseAmount);
         }
 
-        public void CalculateActiveLevelAndQuestionIndex(ref float totalLife)
+        public void CalculateActiveLevelAndQuestionIndex(GameSessionService gameSessionService)
         {
-            if (Levels[ActiveLevelIndex].ActiveQuestionIndex == GetActiveLevel().WordList.Count)
+            Level activeLevel = GetActiveLevel();
+
+            if (activeLevel.ActiveQuestionIndex != activeLevel.WordList.Count)
             {
-                int levelCount = Levels.Length;
-                var lastLevel = Levels[levelCount - 1];
+                return;
+            }
 
-                int lastLevelWordListLastItemIndex = lastLevel.WordList.Count - 1;
+            Level lastLevel = levels[LevelCount - 1];
+            int lastLevelWordListLastItemIndex = lastLevel.WordList.Count - 1;
 
-                if (ActiveLevelIndex == levelCount - 1 && Levels[ActiveLevelIndex].ActiveQuestionIndex != lastLevelWordListLastItemIndex) 
-                {
-                    return;
-                }
+            if (IsLastLevel && activeLevel.ActiveQuestionIndex != lastLevelWordListLastItemIndex)
+            {
+                return;
+            }
 
-                IncreaseLife(ref totalLife);
+            IncreaseLife(gameSessionService);
+            EarnLife.Invoke();
 
-                EarnLife.Invoke();
+            ActiveLevelIndex++;
+            GetActiveLevel().ResetQuestionProgress();
+        }
 
-                ActiveLevelIndex++;
+        private void InitLevels()
+        {
+            int wordLevelCount = wordParserService.WordDatas.LevelWordList.Count;
 
-                Levels[ActiveLevelIndex].ActiveQuestionIndex = 0;
+            if (levelCatalog.Count != wordLevelCount)
+            {
+                throw new InvalidOperationException(
+                    $"Level catalog count ({levelCatalog.Count}) does not match word level count ({wordLevelCount}).");
+            }
+
+            levels = new Level[levelCatalog.Count];
+
+            for (int i = 0; i < levelCatalog.Count; i++)
+            {
+                LevelConfig config = levelCatalog.GetLevel(i);
+
+                levels[i] = new Level(
+                    config.LifeIncreaseAmount,
+                    config.EarnedScoreAmount,
+                    config.LoseLifeAmount,
+                    config.EarnedTimeAmount,
+                    config.LoseTimeAmount,
+                    wordParserService.WordDatas.LevelWordList[i]);
             }
         }
     }

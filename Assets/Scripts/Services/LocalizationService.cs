@@ -1,96 +1,72 @@
-﻿using UnityEngine;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using FTRGames.Alpaseh.Models.LocalizationData;
-using UnityEngine.Events;
 using FTRGames.Alpaseh.Enums;
+using FTRGames.Alpaseh.Models.LocalizationData;
+using Newtonsoft.Json.Linq;
+using UnityEngine.Events;
 
 namespace FTRGames.Alpaseh.Services
 {
-    public class LocalizationService
+    public sealed class LocalizationService
     {
-        private TextAsset[] languageFiles;
-        private List<Localization> LocalizationDatas { get; set; }
+        private readonly ResourceDataService resourceDataService;
+        private readonly List<JObject> languageDataObjects = new List<JObject>();
+        private readonly List<Localization> localizationDatas = new List<Localization>();
 
-        public UnityEvent languageChangedEvent;
+        public UnityEvent languageChangedEvent = new UnityEvent();
 
-        public int GetLanguageCount
+        public LocalizationService(ResourceDataService resourceDataService)
         {
-            get
-            {
-                return languageFiles.Length;
-            }
+            this.resourceDataService = resourceDataService;
         }
 
-        public void Initialization()
+        public int GetLanguageCount => resourceDataService.LanguageCount;
+
+        public void Initialize()
         {
-            LocalizationDataInit();
-            GetAllLocalizationDatas();
-        }
-
-        private void LocalizationDataInit()
-        {
-            LocalizationDatas = new List<Localization>();
-            languageChangedEvent = new UnityEvent();
-        }
-
-        private void GetAllLocalizationDatas()
-        {
-            languageFiles = Resources.LoadAll<TextAsset>("Language/");
-
-            for (int i = 0; i < languageFiles.Length; i++)
-            {
-                SetLocalizationData(i);
-            }
-        }
-
-        private void SetLocalizationData(int selectedLanguageIndex)
-        {
-            var languageData = JObject.Parse(languageFiles[selectedLanguageIndex].text);
-
-            var introLocal = languageData["Intro"].ToObject<Intro>();
-            var mainMenuLocal = languageData["MainMenu"].ToObject<MainMenu>();
-            var howToPlayLocal = languageData["HowToPlay"].ToObject<HowToPlay>();
-            var settingsLocal = languageData["Settings"].ToObject<Settings>();
-            var highScoresLocal = languageData["HighScores"].ToObject<HighScores>();
-            var creditsLocal = languageData["Credits"].ToObject<Credits>();
-            var gameLocal = languageData["Game"].ToObject<Game>();
-            var languageLocal = ((JArray)languageData["Language"]).ToObject<List<Language>>().ToArray();
-
-            LocalizationDatas.Add(new Localization { 
-                Intro = introLocal,
-                MainMenu = mainMenuLocal,
-                HowToPlay = howToPlayLocal,
-                Settings = settingsLocal,
-                HighScores = highScoresLocal,
-                Credits = creditsLocal,
-                Game = gameLocal,
-                Language = languageLocal
-            });
+            localizationDatas.Clear();
+            languageDataObjects.Clear();
+            LoadAllLocalizationData();
         }
 
         public Localization GetLocalizationData()
         {
-            return LocalizationDatas[PlayerPrefs.GetInt("Alpaseh-SelectedLanguageIndex")];
+            return localizationDatas[resourceDataService.SelectedLanguageIndex];
         }
 
         public string GetLocalizationData(LanguageObject languageObject, string key)
         {
-            var languageData = JObject.Parse(languageFiles[PlayerPrefs.GetInt("Alpaseh-SelectedLanguageIndex")].text);
-
+            JObject languageData = languageDataObjects[resourceDataService.SelectedLanguageIndex];
             return languageData[languageObject.ToString()][key].ToObject<string>();
         }
 
         public List<string> GetLanguageFlagFileNames()
         {
-            List<string> tempList = new List<string>();
+            return new List<string>(resourceDataService.GetLanguageIds());
+        }
 
-            for (int i = 0; i < languageFiles.Length; i++)
+        private void LoadAllLocalizationData()
+        {
+            for (int i = 0; i < resourceDataService.LanguageCount; i++)
             {
-                tempList.Add(languageFiles[i].name);
+                JObject languageData = JObject.Parse(resourceDataService.GetLocalizationFile(i).text);
+                languageDataObjects.Add(languageData);
+                localizationDatas.Add(CreateLocalizationData(languageData));
             }
+        }
 
-            return tempList;
+        private static Localization CreateLocalizationData(JObject languageData)
+        {
+            return new Localization
+            {
+                Intro = languageData["Intro"].ToObject<Intro>(),
+                MainMenu = languageData["MainMenu"].ToObject<MainMenu>(),
+                HowToPlay = languageData["HowToPlay"].ToObject<HowToPlay>(),
+                Settings = languageData["Settings"].ToObject<Settings>(),
+                HighScores = languageData["HighScores"].ToObject<HighScores>(),
+                Credits = languageData["Credits"].ToObject<Credits>(),
+                Game = languageData["Game"].ToObject<Game>(),
+                Language = ((JArray)languageData["Language"]).ToObject<List<Language>>().ToArray()
+            };
         }
     }
 }

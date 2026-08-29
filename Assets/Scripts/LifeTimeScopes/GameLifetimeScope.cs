@@ -17,6 +17,16 @@ namespace FTRGames.Alpaseh.LifeTimeScopes
             builder.RegisterEntryPoint<GamePresenter>();
 
             builder.Register<GameService>(Lifetime.Scoped);
+            builder.Register<GameSessionService>(Lifetime.Scoped);
+            builder.Register<GameInputService>(Lifetime.Scoped);
+            builder.Register<GameEventBindingService>(Lifetime.Scoped);
+            builder.Register<GameStartupService>(Lifetime.Scoped);
+            builder.Register<GameTimerService>(Lifetime.Scoped);
+            builder.Register<GameFlowService>(Lifetime.Scoped);
+            builder.Register<GameUIService>(Lifetime.Scoped);
+            builder.Register<GameFeedbackService>(Lifetime.Scoped);
+            builder.Register<QuestionService>(Lifetime.Scoped);
+            builder.Register<AnswerService>(Lifetime.Scoped);
             builder.Register<WordParserService>(Lifetime.Scoped);
             builder.Register<TweenService>(Lifetime.Scoped);
             builder.Register<WordNumberConverterService>(Lifetime.Scoped);
@@ -26,4 +36,3 @@ namespace FTRGames.Alpaseh.LifeTimeScopes
         }
     }
 }
-

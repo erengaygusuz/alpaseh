@@ -1,20 +1,33 @@
-using FTRGames.Alpaseh.Views;
 using System.Collections.Generic;
+using FTRGames.Alpaseh.Views;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace FTRGames.Alpaseh.Services
 {
-    public class SettingsService
+    public sealed class SettingsService
     {
-        private readonly AudioView audioView;
-        private readonly LocalizationService localizationService;
+        private static readonly Color32 ActiveTabColor = new Color32(219, 219, 219, 255);
+        private static readonly Color32 InactiveTabColor = new Color32(188, 188, 188, 255);
 
-        public SettingsService(LocalizationService localizationService, AudioView audioView)
+        private readonly LocalizationService localizationService;
+        private readonly ResourceDataService resourceDataService;
+        private readonly AudioService audioService;
+        private readonly UIColorService uiColorService;
+        private readonly SceneNavigationService sceneNavigationService;
+
+        public SettingsService(
+            LocalizationService localizationService,
+            ResourceDataService resourceDataService,
+            AudioService audioService,
+            UIColorService uiColorService,
+            SceneNavigationService sceneNavigationService)
         {
             this.localizationService = localizationService;
-            this.audioView = audioView;
+            this.resourceDataService = resourceDataService;
+            this.audioService = audioService;
+            this.uiColorService = uiColorService;
+            this.sceneNavigationService = sceneNavigationService;
         }
 
         public void Initialization(SettingsView settingsView)
@@ -27,174 +40,117 @@ namespace FTRGames.Alpaseh.Services
 
         public void GetUserNameValue(SettingsView settingsView)
         {
-            settingsView.usernameValue.text = PlayerPrefs.GetString("Alpaseh-Username");
+            settingsView.usernameValue.text = PlayerPrefs.GetString(PlayerPrefsKeys.Username);
         }
 
         public void GetLanguageValues(SettingsView settingsView)
         {
-            if (PlayerPrefs.HasKey("Alpaseh-SelectedLanguageIndex") == true)
-            {
-                settingsView.languageOptions.value = PlayerPrefs.GetInt("Alpaseh-SelectedLanguageIndex");
-            }
-
-            else
-            {
-                settingsView.languageOptions.value = 0;
-            }
+            settingsView.languageOptions.value = resourceDataService.SelectedLanguageIndex;
         }
 
         public void FillLanguageDropdown(SettingsView settingsView)
         {
-            List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
+            var options = new List<Dropdown.OptionData>();
 
             for (int i = 0; i < localizationService.GetLanguageCount; i++)
             {
-                Dropdown.OptionData option = new Dropdown.OptionData(localizationService.GetLocalizationData().Language[i].Name, Resources.Load<Sprite>("Flags/" + localizationService.GetLanguageFlagFileNames()[i]));
-                list.Add(option);
+                options.Add(new Dropdown.OptionData(
+                    localizationService.GetLocalizationData().Language[i].Name,
+                    resourceDataService.GetLanguageFlag(i)));
             }
 
-            settingsView.languageOptions.AddOptions(list);
-
+            settingsView.languageOptions.ClearOptions();
+            settingsView.languageOptions.AddOptions(options);
             GetLanguageValues(settingsView);
         }
 
         public void PersonalTabClick(SettingsView settingsView)
         {
-            settingsView.personalTab.GetComponent<Image>().color = new Color32(219, 219, 219, 255);
-            settingsView.generalTab.GetComponent<Image>().color = new Color32(188, 188, 188, 255);
-            settingsView.personalTabContent.SetActive(true);
-            settingsView.generalTabContent.SetActive(false);
+            SetTabState(settingsView, isPersonalTabActive: true);
         }
 
         public void GeneralTabClick(SettingsView settingsView)
         {
-            settingsView.personalTab.GetComponent<Image>().color = new Color32(188, 188, 188, 255);
-            settingsView.generalTab.GetComponent<Image>().color = new Color32(219, 219, 219, 255);
-            settingsView.personalTabContent.SetActive(false);
-            settingsView.generalTabContent.SetActive(true);
-
+            SetTabState(settingsView, isPersonalTabActive: false);
             ActivateSelectedThemeToggle(settingsView);
         }
 
         public void SaveLanguageOption(SettingsView settingsView)
         {
-            PlayerPrefs.SetInt("Alpaseh-SelectedLanguageIndex", settingsView.languageOptions.value);
+            PlayerPrefs.SetInt(PlayerPrefsKeys.SelectedLanguageIndex, settingsView.languageOptions.value);
             PlayerPrefs.Save();
 
-            for (int i = 0; i < localizationService.GetLanguageCount; i++)
-            {
-                settingsView.languageOptions.options[i].text = localizationService.GetLocalizationData().Language[i].Name;
-            }
-
-            settingsView.languageOptions.captionText.text = settingsView.languageOptions.options[settingsView.languageOptions.value].text;
-
+            RefreshLanguageOptionLabels(settingsView);
             localizationService.languageChangedEvent.Invoke();
         }
 
         public void GoToMainMenuBtnClick(SettingsView settingsView)
         {
             SaveUsernameValue(settingsView);
-
-            SceneManager.LoadScene("MainMenu");
-        }
-
-        private void SaveUsernameValue(SettingsView settingsView)
-        {
-            PlayerPrefs.SetString("Alpaseh-Username", settingsView.usernameValue.text);
+            sceneNavigationService.Load(SceneNames.MainMenu);
         }
 
         public void SetAudioLevelValues(SettingsView settingsView)
         {
-            audioView.loopAudioSource.volume = settingsView.audioLevelSlider.value;
-            audioView.answerAudioSource.volume = settingsView.audioLevelSlider.value;
-            audioView.timeTickAudioSource.volume = settingsView.audioLevelSlider.value;
-
+            audioService.SetVolumeAndSave(settingsView.audioLevelSlider.value);
             SetAudioLevelLabelValue(settingsView);
+        }
 
-            SaveAudioLevelValue(settingsView);
+        public void SetSelectedColorIndex(int index)
+        {
+            uiColorService.SelectColorScheme(index);
+        }
+
+        private static void SetTabState(SettingsView settingsView, bool isPersonalTabActive)
+        {
+            settingsView.personalTab.GetComponent<Image>().color = isPersonalTabActive ? ActiveTabColor : InactiveTabColor;
+            settingsView.generalTab.GetComponent<Image>().color = isPersonalTabActive ? InactiveTabColor : ActiveTabColor;
+            settingsView.personalTabContent.SetActive(isPersonalTabActive);
+            settingsView.generalTabContent.SetActive(!isPersonalTabActive);
+        }
+
+        private void RefreshLanguageOptionLabels(SettingsView settingsView)
+        {
+            for (int i = 0; i < localizationService.GetLanguageCount; i++)
+            {
+                settingsView.languageOptions.options[i].text = localizationService.GetLocalizationData().Language[i].Name;
+            }
+
+            settingsView.languageOptions.captionText.text =
+                settingsView.languageOptions.options[settingsView.languageOptions.value].text;
+        }
+
+        private static void SaveUsernameValue(SettingsView settingsView)
+        {
+            PlayerPrefs.SetString(PlayerPrefsKeys.Username, settingsView.usernameValue.text);
+            PlayerPrefs.Save();
         }
 
         private void SetAudioLevelLabelValue(SettingsView settingsView)
         {
-            settingsView.audioLevelLabelValue.text = Mathf.RoundToInt(audioView.loopAudioSource.volume * 100).ToString();
-        }
-
-        private void SaveAudioLevelValue(SettingsView settingsView)
-        {
-            PlayerPrefs.SetFloat("Alpaseh-AudioLevelSliderValue", settingsView.audioLevelSlider.value);
-            PlayerPrefs.Save();
+            settingsView.audioLevelLabelValue.text = Mathf.RoundToInt(audioService.Volume * 100).ToString();
         }
 
         private void GetAudioLevelValues(SettingsView settingsView)
         {
-            audioView.loopAudioSource.volume = PlayerPrefs.GetFloat("Alpaseh-AudioLevelSliderValue");
-            audioView.answerAudioSource.volume = PlayerPrefs.GetFloat("Alpaseh-AudioLevelSliderValue");
-            audioView.timeTickAudioSource.volume = PlayerPrefs.GetFloat("Alpaseh-AudioLevelSliderValue");
-
+            audioService.SetVolume(audioService.SavedVolume);
+            settingsView.audioLevelSlider.value = audioService.Volume;
             SetAudioLevelLabelValue(settingsView);
-
-            settingsView.audioLevelSlider.value = audioView.loopAudioSource.volume;
-        }
-
-        public void SetSelectedColorIndex0()
-        {
-            int activeToggleIndex = 0;
-
-            PlayerPrefs.SetInt("Alpaseh-SelectedColorSchemeIndex", activeToggleIndex);
-
-            PlayerPrefs.Save();
-
-            for (int i = 0; i < GameObject.FindObjectsOfType<ColorAssigner>().Length; i++)
-            {
-                GameObject.FindObjectsOfType<ColorAssigner>()[i].IsColorSchemeChanged = true;
-            }
-        }
-
-        public void SetSelectedColorIndex1()
-        {
-            int activeToggleIndex = 1;
-
-            PlayerPrefs.SetInt("Alpaseh-SelectedColorSchemeIndex", activeToggleIndex);
-
-            PlayerPrefs.Save();
-
-            for (int i = 0; i < GameObject.FindObjectsOfType<ColorAssigner>().Length; i++)
-            {
-                GameObject.FindObjectsOfType<ColorAssigner>()[i].IsColorSchemeChanged = true;
-            }
-        }
-
-        public void SetSelectedColorIndex2()
-        {
-            int activeToggleIndex = 2;
-
-            PlayerPrefs.SetInt("Alpaseh-SelectedColorSchemeIndex", activeToggleIndex);
-
-            PlayerPrefs.Save();
-
-            for (int i = 0; i < GameObject.FindObjectsOfType<ColorAssigner>().Length; i++)
-            {
-                GameObject.FindObjectsOfType<ColorAssigner>()[i].IsColorSchemeChanged = true;
-            }
-        }
-
-        public void SetSelectedColorIndex3()
-        {
-            int activeToggleIndex = 3;
-
-            PlayerPrefs.SetInt("Alpaseh-SelectedColorSchemeIndex", activeToggleIndex);
-
-            PlayerPrefs.Save();
-
-            for (int i = 0; i < GameObject.FindObjectsOfType<ColorAssigner>().Length; i++)
-            {
-                GameObject.FindObjectsOfType<ColorAssigner>()[i].IsColorSchemeChanged = true;
-            }
         }
 
         private void ActivateSelectedThemeToggle(SettingsView settingsView)
         {
-            settingsView.themesToggles[PlayerPrefs.GetInt("Alpaseh-SelectedColorSchemeIndex", 0)].isOn = true;
+            if (settingsView.themesToggles == null || settingsView.themesToggles.Length == 0)
+            {
+                return;
+            }
+
+            int activeIndex = Mathf.Clamp(
+                PlayerPrefs.GetInt(PlayerPrefsKeys.SelectedColorSchemeIndex, 0),
+                0,
+                settingsView.themesToggles.Length - 1);
+
+            settingsView.themesToggles[activeIndex].isOn = true;
         }
     }
 }

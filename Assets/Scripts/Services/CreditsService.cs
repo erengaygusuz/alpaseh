@@ -1,12 +1,17 @@
-
 using FTRGames.Alpaseh.Views;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace FTRGames.Alpaseh.Services
 {
     public class CreditsService
     {
+        private readonly SceneNavigationService sceneNavigationService;
+
+        public CreditsService(SceneNavigationService sceneNavigationService)
+        {
+            this.sceneNavigationService = sceneNavigationService;
+        }
+
         public void SetVersionValue(CreditsView creditsView)
         {
             creditsView.versionValue.text = Application.version;
@@ -14,7 +19,7 @@ namespace FTRGames.Alpaseh.Services
 
         public void GoToMainMenuBtnClick()
         {
-            SceneManager.LoadScene("MainMenu");
+            sceneNavigationService.Load(SceneNames.MainMenu);
         }
     }
 }

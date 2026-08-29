@@ -1,7 +1,6 @@
 using FTRGames.Alpaseh.Views;
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace FTRGames.Alpaseh.Services
@@ -9,10 +8,14 @@ namespace FTRGames.Alpaseh.Services
     public class HighScoresService
     {
         private readonly ScoreService scoreService;
+        private readonly SceneNavigationService sceneNavigationService;
 
-        public HighScoresService(ScoreService scoreService)
+        public HighScoresService(
+            ScoreService scoreService,
+            SceneNavigationService sceneNavigationService)
         {
             this.scoreService = scoreService;
+            this.sceneNavigationService = sceneNavigationService;
         }
 
         public void Initialization(HighScoresView highScoresView, Func<GameObject> scoreListFactory)
@@ -24,11 +27,21 @@ namespace FTRGames.Alpaseh.Services
         {
             for (int i = 0; i < scoreService.GetScoreList().Count; i++)
             {
-                AddAScoreToScoreListContent(highScoresView, scoreListFactory, i, scoreService.GetScoreList()[i].Username, scoreService.GetScoreList()[i].Score);
+                AddAScoreToScoreListContent(
+                    highScoresView,
+                    scoreListFactory,
+                    i,
+                    scoreService.GetScoreList()[i].Username,
+                    scoreService.GetScoreList()[i].Score);
             }
         }
 
-        private void AddAScoreToScoreListContent(HighScoresView highScoresView, Func<GameObject> scoreListFactory, int index, string username, int score)
+        private void AddAScoreToScoreListContent(
+            HighScoresView highScoresView,
+            Func<GameObject> scoreListFactory,
+            int index,
+            string username,
+            int score)
         {
             highScoresView.ScoreListRow.SetActive(true);
 
@@ -41,7 +54,10 @@ namespace FTRGames.Alpaseh.Services
             tempScoreObject.transform.SetParent(highScoresView.ScoreListContent.transform);
 
             tempScoreObject.transform.localScale = new Vector3(1, 1, 1);
-            tempScoreObject.transform.localPosition = new Vector3(tempScoreObject.transform.localPosition.x, tempScoreObject.transform.localPosition.y, 0);
+            tempScoreObject.transform.localPosition = new Vector3(
+                tempScoreObject.transform.localPosition.x,
+                tempScoreObject.transform.localPosition.y,
+                0);
 
             highScoresView.ScoreListRow.SetActive(false);
         }
@@ -64,7 +80,6 @@ namespace FTRGames.Alpaseh.Services
                 highScoresView.infoPanel.transform.GetChild(1).gameObject.SetActive(false);
                 highScoresView.infoPanel.transform.GetChild(2).gameObject.SetActive(false);
             }
-
             else
             {
                 highScoresView.infoPanel.transform.GetChild(0).gameObject.SetActive(false);
@@ -98,8 +113,7 @@ namespace FTRGames.Alpaseh.Services
 
         public void GoToMainMenuBtnClick()
         {
-            SceneManager.LoadScene("MainMenu");
+            sceneNavigationService.Load(SceneNames.MainMenu);
         }
     }
 }
-

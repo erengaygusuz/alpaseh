@@ -11,16 +11,32 @@ namespace FTRGames.Alpaseh.LifeTimeScopes
         [SerializeField]
         private AudioView audioView;
 
+        [SerializeField]
+        private LanguageCatalog languageCatalog;
+
+        [SerializeField]
+        private LevelCatalog levelCatalog;
+
+        [SerializeField]
+        private GameConfig gameConfig;
+
         protected override void Configure(IContainerBuilder builder)
         {
+            builder.RegisterInstance(languageCatalog);
+            builder.RegisterInstance(levelCatalog);
+            builder.RegisterInstance(gameConfig);
+            builder.Register<ResourceDataService>(Lifetime.Singleton);
             builder.Register<LocalizationService>(Lifetime.Singleton);
             builder.Register<AudioService>(Lifetime.Singleton);
             builder.Register<UIColorService>(Lifetime.Singleton);
             builder.Register<ScoreService>(Lifetime.Singleton);
+            builder.Register<SceneNavigationService>(Lifetime.Singleton);
+            builder.Register<StartupRouteService>(Lifetime.Singleton);
 
             builder.RegisterComponentInNewPrefab(audioView, Lifetime.Singleton).DontDestroyOnLoad();
+
+            builder.RegisterEntryPoint<ApplicationInitializer>();
+            builder.RegisterEntryPoint<ApplicationStartup>();
         }
     }
 }
-
-

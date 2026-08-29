@@ -1,70 +1,42 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace FTRGames.Alpaseh.Services
 {
-    public class WordNumberConverterService 
+    public sealed class WordNumberConverterService
     {
-        private Dictionary<char, char> WordNumberPairs { get; set; }
+        private readonly ResourceDataService resourceDataService;
+        private CharacterMapping wordNumberMapping;
+
+        public WordNumberConverterService(ResourceDataService resourceDataService)
+        {
+            this.resourceDataService = resourceDataService;
+        }
 
         public void Initialization()
         {
-            CreateWordNumberPairs();
-        }
-
-        private void CreateWordNumberPairs()
-        {
-            WordNumberPairs = new Dictionary<char, char>();
-
-            WordNumberPairs.Add('o', '0');
-            WordNumberPairs.Add('O', '0');
-            WordNumberPairs.Add('e', '3');
-            WordNumberPairs.Add('E', '3');
-            WordNumberPairs.Add('z', '2');
-            WordNumberPairs.Add('Z', '2');
-            WordNumberPairs.Add('ı', '1');
-            WordNumberPairs.Add('I', '1');
-            WordNumberPairs.Add('i', '1');
-            WordNumberPairs.Add('İ', '1');
-            WordNumberPairs.Add('s', '5');
-            WordNumberPairs.Add('S', '5');
-            WordNumberPairs.Add('g', '6');
-            WordNumberPairs.Add('G', '9');
-            WordNumberPairs.Add('b', '8');
-            WordNumberPairs.Add('B', '8');
-            WordNumberPairs.Add('l', '7');
-            WordNumberPairs.Add('L', '7');
-            WordNumberPairs.Add('h', '4');
-            WordNumberPairs.Add('H', '4');
+            wordNumberMapping = resourceDataService.GetWordNumberMapping(
+                resourceDataService.SelectedLanguageIndex);
         }
 
         public string GetNumbersFromWord(string word)
         {
-            string numberWord = "";
+            if (string.IsNullOrEmpty(word))
+            {
+                return string.Empty;
+            }
+
+            var numberCharacters = new List<char>();
 
             for (int i = 0; i < word.Length; i++)
             {
-                foreach (var wordNumber in WordNumberPairs)
+                if (wordNumberMapping.TryGetValue(word[i], out char numberCharacter))
                 {
-                    if (wordNumber.Key == word[i])
-                    {
-                        numberWord += wordNumber.Value;
-                    }
+                    numberCharacters.Add(numberCharacter);
                 }
             }
 
-            return GetWordReverseOrder(numberWord);
-        }
-
-        private string GetWordReverseOrder(string word)
-        {
-            string tempWord = "";
-
-            for (int i = word.Length - 1; i > -1; i--)
-            {
-                tempWord += word[i];
-            }
-
-            return tempWord;
+            numberCharacters.Reverse();
+            return new string(numberCharacters.ToArray());
         }
     }
 }

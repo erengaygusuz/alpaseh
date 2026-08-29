@@ -1,6 +1,5 @@
 using FTRGames.Alpaseh.Views;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace FTRGames.Alpaseh.Services
 {
@@ -8,11 +7,16 @@ namespace FTRGames.Alpaseh.Services
     {
         private readonly AudioView audioView;
         private readonly AudioService audioService;
+        private readonly SceneNavigationService sceneNavigationService;
 
-        public MainMenuService(AudioService audioService, AudioView audioView)
+        public MainMenuService(
+            AudioService audioService,
+            AudioView audioView,
+            SceneNavigationService sceneNavigationService)
         {
             this.audioService = audioService;
             this.audioView = audioView;
+            this.sceneNavigationService = sceneNavigationService;
         }
 
         public void Initialization(MainMenuView mainMenuView)
@@ -35,27 +39,27 @@ namespace FTRGames.Alpaseh.Services
 
         public void StartGameBtnClick()
         {
-            SceneManager.LoadScene("Game");
+            sceneNavigationService.Load(SceneNames.Game);
         }
 
         public void HowToPlayBtnClick()
         {
-            SceneManager.LoadScene("HowToPlay");
+            sceneNavigationService.Load(SceneNames.HowToPlay);
         }
 
         public void SettingsBtnClick()
         {
-            SceneManager.LoadScene("Settings");
+            sceneNavigationService.Load(SceneNames.Settings);
         }
 
         public void HighScoresBtnClick()
         {
-            SceneManager.LoadScene("HighScores");
+            sceneNavigationService.Load(SceneNames.HighScores);
         }
 
         public void CreditsBtnClick()
         {
-            SceneManager.LoadScene("Credits");
+            sceneNavigationService.Load(SceneNames.Credits);
         }
 
         public void ExitBtnClick()
@@ -64,4 +68,3 @@ namespace FTRGames.Alpaseh.Services
         }
     }
 }
-

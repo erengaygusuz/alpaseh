@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bf6c2a91d0d4a978a9f0b2b61a449ad, type: 3}
+  m_Name: LevelCatalog
+  m_EditorClassIdentifier: 
+  levels:
+  - lifeIncreaseAmount: 1
+    earnedScoreAmount: 10
+    loseLifeAmount: 1
+    earnedTimeAmount: 3
+    loseTimeAmount: 5
+  - lifeIncreaseAmount: 2
+    earnedScoreAmount: 20
+    loseLifeAmount: 1
+    earnedTimeAmount: 4
+    loseTimeAmount: 5
+  - lifeIncreaseAmount: 3
+    earnedScoreAmount: 30
+    loseLifeAmount: 1
+    earnedTimeAmount: 5
+    loseTimeAmount: 5
+  - lifeIncreaseAmount: 4
+    earnedScoreAmount: 40
+    loseLifeAmount: 1
+    earnedTimeAmount: 6
+    loseTimeAmount: 5
+  - lifeIncreaseAmount: 5
+    earnedScoreAmount: 50
+    loseLifeAmount: 1
+    earnedTimeAmount: 7
+    loseTimeAmount: 5

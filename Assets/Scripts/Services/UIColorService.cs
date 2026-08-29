@@ -1,58 +1,74 @@
-﻿using FTRGames.Alpaseh.Models;
+using System;
 using System.Collections.Generic;
+using FTRGames.Alpaseh.Models;
 using UnityEngine;
 
 namespace FTRGames.Alpaseh.Services
 {
     public class UIColorService
     {
-        private List<ColorScheme> ColorSchemes { get; set; }
+        private readonly List<ColorScheme> colorSchemes;
 
-        public bool IsColorSchemeChanged { get; set; }
-
-        public void GetAllSchemes()
+        public UIColorService()
         {
-            ColorSchemes = new List<ColorScheme>();
-
-            ColorSchemes.Add(new ColorScheme
+            colorSchemes = new List<ColorScheme>
             {
-                TextColor = new Color32(20, 46, 64, 255),
-                BarBackgroundColor = new Color32(18, 125, 199, 255),
-                ContentBackgroundColor = new Color32(135, 206, 255, 255),
-                ButtonBackgroundColor = new Color32(73, 139, 184, 255)
-            });
-
-            ColorSchemes.Add(new ColorScheme
-            {
-                TextColor = new Color32(58, 61, 37, 255),
-                BarBackgroundColor = new Color32(177, 194, 54, 255),
-                ContentBackgroundColor = new Color32(221, 235, 122, 255),
-                ButtonBackgroundColor = new Color32(145, 163, 15, 255)
-            });
-
-            ColorSchemes.Add(new ColorScheme
-            {
-                TextColor = new Color32(10, 66, 9, 255),
-                BarBackgroundColor = new Color32(50, 204, 47, 255),
-                ContentBackgroundColor = new Color32(172, 247, 171, 255),
-                ButtonBackgroundColor = new Color32(88, 161, 87, 255)
-            });
-
-            ColorSchemes.Add(new ColorScheme
-            {
-                TextColor = new Color32(66, 11, 19, 255),
-                BarBackgroundColor = new Color32(240, 89, 110, 255),
-                ContentBackgroundColor = new Color32(219, 154, 163, 255),
-                ButtonBackgroundColor = new Color32(176, 72, 87, 255)
-            });
+                new ColorScheme
+                {
+                    TextColor = new Color32(20, 46, 64, 255),
+                    BarBackgroundColor = new Color32(18, 125, 199, 255),
+                    ContentBackgroundColor = new Color32(135, 206, 255, 255),
+                    ButtonBackgroundColor = new Color32(73, 139, 184, 255)
+                },
+                new ColorScheme
+                {
+                    TextColor = new Color32(58, 61, 37, 255),
+                    BarBackgroundColor = new Color32(177, 194, 54, 255),
+                    ContentBackgroundColor = new Color32(221, 235, 122, 255),
+                    ButtonBackgroundColor = new Color32(145, 163, 15, 255)
+                },
+                new ColorScheme
+                {
+                    TextColor = new Color32(10, 66, 9, 255),
+                    BarBackgroundColor = new Color32(50, 204, 47, 255),
+                    ContentBackgroundColor = new Color32(172, 247, 171, 255),
+                    ButtonBackgroundColor = new Color32(88, 161, 87, 255)
+                },
+                new ColorScheme
+                {
+                    TextColor = new Color32(66, 11, 19, 255),
+                    BarBackgroundColor = new Color32(240, 89, 110, 255),
+                    ContentBackgroundColor = new Color32(219, 154, 163, 255),
+                    ButtonBackgroundColor = new Color32(176, 72, 87, 255)
+                }
+            };
         }
 
-        public ColorScheme GetActiveColorScheme
+        public event Action ColorSchemeChanged;
+
+        public int ActiveColorSchemeIndex => Mathf.Clamp(
+            PlayerPrefs.GetInt(PlayerPrefsKeys.SelectedColorSchemeIndex, 0),
+            0,
+            colorSchemes.Count - 1);
+
+        public ColorScheme GetActiveColorScheme => colorSchemes[ActiveColorSchemeIndex];
+
+        public void SelectColorScheme(int index)
         {
-            get
+            if (index < 0 || index >= colorSchemes.Count)
             {
-                return ColorSchemes[PlayerPrefs.GetInt("Alpaseh-SelectedColorSchemeIndex", 0)];
+                throw new ArgumentOutOfRangeException(nameof(index));
             }
+
+            if (PlayerPrefs.HasKey(PlayerPrefsKeys.SelectedColorSchemeIndex) && ActiveColorSchemeIndex == index)
+            {
+                return;
+            }
+
+            PlayerPrefs.SetInt(PlayerPrefsKeys.SelectedColorSchemeIndex, index);
+            PlayerPrefs.Save();
+
+            ColorSchemeChanged?.Invoke();
         }
     }
 }

@@ -59,3 +59,10 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+
+# Local Unity/editor settings
+/UserSettings/
+/.vscode/
+
+# Generated IDE solution files
+*.slnx

@@ -1,86 +1,116 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FTRGames.Alpaseh.Models
 {
     public class WordData
     {
-        public List<List<string>> LevelWordList = new List<List<string>>();
+        private const int MinimumWordLength = 3;
+        private const int MaximumWordLength = 7;
 
-        public WordData(string wordText, char[] identifiedLetters)
+        private readonly Random random = new Random();
+
+        public List<List<string>> LevelWordList { get; } = new List<List<string>>();
+
+        public WordData(string wordText, string allowedLetters)
         {
-            for (int i = 3; i < 8; i++)
+            if (wordText == null)
             {
-                AddWordsToList(wordText.Split('\n'), i, IdentifiedLetters(identifiedLetters));
+                throw new ArgumentNullException(nameof(wordText));
+            }
+
+            HashSet<char> allowedLetterSet = BuildAllowedLetters(allowedLetters);
+            string[] words = ParseWords(wordText);
+
+            for (int wordLength = MinimumWordLength; wordLength <= MaximumWordLength; wordLength++)
+            {
+                LevelWordList.Add(BuildWordList(words, wordLength, allowedLetterSet));
             }
         }
 
-        private List<Letter> IdentifiedLetters(char[] identifiedLetters)
+        private static HashSet<char> BuildAllowedLetters(string allowedLetters)
         {
-            var letters = new List<Letter>();
-
-            for (int i = 0; i < identifiedLetters.Length; i = i + 2)
+            if (string.IsNullOrWhiteSpace(allowedLetters))
             {
-                letters.Add(new Letter
-                {
-                    LowerCase = identifiedLetters[i],
-                    UpperCase = identifiedLetters[i + 1]
-                });
+                throw new ArgumentException(
+                    "Allowed letters cannot be null or empty.",
+                    nameof(allowedLetters));
             }
 
-            return letters;
-        }
+            var allowedLetterSet = new HashSet<char>();
 
-        private void AddWordsToList(string[] wordList, int wordSize, List<Letter> selectedLetters)
-        {
-            var tempList = new List<string>();
-
-            for (int i = 0; i < wordList.Length; i++)
+            foreach (char letter in allowedLetters.Trim().ToLowerInvariant())
             {
-                if (wordList[i].Length > 0)
+                if (!char.IsWhiteSpace(letter))
                 {
-                    var selectedWord = wordList[i].Substring(0, wordList[i].Length - 1);
-
-                    var selectedWordListCount = selectedWord.Length;
-
-                    if (selectedWordListCount == wordSize)
-                    {
-                        var wordLetterCount = 0;
-
-                        for (int k = 0; k < selectedWordListCount; k++)
-                        {
-                            for (int j = 0; j < selectedLetters.Count; j++)
-                            {
-                                selectedWord = selectedWord.ToLower();
-
-                                var selectedWordLetter = selectedWord[k];
-                                var selectedLetter = selectedLetters[j];
-
-                                if (selectedWordLetter == selectedLetter.LowerCase)
-                                {
-                                    wordLetterCount++;
-                                }
-                            }
-                        }
-
-                        if (wordLetterCount == selectedWordListCount)
-                        {
-                            if (!tempList.Contains(selectedWord))
-                            {
-                                tempList.Add(selectedWord);
-                            }
-                        }
-                    }
+                    allowedLetterSet.Add(letter);
                 }
             }
 
-            LevelWordList.Add(ShuffleList(tempList));
+            if (allowedLetterSet.Count == 0)
+            {
+                throw new ArgumentException(
+                    "Allowed letters must contain at least one character.",
+                    nameof(allowedLetters));
+            }
+
+            return allowedLetterSet;
         }
 
-        private List<string> ShuffleList(List<string> list)
+        private static string[] ParseWords(string wordText)
         {
-            return list.OrderBy(a => Guid.NewGuid()).ToList();
+            return wordText.Split(
+                new[] { '\r', '\n' },
+                StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        private List<string> BuildWordList(
+            string[] words,
+            int wordLength,
+            HashSet<char> allowedLetters)
+        {
+            var uniqueWords = new HashSet<string>(StringComparer.Ordinal);
+            var result = new List<string>();
+
+            foreach (string rawWord in words)
+            {
+                string word = rawWord.Trim().ToLowerInvariant();
+
+                if (word.Length != wordLength || !UsesOnlyAllowedLetters(word, allowedLetters))
+                {
+                    continue;
+                }
+
+                if (uniqueWords.Add(word))
+                {
+                    result.Add(word);
+                }
+            }
+
+            Shuffle(result);
+            return result;
+        }
+
+        private static bool UsesOnlyAllowedLetters(string word, HashSet<char> allowedLetters)
+        {
+            foreach (char letter in word)
+            {
+                if (!allowedLetters.Contains(letter))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void Shuffle(List<string> list)
+        {
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                int swapIndex = random.Next(i + 1);
+                (list[i], list[swapIndex]) = (list[swapIndex], list[i]);
+            }
         }
     }
 }

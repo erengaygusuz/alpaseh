@@ -1,7 +1,6 @@
 using FTRGames.Alpaseh.Views;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace FTRGames.Alpaseh.Services
@@ -9,10 +8,17 @@ namespace FTRGames.Alpaseh.Services
     public class IntroService
     {
         private readonly LocalizationService localizationService;
+        private readonly ResourceDataService resourceDataService;
+        private readonly SceneNavigationService sceneNavigationService;
 
-        public IntroService(LocalizationService localizationService)
+        public IntroService(
+            LocalizationService localizationService,
+            ResourceDataService resourceDataService,
+            SceneNavigationService sceneNavigationService)
         {
             this.localizationService = localizationService;
+            this.resourceDataService = resourceDataService;
+            this.sceneNavigationService = sceneNavigationService;
         }
 
         public void Initialization(IntroView introView)
@@ -22,28 +28,24 @@ namespace FTRGames.Alpaseh.Services
 
         private void GetLanguageValues(IntroView introView)
         {
-            if (PlayerPrefs.HasKey("Alpaseh-SelectedLanguageIndex") == true)
-            {
-                introView.languageOptions.value = PlayerPrefs.GetInt("Alpaseh-SelectedLanguageIndex");
-            }
-
-            else
-            {
-                introView.languageOptions.value = 0;
-            }
+            introView.languageOptions.value = resourceDataService.SelectedLanguageIndex;
         }
 
         private void FillLanguageDropdown(IntroView introView)
         {
-            List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
+            var options = new List<Dropdown.OptionData>();
 
             for (int i = 0; i < localizationService.GetLanguageCount; i++)
             {
-                Dropdown.OptionData option = new Dropdown.OptionData(localizationService.GetLocalizationData().Language[i].Name, Resources.Load<Sprite>("Flags/" + localizationService.GetLanguageFlagFileNames()[i]));
-                list.Add(option);
+                var option = new Dropdown.OptionData(
+                    localizationService.GetLocalizationData().Language[i].Name,
+                    resourceDataService.GetLanguageFlag(i));
+
+                options.Add(option);
             }
 
-            introView.languageOptions.AddOptions(list);
+            introView.languageOptions.ClearOptions();
+            introView.languageOptions.AddOptions(options);
 
             GetLanguageValues(introView);
         }
@@ -54,12 +56,11 @@ namespace FTRGames.Alpaseh.Services
             {
                 introView.warningPanel.SetActive(true);
             }
-
             else
             {
-                PlayerPrefs.SetString("Alpaseh-Username", introView.username.text);
-                PlayerPrefs.SetString("Alpaseh-Language", introView.languageOptions.captionText.text);
-                SceneManager.LoadScene("MainMenu");
+                PlayerPrefs.SetString(PlayerPrefsKeys.Username, introView.username.text);
+                PlayerPrefs.SetString(PlayerPrefsKeys.Language, introView.languageOptions.captionText.text);
+                sceneNavigationService.Load(SceneNames.MainMenu);
             }
         }
 
@@ -70,7 +71,7 @@ namespace FTRGames.Alpaseh.Services
 
         public void SaveLanguageOption(IntroView introView)
         {
-            PlayerPrefs.SetInt("Alpaseh-SelectedLanguageIndex", introView.languageOptions.value);
+            PlayerPrefs.SetInt(PlayerPrefsKeys.SelectedLanguageIndex, introView.languageOptions.value);
             PlayerPrefs.Save();
 
             for (int i = 0; i < localizationService.GetLanguageCount; i++)
@@ -84,4 +85,3 @@ namespace FTRGames.Alpaseh.Services
         }
     }
 }
-
