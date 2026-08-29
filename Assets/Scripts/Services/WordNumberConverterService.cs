@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace FTRGames.Alpaseh.Services
 {
     public sealed class WordNumberConverterService
     {
         private readonly ResourceDataService resourceDataService;
-        private readonly Dictionary<char, char> wordNumberPairs = new Dictionary<char, char>();
+        private CharacterMapping wordNumberMapping;
 
         public WordNumberConverterService(ResourceDataService resourceDataService)
         {
@@ -14,7 +14,8 @@ namespace FTRGames.Alpaseh.Services
 
         public void Initialization()
         {
-            CreateWordNumberPairs(resourceDataService.SelectedLanguageIndex);
+            wordNumberMapping = resourceDataService.GetWordNumberMapping(
+                resourceDataService.SelectedLanguageIndex);
         }
 
         public string GetNumbersFromWord(string word)
@@ -28,7 +29,7 @@ namespace FTRGames.Alpaseh.Services
 
             for (int i = 0; i < word.Length; i++)
             {
-                if (wordNumberPairs.TryGetValue(word[i], out char numberCharacter))
+                if (wordNumberMapping.TryGetValue(word[i], out char numberCharacter))
                 {
                     numberCharacters.Add(numberCharacter);
                 }
@@ -36,19 +37,6 @@ namespace FTRGames.Alpaseh.Services
 
             numberCharacters.Reverse();
             return new string(numberCharacters.ToArray());
-        }
-
-        private void CreateWordNumberPairs(int languageIndex)
-        {
-            wordNumberPairs.Clear();
-
-            string sourceCharacters = resourceDataService.GetWordNumberSourceCharacters(languageIndex);
-            string targetCharacters = resourceDataService.GetWordNumberTargetCharacters(languageIndex);
-
-            for (int i = 0; i < sourceCharacters.Length; i++)
-            {
-                wordNumberPairs[sourceCharacters[i]] = targetCharacters[i];
-            }
         }
     }
 }
