@@ -3,8 +3,10 @@ using UnityEngine;
 
 namespace FTRGames.Alpaseh.Services
 {
-    public class AudioService
+    public sealed class AudioService
     {
+        private const float DefaultVolume = 1.0f;
+
         private readonly AudioView audioView;
 
         public AudioService(AudioView audioView)
@@ -14,24 +16,22 @@ namespace FTRGames.Alpaseh.Services
 
         public float Volume => audioView.loopAudioSource.volume;
 
-        public float SavedVolume => PlayerPrefs.GetFloat(PlayerPrefsKeys.AudioLevel, 1.0f);
+        public float SavedVolume => PlayerPrefs.GetFloat(PlayerPrefsKeys.AudioLevel, DefaultVolume);
 
         public void Initialize()
         {
-            var volume = SavedVolume;
-
             if (!PlayerPrefs.HasKey(PlayerPrefsKeys.AudioLevel))
             {
-                PlayerPrefs.SetFloat(PlayerPrefsKeys.AudioLevel, volume);
+                PlayerPrefs.SetFloat(PlayerPrefsKeys.AudioLevel, DefaultVolume);
                 PlayerPrefs.Save();
             }
 
-            SetVolume(volume);
+            SetVolume(SavedVolume);
         }
 
         public void SetVolume(float volume)
         {
-            var clampedVolume = Mathf.Clamp01(volume);
+            float clampedVolume = Mathf.Clamp01(volume);
 
             audioView.loopAudioSource.volume = clampedVolume;
             audioView.answerAudioSource.volume = clampedVolume;
@@ -43,27 +43,19 @@ namespace FTRGames.Alpaseh.Services
         public void SetVolumeAndSave(float volume)
         {
             SetVolume(volume);
-
             PlayerPrefs.SetFloat(PlayerPrefsKeys.AudioLevel, Volume);
             PlayerPrefs.Save();
         }
 
-        private void PlayAudio(AudioSource audioSource, AudioClip clip)
-        {
-            if (!audioSource.isPlaying)
-            {
-                audioSource.clip = clip;
-                audioSource.Play();
-            }
-        }
-
         public void StopAudio(AudioSource audioSource)
         {
-            if (audioSource.clip != null)
+            if (audioSource.clip == null)
             {
-                audioSource.Stop();
-                audioSource.clip = null;
+                return;
             }
+
+            audioSource.Stop();
+            audioSource.clip = null;
         }
 
         public void PlayMainMenuAudio()
@@ -104,6 +96,17 @@ namespace FTRGames.Alpaseh.Services
         public void StopTimeTickAudio()
         {
             StopAudio(audioView.timeTickAudioSource);
+        }
+
+        private static void PlayAudio(AudioSource audioSource, AudioClip clip)
+        {
+            if (audioSource.isPlaying)
+            {
+                return;
+            }
+
+            audioSource.clip = clip;
+            audioSource.Play();
         }
     }
 }
