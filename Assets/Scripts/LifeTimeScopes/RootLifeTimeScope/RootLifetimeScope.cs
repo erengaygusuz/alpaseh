@@ -17,9 +17,13 @@ namespace FTRGames.Alpaseh.LifeTimeScopes
             builder.Register<AudioService>(Lifetime.Singleton);
             builder.Register<UIColorService>(Lifetime.Singleton);
             builder.Register<ScoreService>(Lifetime.Singleton);
+            builder.Register<SceneNavigationService>(Lifetime.Singleton);
+            builder.Register<StartupRouteService>(Lifetime.Singleton);
 
             builder.RegisterComponentInNewPrefab(audioView, Lifetime.Singleton).DontDestroyOnLoad();
+
             builder.RegisterEntryPoint<ApplicationInitializer>();
+            builder.RegisterEntryPoint<ApplicationStartup>();
         }
     }
 }
