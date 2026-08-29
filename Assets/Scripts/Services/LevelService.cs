@@ -17,7 +17,7 @@ namespace FTRGames.Alpaseh.Services
 
         private readonly WordParserService wordParserService;
 
-        public LevelService (WordParserService wordParserService)
+        public LevelService(WordParserService wordParserService)
         {
             this.wordParserService = wordParserService;
         }
@@ -68,21 +68,20 @@ namespace FTRGames.Alpaseh.Services
             return Levels[ActiveLevelIndex];
         }
 
-        public void CalculateTimeScoreLifeAmount(ref float totalTime, ref int totalScore, ref float totalLife)
+        public void CalculateTimeScoreLifeAmount(GameSessionService gameSessionService)
         {
             if (Levels[ActiveLevelIndex].CorrectAnswer)
             {
-                totalScore += Levels[ActiveLevelIndex].EarnedScoreAmount;
-                totalTime += Levels[ActiveLevelIndex].EarnedTimeAmount;
+                gameSessionService.AddScore(Levels[ActiveLevelIndex].EarnedScoreAmount);
+                gameSessionService.AddTime(Levels[ActiveLevelIndex].EarnedTimeAmount);
 
                 EarnTime.Invoke();
                 EarnScore.Invoke();
             }
-
             else
             {
-                totalLife -= Levels[ActiveLevelIndex].LoseLifeAmount;
-                totalTime -= Levels[ActiveLevelIndex].LoseTimeAmount;
+                gameSessionService.LoseLife(Levels[ActiveLevelIndex].LoseLifeAmount);
+                gameSessionService.LoseTime(Levels[ActiveLevelIndex].LoseTimeAmount);
 
                 LooseLife.Invoke();
                 LooseTime.Invoke();
@@ -91,12 +90,12 @@ namespace FTRGames.Alpaseh.Services
             Levels[ActiveLevelIndex].ActiveQuestionIndex++;
         }
 
-        public void IncreaseLife(ref float totalLife)
+        public void IncreaseLife(GameSessionService gameSessionService)
         {
-            totalLife += Levels[ActiveLevelIndex].LifeIncreaseAmount;
+            gameSessionService.AddLife(Levels[ActiveLevelIndex].LifeIncreaseAmount);
         }
 
-        public void CalculateActiveLevelAndQuestionIndex(ref float totalLife)
+        public void CalculateActiveLevelAndQuestionIndex(GameSessionService gameSessionService)
         {
             if (Levels[ActiveLevelIndex].ActiveQuestionIndex == GetActiveLevel().WordList.Count)
             {
@@ -105,12 +104,12 @@ namespace FTRGames.Alpaseh.Services
 
                 int lastLevelWordListLastItemIndex = lastLevel.WordList.Count - 1;
 
-                if (ActiveLevelIndex == levelCount - 1 && Levels[ActiveLevelIndex].ActiveQuestionIndex != lastLevelWordListLastItemIndex) 
+                if (ActiveLevelIndex == levelCount - 1 && Levels[ActiveLevelIndex].ActiveQuestionIndex != lastLevelWordListLastItemIndex)
                 {
                     return;
                 }
 
-                IncreaseLife(ref totalLife);
+                IncreaseLife(gameSessionService);
 
                 EarnLife.Invoke();
 

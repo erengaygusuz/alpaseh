@@ -17,6 +17,7 @@ namespace FTRGames.Alpaseh.LifeTimeScopes
             builder.RegisterEntryPoint<GamePresenter>();
 
             builder.Register<GameService>(Lifetime.Scoped);
+            builder.Register<GameSessionService>(Lifetime.Scoped);
             builder.Register<WordParserService>(Lifetime.Scoped);
             builder.Register<TweenService>(Lifetime.Scoped);
             builder.Register<WordNumberConverterService>(Lifetime.Scoped);

@@ -13,18 +13,12 @@ namespace FTRGames.Alpaseh.Services
         private readonly TweenService tweenService;
         private readonly ScoreService scoreService;
         private readonly SceneNavigationService sceneNavigationService;
+        private readonly GameSessionService gameSessionService;
 
-        private float totalTime;
-        private float totalLife;
-        private int totalScore;
         private float timeTickElapsed;
 
         public UnityEvent GameOver { get; set; }
         public UnityEvent GameCompleted { get; set; }
-
-        private bool isGameOver;
-        private bool isGamePaused;
-        private bool isGameCompleted;
 
         public bool IsGotoMainMenuBtnClick;
 
@@ -32,18 +26,20 @@ namespace FTRGames.Alpaseh.Services
             AudioService audioService,
             TweenService tweenService,
             ScoreService scoreService,
-            SceneNavigationService sceneNavigationService)
+            SceneNavigationService sceneNavigationService,
+            GameSessionService gameSessionService)
         {
             this.audioService = audioService;
             this.tweenService = tweenService;
             this.scoreService = scoreService;
             this.sceneNavigationService = sceneNavigationService;
+            this.gameSessionService = gameSessionService;
         }
 
         public void Initialization(AudioView audioView, LevelService levelService, GameView gameView)
         {
             GameEventsInit();
-            InitLifeAndTime();
+            gameSessionService.Initialize();
             InitGameUI(gameView, levelService);
 
             GetActiveQuestionText(levelService, gameView);
@@ -71,7 +67,7 @@ namespace FTRGames.Alpaseh.Services
 
             timeTickElapsed -= TimeTickInterval;
 
-            if (!isGameCompleted)
+            if (!gameSessionService.IsGameCompleted)
             {
                 audioService.PlayTimeTickAudio();
             }
@@ -83,16 +79,10 @@ namespace FTRGames.Alpaseh.Services
         {
             gameView.enteredNumberWordText.text = "";
 
-            gameView.totalTimeText.text = Mathf.Round(totalTime).ToString();
-            gameView.totalLifeText.text = totalLife.ToString();
-            gameView.totalScoreText.text = totalScore.ToString();
+            gameView.totalTimeText.text = Mathf.Round(gameSessionService.TotalTime).ToString();
+            gameView.totalLifeText.text = gameSessionService.TotalLife.ToString();
+            gameView.totalScoreText.text = gameSessionService.TotalScore.ToString();
             gameView.activeLevelText.text = (levelService.ActiveLevelIndex + 1).ToString();
-        }
-
-        private void InitLifeAndTime()
-        {
-            totalLife = 10;
-            totalTime = 200;
         }
 
         private void GameEventsInit()
@@ -139,19 +129,17 @@ namespace FTRGames.Alpaseh.Services
 
         public void GameCheck(GameView gameView, LevelService levelService)
         {
-            if (!isGameOver && !isGamePaused)
+            if (gameSessionService.CanTick)
             {
-                totalTime -= Time.deltaTime;
+                gameSessionService.Tick(Time.deltaTime);
                 UpdateTimeTick(Time.deltaTime);
             }
 
-            gameView.totalTimeText.text = Mathf.Round(totalTime).ToString();
+            gameView.totalTimeText.text = Mathf.Round(gameSessionService.TotalTime).ToString();
 
-            if ((totalLife <= 0 || totalTime <= 0) && !isGameOver)
+            if (gameSessionService.ShouldGameOver && !gameSessionService.IsGameOver)
             {
-                totalLife = 0;
-                totalTime = 0;
-                isGameOver = true;
+                gameSessionService.MarkGameOver();
 
                 GameOver.Invoke();
             }
@@ -247,7 +235,7 @@ namespace FTRGames.Alpaseh.Services
                 gameView.enteredNumberWordText.text,
                 wordNumberConverterService.GetNumbersFromWord(gameView.questionText.text));
 
-            isGamePaused = true;
+            gameSessionService.Pause();
 
             audioService.StopTimeTickAudio();
 
@@ -272,7 +260,7 @@ namespace FTRGames.Alpaseh.Services
                     if (lastLevel.ActiveQuestionIndex == lastLevelWordListLastItemIndex)
                     {
                         GameCompleted.Invoke();
-                        isGameCompleted = true;
+                        gameSessionService.MarkCompleted();
                     }
                 }
             }
@@ -296,12 +284,12 @@ namespace FTRGames.Alpaseh.Services
                 }
             }
 
-            levelService.CalculateTimeScoreLifeAmount(ref totalTime, ref totalScore, ref totalLife);
-            levelService.CalculateActiveLevelAndQuestionIndex(ref totalLife);
+            levelService.CalculateTimeScoreLifeAmount(gameSessionService);
+            levelService.CalculateActiveLevelAndQuestionIndex(gameSessionService);
 
-            gameView.totalTimeText.text = Mathf.Round(totalTime).ToString();
-            gameView.totalLifeText.text = totalLife.ToString();
-            gameView.totalScoreText.text = totalScore.ToString();
+            gameView.totalTimeText.text = Mathf.Round(gameSessionService.TotalTime).ToString();
+            gameView.totalLifeText.text = gameSessionService.TotalLife.ToString();
+            gameView.totalScoreText.text = gameSessionService.TotalScore.ToString();
             gameView.activeLevelText.text = (levelService.ActiveLevelIndex + 1).ToString();
 
             gameView.enteredNumberWordText.gameObject.SetActive(true);
@@ -314,7 +302,7 @@ namespace FTRGames.Alpaseh.Services
 
         public void ContinueTheGame()
         {
-            isGamePaused = false;
+            gameSessionService.Resume();
         }
 
         public void DeleteBtnClick(GameView gameView)
@@ -435,7 +423,7 @@ namespace FTRGames.Alpaseh.Services
 
         public void ShowInfoPanelUI(GameView gameView)
         {
-            if (scoreService.CompareNewScoreWithScoresInTheList(totalScore))
+            if (scoreService.CompareNewScoreWithScoresInTheList(gameSessionService.TotalScore))
             {
                 Time.timeScale = 0;
 
