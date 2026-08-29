@@ -9,54 +9,83 @@ namespace FTRGames.Alpaseh.Services
         public const string EnglishLanguageId = "english";
         public const string TurkishLanguageId = "turkish";
 
-        private static readonly string[] LanguageIds =
-        {
-            EnglishLanguageId,
-            TurkishLanguageId
-        };
+        private readonly LanguageCatalog languageCatalog;
 
-        public int LanguageCount => LanguageIds.Length;
+        public ResourceDataService(LanguageCatalog languageCatalog)
+        {
+            this.languageCatalog = languageCatalog ??
+                throw new ArgumentNullException(nameof(languageCatalog));
+        }
+
+        public int LanguageCount => languageCatalog.Count;
 
         public int SelectedLanguageIndex => NormalizeLanguageIndex(
             PlayerPrefs.GetInt(PlayerPrefsKeys.SelectedLanguageIndex, 0));
 
         public IReadOnlyList<string> GetLanguageIds()
         {
-            return LanguageIds;
+            var languageIds = new string[LanguageCount];
+
+            for (int i = 0; i < LanguageCount; i++)
+            {
+                languageIds[i] = languageCatalog.GetLanguage(i).Id;
+            }
+
+            return languageIds;
         }
 
         public string GetLanguageId(int languageIndex)
         {
-            return LanguageIds[NormalizeLanguageIndex(languageIndex)];
+            return GetLanguage(languageIndex).Id;
         }
 
         public TextAsset GetLocalizationFile(int languageIndex)
         {
-            return LoadRequired<TextAsset>($"Language/{GetLanguageId(languageIndex)}");
+            return GetRequiredAsset(
+                GetLanguage(languageIndex).LocalizationFile,
+                "localization file",
+                languageIndex);
         }
 
         public TextAsset GetWordListFile(int languageIndex)
         {
-            return LoadRequired<TextAsset>($"WordList/word-{GetLanguageId(languageIndex)}");
+            return GetRequiredAsset(
+                GetLanguage(languageIndex).WordListFile,
+                "word list file",
+                languageIndex);
         }
 
         public Sprite GetLanguageFlag(int languageIndex)
         {
-            return LoadRequired<Sprite>($"Flags/{GetLanguageId(languageIndex)}");
+            return GetRequiredAsset(
+                GetLanguage(languageIndex).Flag,
+                "flag",
+                languageIndex);
         }
 
-        private static int NormalizeLanguageIndex(int languageIndex)
+        private LanguageCatalogEntry GetLanguage(int languageIndex)
         {
-            return Mathf.Clamp(languageIndex, 0, LanguageIds.Length - 1);
+            return languageCatalog.GetLanguage(NormalizeLanguageIndex(languageIndex));
         }
 
-        private static T LoadRequired<T>(string resourcePath) where T : UnityEngine.Object
+        private int NormalizeLanguageIndex(int languageIndex)
         {
-            T asset = Resources.Load<T>(resourcePath);
+            if (LanguageCount <= 0)
+            {
+                throw new InvalidOperationException("Language catalog is empty.");
+            }
 
+            return Mathf.Clamp(languageIndex, 0, LanguageCount - 1);
+        }
+
+        private T GetRequiredAsset<T>(T asset, string assetType, int languageIndex)
+            where T : UnityEngine.Object
+        {
             if (asset == null)
             {
-                throw new InvalidOperationException($"Required resource could not be loaded: {resourcePath}");
+                string languageId = GetLanguage(languageIndex).Id;
+                throw new InvalidOperationException(
+                    $"Language '{languageId}' is missing its {assetType} reference in the language catalog.");
             }
 
             return asset;

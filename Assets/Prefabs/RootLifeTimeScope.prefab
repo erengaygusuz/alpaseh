@@ -49,3 +49,4 @@ MonoBehaviour:
   autoInjectGameObjects: []
   audioView: {fileID: 4795191859181606723, guid: 336e15252841dd6428817f12a706e52b,
     type: 3}
+  languageCatalog: {fileID: 11400000, guid: ca2d89b932bd4fc1b6da098d9c1210b0, type: 2}

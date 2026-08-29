@@ -11,8 +11,12 @@ namespace FTRGames.Alpaseh.LifeTimeScopes
         [SerializeField]
         private AudioView audioView;
 
+        [SerializeField]
+        private LanguageCatalog languageCatalog;
+
         protected override void Configure(IContainerBuilder builder)
         {
+            builder.RegisterInstance(languageCatalog);
             builder.Register<ResourceDataService>(Lifetime.Singleton);
             builder.Register<LocalizationService>(Lifetime.Singleton);
             builder.Register<AudioService>(Lifetime.Singleton);
