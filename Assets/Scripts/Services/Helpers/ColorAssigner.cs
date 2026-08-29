@@ -1,30 +1,13 @@
 ﻿using FTRGames.Alpaseh.Enums;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
 namespace FTRGames.Alpaseh.Services
 {
-    public class ColorAssigner : MonoBehaviour
+    public sealed class ColorAssigner : MonoBehaviour
     {
-        private List<string> ObjectTypes
-        {
-            get
-            {
-                return new List<string>()
-                {
-                    "TEXT",
-                    "BAR",
-                    "CONTENT",
-                    "BUTTON"
-                };
-            }
-        }
-
         public ObjectType SelectedObjectType;
-
-        public bool IsColorSchemeChanged;
 
         private UIColorService uiColorService;
 
@@ -36,21 +19,15 @@ namespace FTRGames.Alpaseh.Services
 
         private void Start()
         {
+            uiColorService.ColorSchemeChanged += AssignObject;
             AssignObject();
         }
 
-        private void Update()
+        private void OnDestroy()
         {
-            CheckColorColorShemeStatus();
-        }
-
-        private void CheckColorColorShemeStatus()
-        {
-            if (IsColorSchemeChanged)
+            if (uiColorService != null)
             {
-                AssignObject();
-
-                IsColorSchemeChanged = false;
+                uiColorService.ColorSchemeChanged -= AssignObject;
             }
         }
 
@@ -59,29 +36,20 @@ namespace FTRGames.Alpaseh.Services
             switch (SelectedObjectType)
             {
                 case ObjectType.BAR:
-
                     GetComponent<Image>().color = uiColorService.GetActiveColorScheme.BarBackgroundColor;
-
                     break;
+
                 case ObjectType.TEXT:
-
                     GetComponent<Text>().color = uiColorService.GetActiveColorScheme.TextColor;
-
                     break;
+
                 case ObjectType.CONTENT:
-
                     GetComponent<Image>().color = uiColorService.GetActiveColorScheme.ContentBackgroundColor;
-
                     break;
+
                 case ObjectType.BUTTON:
-
-                    GetComponent<Image>().color = uiColorService.GetActiveColorScheme.ButtonBackgroundColor;
-
-                    break;
                 default:
-
                     GetComponent<Image>().color = uiColorService.GetActiveColorScheme.ButtonBackgroundColor;
-
                     break;
             }
         }
