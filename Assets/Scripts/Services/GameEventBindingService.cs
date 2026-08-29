@@ -70,8 +70,8 @@ namespace FTRGames.Alpaseh.Services
         {
             levelService.EarnScore.AddListener(() => gameFeedbackService.ShowEarnScore(gameView, levelService));
             levelService.EarnTime.AddListener(() => gameFeedbackService.ShowEarnTime(gameView, levelService));
-            levelService.LooseLife.AddListener(() => gameFeedbackService.ShowLoseLife(gameView, levelService));
-            levelService.LooseTime.AddListener(() => gameFeedbackService.ShowLoseTime(gameView, levelService));
+            levelService.LoseLife.AddListener(() => gameFeedbackService.ShowLoseLife(gameView, levelService));
+            levelService.LoseTime.AddListener(() => gameFeedbackService.ShowLoseTime(gameView, levelService));
             levelService.EarnLife.AddListener(() => gameFeedbackService.ShowEarnLife(gameView, levelService));
         }
 

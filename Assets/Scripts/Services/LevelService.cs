@@ -16,8 +16,8 @@ namespace FTRGames.Alpaseh.Services
         public bool IsLastLevel => LevelCount > 0 && ActiveLevelIndex == LevelCount - 1;
 
         public UnityEvent EarnScore { get; } = new UnityEvent();
-        public UnityEvent LooseLife { get; } = new UnityEvent();
-        public UnityEvent LooseTime { get; } = new UnityEvent();
+        public UnityEvent LoseLife { get; } = new UnityEvent();
+        public UnityEvent LoseTime { get; } = new UnityEvent();
         public UnityEvent EarnTime { get; } = new UnityEvent();
         public UnityEvent EarnLife { get; } = new UnityEvent();
 
@@ -31,32 +31,6 @@ namespace FTRGames.Alpaseh.Services
         {
             InitLevels();
             ActiveLevelIndex = 0;
-        }
-
-        private void InitLevels()
-        {
-            int wordLevelCount = wordParserService.WordDatas.LevelWordList.Count;
-
-            if (levelCatalog.Count != wordLevelCount)
-            {
-                throw new InvalidOperationException(
-                    $"Level catalog count ({levelCatalog.Count}) does not match word level count ({wordLevelCount}).");
-            }
-
-            levels = new Level[levelCatalog.Count];
-
-            for (int i = 0; i < levelCatalog.Count; i++)
-            {
-                LevelConfig config = levelCatalog.GetLevel(i);
-
-                levels[i] = new Level(
-                    config.LifeIncreaseAmount,
-                    config.EarnedScoreAmount,
-                    config.LoseLifeAmount,
-                    config.EarnedTimeAmount,
-                    config.LoseTimeAmount,
-                    wordParserService.WordDatas.LevelWordList[i]);
-            }
         }
 
         public Level GetActiveLevel()
@@ -86,8 +60,8 @@ namespace FTRGames.Alpaseh.Services
                 gameSessionService.LoseLife(activeLevel.LoseLifeAmount);
                 gameSessionService.LoseTime(activeLevel.LoseTimeAmount);
 
-                LooseLife.Invoke();
-                LooseTime.Invoke();
+                LoseLife.Invoke();
+                LoseTime.Invoke();
             }
 
             activeLevel.AdvanceQuestion();
@@ -120,6 +94,32 @@ namespace FTRGames.Alpaseh.Services
 
             ActiveLevelIndex++;
             GetActiveLevel().ResetQuestionProgress();
+        }
+
+        private void InitLevels()
+        {
+            int wordLevelCount = wordParserService.WordDatas.LevelWordList.Count;
+
+            if (levelCatalog.Count != wordLevelCount)
+            {
+                throw new InvalidOperationException(
+                    $"Level catalog count ({levelCatalog.Count}) does not match word level count ({wordLevelCount}).");
+            }
+
+            levels = new Level[levelCatalog.Count];
+
+            for (int i = 0; i < levelCatalog.Count; i++)
+            {
+                LevelConfig config = levelCatalog.GetLevel(i);
+
+                levels[i] = new Level(
+                    config.LifeIncreaseAmount,
+                    config.EarnedScoreAmount,
+                    config.LoseLifeAmount,
+                    config.EarnedTimeAmount,
+                    config.LoseTimeAmount,
+                    wordParserService.WordDatas.LevelWordList[i]);
+            }
         }
     }
 }
