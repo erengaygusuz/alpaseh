@@ -12,6 +12,8 @@ namespace FTRGames.Alpaseh.Services
         private readonly SceneNavigationService sceneNavigationService;
         private readonly GameSessionService gameSessionService;
         private readonly GameTimerService gameTimerService;
+        private readonly QuestionService questionService;
+        private readonly AnswerService answerService;
 
         public UnityEvent GameOver { get; set; }
         public UnityEvent GameCompleted { get; set; }
@@ -24,7 +26,9 @@ namespace FTRGames.Alpaseh.Services
             ScoreService scoreService,
             SceneNavigationService sceneNavigationService,
             GameSessionService gameSessionService,
-            GameTimerService gameTimerService)
+            GameTimerService gameTimerService,
+            QuestionService questionService,
+            AnswerService answerService)
         {
             this.audioService = audioService;
             this.tweenService = tweenService;
@@ -32,6 +36,8 @@ namespace FTRGames.Alpaseh.Services
             this.sceneNavigationService = sceneNavigationService;
             this.gameSessionService = gameSessionService;
             this.gameTimerService = gameTimerService;
+            this.questionService = questionService;
+            this.answerService = answerService;
         }
 
         public void Initialization(AudioView audioView, LevelService levelService, GameView gameView)
@@ -41,7 +47,7 @@ namespace FTRGames.Alpaseh.Services
             gameTimerService.Initialize();
             InitGameUI(gameView, levelService);
 
-            GetActiveQuestionText(levelService, gameView);
+            gameView.questionText.text = questionService.GetActiveQuestion(levelService);
             PlayAmbienceSound(audioView);
         }
 
@@ -78,32 +84,6 @@ namespace FTRGames.Alpaseh.Services
             }
         }
 
-        private void GetActiveQuestionText(LevelService levelService, GameView gameView)
-        {
-            int activeQuestionIndex = levelService.Levels[levelService.ActiveLevelIndex].ActiveQuestionIndex;
-            string question = levelService.Levels[levelService.ActiveLevelIndex].WordList[activeQuestionIndex].ToString();
-
-            gameView.questionText.text = TurkishCharacterToEnglish(question);
-        }
-
-        private string TurkishCharacterToEnglish(string text)
-        {
-            char[] turkishChars = { 'ı', 'ğ', 'İ', 'Ğ', 'ç', 'Ç', 'ş', 'Ş', 'ö', 'Ö', 'ü', 'Ü' };
-            char[] englishChars = { 'i', 'g', 'I', 'G', 'c', 'C', 's', 'S', 'o', 'O', 'u', 'U' };
-
-            for (int i = 0; i < turkishChars.Length; i++)
-            {
-                text = text.Replace(turkishChars[i], englishChars[i]);
-            }
-
-            return text;
-        }
-
-        private void ClearEnteredNumberWordText(GameView gameView)
-        {
-            gameView.enteredNumberWordText.text = "";
-        }
-
         #region Tick Event Functions
 
         public void GameCheck(GameView gameView)
@@ -123,11 +103,12 @@ namespace FTRGames.Alpaseh.Services
 
         #region Event Binding Functions
 
-        public void ControlBtnClick(GameView gameView, LevelService levelService, WordNumberConverterService wordNumberConverterService)
+        public void ControlBtnClick(GameView gameView, LevelService levelService)
         {
-            bool isCorrectAnswer = levelService.Levels[levelService.ActiveLevelIndex].CheckEnteredNumberWord(
+            bool isCorrectAnswer = answerService.CheckAnswer(
+                levelService,
                 gameView.enteredNumberWordText.text,
-                wordNumberConverterService.GetNumbersFromWord(gameView.questionText.text));
+                gameView.questionText.text);
 
             gameSessionService.Pause();
             audioService.StopTimeTickAudio();
@@ -141,34 +122,18 @@ namespace FTRGames.Alpaseh.Services
                 tweenService.PlayWrongAnswerAnim(gameView.enteredNumberWordText, gameView.checkButton);
             }
 
-            int levelCount = levelService.Levels.Length;
-            var lastLevel = levelService.Levels[levelCount - 1];
-
-            if (lastLevel.WordList.Count > 0 && levelService.ActiveLevelIndex == levelCount - 1)
+            if (questionService.IsLastQuestion(levelService))
             {
-                int lastLevelWordListLastItemIndex = lastLevel.WordList.Count - 1;
-
-                if (lastLevel.ActiveQuestionIndex == lastLevelWordListLastItemIndex)
-                {
-                    GameCompleted.Invoke();
-                    gameSessionService.MarkCompleted();
-                }
+                GameCompleted.Invoke();
+                gameSessionService.MarkCompleted();
             }
         }
 
         public void PrepareScreenForNextQuestion(GameView gameView, LevelService levelService)
         {
-            int levelCount = levelService.Levels.Length;
-            var lastLevel = levelService.Levels[levelCount - 1];
-
-            if (lastLevel.WordList.Count > 0 && levelService.ActiveLevelIndex == levelCount - 1)
+            if (questionService.IsLastQuestion(levelService))
             {
-                int lastLevelWordListLastItemIndex = lastLevel.WordList.Count - 1;
-
-                if (lastLevel.ActiveQuestionIndex == lastLevelWordListLastItemIndex)
-                {
-                    return;
-                }
+                return;
             }
 
             levelService.CalculateTimeScoreLifeAmount(gameSessionService);
@@ -183,8 +148,8 @@ namespace FTRGames.Alpaseh.Services
             gameView.enteredNumberWordText.transform.rotation = Quaternion.Euler(0, 0, 0);
             gameView.enteredNumberWordText.color = new Color32(0, 0, 0, 255);
 
-            GetActiveQuestionText(levelService, gameView);
-            ClearEnteredNumberWordText(gameView);
+            gameView.questionText.text = questionService.GetActiveQuestion(levelService);
+            gameView.enteredNumberWordText.text = "";
         }
 
         public void ContinueTheGame()

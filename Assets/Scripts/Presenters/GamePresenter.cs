@@ -10,9 +10,9 @@ namespace FTRGames.Alpaseh.Presenters
         private readonly AudioView audioView;
         private readonly GameService gameService;
         private readonly GameInputService gameInputService;
+        private readonly AnswerService answerService;
         private readonly ScoreService scoreService;
         private readonly LevelService levelService;
-        private readonly WordNumberConverterService wordNumberConverterService;
         private readonly WordParserService wordParserService;
         private readonly TweenService tweenService;
         private readonly AudioService audioService;
@@ -20,22 +20,22 @@ namespace FTRGames.Alpaseh.Presenters
         public GamePresenter(
             GameService gameService,
             GameInputService gameInputService,
+            AnswerService answerService,
             ScoreService scoreService,
             GameView gameView,
             AudioView audioView,
             LevelService levelService,
             WordParserService wordParserService,
-            WordNumberConverterService wordNumberConverterService,
             TweenService tweenService,
             AudioService audioService)
         {
             this.gameService = gameService;
             this.gameInputService = gameInputService;
+            this.answerService = answerService;
             this.scoreService = scoreService;
             this.gameView = gameView;
             this.audioView = audioView;
             this.levelService = levelService;
-            this.wordNumberConverterService = wordNumberConverterService;
             this.wordParserService = wordParserService;
             this.audioService = audioService;
             this.tweenService = tweenService;
@@ -45,7 +45,7 @@ namespace FTRGames.Alpaseh.Presenters
         {
             scoreService.Initialization();
             wordParserService.Initialization();
-            wordNumberConverterService.Initialization();
+            answerService.Initialization();
             levelService.Initialization();
             tweenService.Initialization();
 
@@ -74,7 +74,7 @@ namespace FTRGames.Alpaseh.Presenters
             gameView.numberButtons[8].onClick.AddListener(() => gameInputService.EnterNumber(gameView, 8));
             gameView.numberButtons[9].onClick.AddListener(() => gameInputService.EnterNumber(gameView, 9));
 
-            gameView.checkButton.onClick.AddListener(() => gameService.ControlBtnClick(gameView, levelService, wordNumberConverterService));
+            gameView.checkButton.onClick.AddListener(() => gameService.ControlBtnClick(gameView, levelService));
             gameView.deleteButton.onClick.AddListener(() => gameInputService.Delete(gameView));
             gameView.mainMenuButton.onClick.AddListener(() => gameService.GoToMainMenuBtnClick(gameView));
             gameView.gameOverPanelPlayAgainButton.onClick.AddListener(() => gameService.PlayAgainBtnClick());
@@ -86,7 +86,7 @@ namespace FTRGames.Alpaseh.Presenters
 
             gameInputService.NumberPressed.AddListener(number => gameInputService.EnterNumber(gameView, number));
             gameInputService.DeletePressed.AddListener(() => gameInputService.Delete(gameView));
-            gameInputService.SubmitPressed.AddListener(() => gameService.ControlBtnClick(gameView, levelService, wordNumberConverterService));
+            gameInputService.SubmitPressed.AddListener(() => gameService.ControlBtnClick(gameView, levelService));
 
             levelService.EarnScore.AddListener(() => gameService.EarnScoreTextEffect(gameView, levelService));
             levelService.EarnTime.AddListener(() => gameService.EarnTimeTextEffect(gameView, levelService));
