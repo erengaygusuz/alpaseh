@@ -9,49 +9,26 @@ namespace FTRGames.Alpaseh.Presenters
         private readonly GameView gameView;
         private readonly AudioView audioView;
         private readonly GameService gameService;
-        private readonly GameInputService gameInputService;
-        private readonly GameFeedbackService gameFeedbackService;
-        private readonly GameEventBindingService gameEventBindingService;
-        private readonly AnswerService answerService;
+        private readonly GameStartupService gameStartupService;
         private readonly ScoreService scoreService;
-        private readonly LevelService levelService;
-        private readonly WordParserService wordParserService;
 
         public GamePresenter(
             GameService gameService,
-            GameInputService gameInputService,
-            GameFeedbackService gameFeedbackService,
-            GameEventBindingService gameEventBindingService,
-            AnswerService answerService,
+            GameStartupService gameStartupService,
             ScoreService scoreService,
             GameView gameView,
-            AudioView audioView,
-            LevelService levelService,
-            WordParserService wordParserService)
+            AudioView audioView)
         {
             this.gameService = gameService;
-            this.gameInputService = gameInputService;
-            this.gameFeedbackService = gameFeedbackService;
-            this.gameEventBindingService = gameEventBindingService;
-            this.answerService = answerService;
+            this.gameStartupService = gameStartupService;
             this.scoreService = scoreService;
             this.gameView = gameView;
             this.audioView = audioView;
-            this.levelService = levelService;
-            this.wordParserService = wordParserService;
         }
 
         void IStartable.Start()
         {
-            scoreService.Initialization();
-            wordParserService.Initialization();
-            answerService.Initialization();
-            levelService.Initialization();
-            gameFeedbackService.Initialization();
-
-            gameService.Initialization(audioView, levelService, gameView);
-            gameEventBindingService.Bind(gameView, audioView, levelService);
-            gameInputService.Enable();
+            gameStartupService.Start(gameView, audioView);
         }
 
         public void Tick()
