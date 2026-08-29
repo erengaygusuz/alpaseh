@@ -5,8 +5,6 @@ namespace FTRGames.Alpaseh.Services
 {
     public class AudioService
     {
-        private const string AudioLevelKey = "Alpaseh-AudioLevelSliderValue";
-
         private readonly AudioView audioView;
 
         public AudioService(AudioView audioView)
@@ -16,15 +14,15 @@ namespace FTRGames.Alpaseh.Services
 
         public float Volume => audioView.loopAudioSource.volume;
 
-        public float SavedVolume => PlayerPrefs.GetFloat(AudioLevelKey, 1.0f);
+        public float SavedVolume => PlayerPrefs.GetFloat(PlayerPrefsKeys.AudioLevel, 1.0f);
 
         public void Initialize()
         {
             var volume = SavedVolume;
 
-            if (!PlayerPrefs.HasKey(AudioLevelKey))
+            if (!PlayerPrefs.HasKey(PlayerPrefsKeys.AudioLevel))
             {
-                PlayerPrefs.SetFloat(AudioLevelKey, volume);
+                PlayerPrefs.SetFloat(PlayerPrefsKeys.AudioLevel, volume);
                 PlayerPrefs.Save();
             }
 
@@ -46,7 +44,7 @@ namespace FTRGames.Alpaseh.Services
         {
             SetVolume(volume);
 
-            PlayerPrefs.SetFloat(AudioLevelKey, Volume);
+            PlayerPrefs.SetFloat(PlayerPrefsKeys.AudioLevel, Volume);
             PlayerPrefs.Save();
         }
 

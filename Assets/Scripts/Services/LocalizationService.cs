@@ -66,12 +66,12 @@ namespace FTRGames.Alpaseh.Services
 
         public Localization GetLocalizationData()
         {
-            return LocalizationDatas[PlayerPrefs.GetInt("Alpaseh-SelectedLanguageIndex")];
+            return LocalizationDatas[PlayerPrefs.GetInt(PlayerPrefsKeys.SelectedLanguageIndex)];
         }
 
         public string GetLocalizationData(LanguageObject languageObject, string key)
         {
-            var languageData = JObject.Parse(languageFiles[PlayerPrefs.GetInt("Alpaseh-SelectedLanguageIndex")].text);
+            var languageData = JObject.Parse(languageFiles[PlayerPrefs.GetInt(PlayerPrefsKeys.SelectedLanguageIndex)].text);
 
             return languageData[languageObject.ToString()][key].ToObject<string>();
         }

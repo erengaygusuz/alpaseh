@@ -25,9 +25,9 @@ namespace FTRGames.Alpaseh.Services
 
         private void GetLanguageValues(IntroView introView)
         {
-            if (PlayerPrefs.HasKey("Alpaseh-SelectedLanguageIndex") == true)
+            if (PlayerPrefs.HasKey(PlayerPrefsKeys.SelectedLanguageIndex))
             {
-                introView.languageOptions.value = PlayerPrefs.GetInt("Alpaseh-SelectedLanguageIndex");
+                introView.languageOptions.value = PlayerPrefs.GetInt(PlayerPrefsKeys.SelectedLanguageIndex);
             }
             else
             {
@@ -60,8 +60,8 @@ namespace FTRGames.Alpaseh.Services
             }
             else
             {
-                PlayerPrefs.SetString("Alpaseh-Username", introView.username.text);
-                PlayerPrefs.SetString("Alpaseh-Language", introView.languageOptions.captionText.text);
+                PlayerPrefs.SetString(PlayerPrefsKeys.Username, introView.username.text);
+                PlayerPrefs.SetString(PlayerPrefsKeys.Language, introView.languageOptions.captionText.text);
                 sceneNavigationService.Load(SceneNames.MainMenu);
             }
         }
@@ -73,7 +73,7 @@ namespace FTRGames.Alpaseh.Services
 
         public void SaveLanguageOption(IntroView introView)
         {
-            PlayerPrefs.SetInt("Alpaseh-SelectedLanguageIndex", introView.languageOptions.value);
+            PlayerPrefs.SetInt(PlayerPrefsKeys.SelectedLanguageIndex, introView.languageOptions.value);
             PlayerPrefs.Save();
 
             for (int i = 0; i < localizationService.GetLanguageCount; i++)

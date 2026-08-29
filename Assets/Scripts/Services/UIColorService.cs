@@ -7,8 +7,6 @@ namespace FTRGames.Alpaseh.Services
 {
     public class UIColorService
     {
-        private const string SelectedColorSchemeIndexKey = "Alpaseh-SelectedColorSchemeIndex";
-
         private readonly List<ColorScheme> colorSchemes;
 
         public UIColorService()
@@ -49,7 +47,7 @@ namespace FTRGames.Alpaseh.Services
         public event Action ColorSchemeChanged;
 
         public int ActiveColorSchemeIndex => Mathf.Clamp(
-            PlayerPrefs.GetInt(SelectedColorSchemeIndexKey, 0),
+            PlayerPrefs.GetInt(PlayerPrefsKeys.SelectedColorSchemeIndex, 0),
             0,
             colorSchemes.Count - 1);
 
@@ -62,12 +60,12 @@ namespace FTRGames.Alpaseh.Services
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
 
-            if (PlayerPrefs.HasKey(SelectedColorSchemeIndexKey) && ActiveColorSchemeIndex == index)
+            if (PlayerPrefs.HasKey(PlayerPrefsKeys.SelectedColorSchemeIndex) && ActiveColorSchemeIndex == index)
             {
                 return;
             }
 
-            PlayerPrefs.SetInt(SelectedColorSchemeIndexKey, index);
+            PlayerPrefs.SetInt(PlayerPrefsKeys.SelectedColorSchemeIndex, index);
             PlayerPrefs.Save();
 
             ColorSchemeChanged?.Invoke();

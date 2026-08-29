@@ -7,10 +7,6 @@ namespace FTRGames.Alpaseh.Services
 {
     public class SettingsService
     {
-        private const string UsernameKey = "Alpaseh-Username";
-        private const string SelectedLanguageIndexKey = "Alpaseh-SelectedLanguageIndex";
-        private const string SelectedColorSchemeIndexKey = "Alpaseh-SelectedColorSchemeIndex";
-
         private readonly LocalizationService localizationService;
         private readonly AudioService audioService;
         private readonly UIColorService uiColorService;
@@ -38,12 +34,12 @@ namespace FTRGames.Alpaseh.Services
 
         public void GetUserNameValue(SettingsView settingsView)
         {
-            settingsView.usernameValue.text = PlayerPrefs.GetString(UsernameKey);
+            settingsView.usernameValue.text = PlayerPrefs.GetString(PlayerPrefsKeys.Username);
         }
 
         public void GetLanguageValues(SettingsView settingsView)
         {
-            settingsView.languageOptions.value = PlayerPrefs.GetInt(SelectedLanguageIndexKey, 0);
+            settingsView.languageOptions.value = PlayerPrefs.GetInt(PlayerPrefsKeys.SelectedLanguageIndex, 0);
         }
 
         public void FillLanguageDropdown(SettingsView settingsView)
@@ -85,7 +81,7 @@ namespace FTRGames.Alpaseh.Services
 
         public void SaveLanguageOption(SettingsView settingsView)
         {
-            PlayerPrefs.SetInt(SelectedLanguageIndexKey, settingsView.languageOptions.value);
+            PlayerPrefs.SetInt(PlayerPrefsKeys.SelectedLanguageIndex, settingsView.languageOptions.value);
             PlayerPrefs.Save();
 
             for (int i = 0; i < localizationService.GetLanguageCount; i++)
@@ -106,7 +102,7 @@ namespace FTRGames.Alpaseh.Services
 
         private void SaveUsernameValue(SettingsView settingsView)
         {
-            PlayerPrefs.SetString(UsernameKey, settingsView.usernameValue.text);
+            PlayerPrefs.SetString(PlayerPrefsKeys.Username, settingsView.usernameValue.text);
             PlayerPrefs.Save();
         }
 
@@ -141,7 +137,7 @@ namespace FTRGames.Alpaseh.Services
             }
 
             var activeIndex = Mathf.Clamp(
-                PlayerPrefs.GetInt(SelectedColorSchemeIndexKey, 0),
+                PlayerPrefs.GetInt(PlayerPrefsKeys.SelectedColorSchemeIndex, 0),
                 0,
                 settingsView.themesToggles.Length - 1);
 

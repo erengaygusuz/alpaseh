@@ -76,7 +76,7 @@ namespace FTRGames.Alpaseh.Services
             {
                 if (ScoreList.Count < 100)
                 {
-                    ScoreList.Add(new ScoreInfo { Username = PlayerPrefs.GetString("Alpaseh-Username", ""), Score = newScore });
+                    ScoreList.Add(new ScoreInfo { Username = PlayerPrefs.GetString(PlayerPrefsKeys.Username, ""), Score = newScore });
 
                     return true;
                 }
@@ -86,7 +86,7 @@ namespace FTRGames.Alpaseh.Services
                     if (ScoreList.Min.Score < newScore)
                     {
                         ScoreList.Remove(ScoreList.Min);
-                        ScoreList.Add(new ScoreInfo { Username = PlayerPrefs.GetString("Alpaseh-Username", ""), Score = newScore });
+                        ScoreList.Add(new ScoreInfo { Username = PlayerPrefs.GetString(PlayerPrefsKeys.Username, ""), Score = newScore });
 
                         return true;
                     }
