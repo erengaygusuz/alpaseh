@@ -1,12 +1,15 @@
-using FTRGames.Alpaseh.Views;
 using System.Collections.Generic;
+using FTRGames.Alpaseh.Views;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace FTRGames.Alpaseh.Services
 {
-    public class SettingsService
+    public sealed class SettingsService
     {
+        private static readonly Color32 ActiveTabColor = new Color32(219, 219, 219, 255);
+        private static readonly Color32 InactiveTabColor = new Color32(188, 188, 188, 255);
+
         private readonly LocalizationService localizationService;
         private readonly ResourceDataService resourceDataService;
         private readonly AudioService audioService;
@@ -51,34 +54,24 @@ namespace FTRGames.Alpaseh.Services
 
             for (int i = 0; i < localizationService.GetLanguageCount; i++)
             {
-                var option = new Dropdown.OptionData(
+                options.Add(new Dropdown.OptionData(
                     localizationService.GetLocalizationData().Language[i].Name,
-                    resourceDataService.GetLanguageFlag(i));
-
-                options.Add(option);
+                    resourceDataService.GetLanguageFlag(i)));
             }
 
             settingsView.languageOptions.ClearOptions();
             settingsView.languageOptions.AddOptions(options);
-
             GetLanguageValues(settingsView);
         }
 
         public void PersonalTabClick(SettingsView settingsView)
         {
-            settingsView.personalTab.GetComponent<Image>().color = new Color32(219, 219, 219, 255);
-            settingsView.generalTab.GetComponent<Image>().color = new Color32(188, 188, 188, 255);
-            settingsView.personalTabContent.SetActive(true);
-            settingsView.generalTabContent.SetActive(false);
+            SetTabState(settingsView, isPersonalTabActive: true);
         }
 
         public void GeneralTabClick(SettingsView settingsView)
         {
-            settingsView.personalTab.GetComponent<Image>().color = new Color32(188, 188, 188, 255);
-            settingsView.generalTab.GetComponent<Image>().color = new Color32(219, 219, 219, 255);
-            settingsView.personalTabContent.SetActive(false);
-            settingsView.generalTabContent.SetActive(true);
-
+            SetTabState(settingsView, isPersonalTabActive: false);
             ActivateSelectedThemeToggle(settingsView);
         }
 
@@ -87,13 +80,7 @@ namespace FTRGames.Alpaseh.Services
             PlayerPrefs.SetInt(PlayerPrefsKeys.SelectedLanguageIndex, settingsView.languageOptions.value);
             PlayerPrefs.Save();
 
-            for (int i = 0; i < localizationService.GetLanguageCount; i++)
-            {
-                settingsView.languageOptions.options[i].text = localizationService.GetLocalizationData().Language[i].Name;
-            }
-
-            settingsView.languageOptions.captionText.text = settingsView.languageOptions.options[settingsView.languageOptions.value].text;
-
+            RefreshLanguageOptionLabels(settingsView);
             localizationService.languageChangedEvent.Invoke();
         }
 
@@ -103,16 +90,40 @@ namespace FTRGames.Alpaseh.Services
             sceneNavigationService.Load(SceneNames.MainMenu);
         }
 
-        private void SaveUsernameValue(SettingsView settingsView)
-        {
-            PlayerPrefs.SetString(PlayerPrefsKeys.Username, settingsView.usernameValue.text);
-            PlayerPrefs.Save();
-        }
-
         public void SetAudioLevelValues(SettingsView settingsView)
         {
             audioService.SetVolumeAndSave(settingsView.audioLevelSlider.value);
             SetAudioLevelLabelValue(settingsView);
+        }
+
+        public void SetSelectedColorIndex(int index)
+        {
+            uiColorService.SelectColorScheme(index);
+        }
+
+        private static void SetTabState(SettingsView settingsView, bool isPersonalTabActive)
+        {
+            settingsView.personalTab.GetComponent<Image>().color = isPersonalTabActive ? ActiveTabColor : InactiveTabColor;
+            settingsView.generalTab.GetComponent<Image>().color = isPersonalTabActive ? InactiveTabColor : ActiveTabColor;
+            settingsView.personalTabContent.SetActive(isPersonalTabActive);
+            settingsView.generalTabContent.SetActive(!isPersonalTabActive);
+        }
+
+        private void RefreshLanguageOptionLabels(SettingsView settingsView)
+        {
+            for (int i = 0; i < localizationService.GetLanguageCount; i++)
+            {
+                settingsView.languageOptions.options[i].text = localizationService.GetLocalizationData().Language[i].Name;
+            }
+
+            settingsView.languageOptions.captionText.text =
+                settingsView.languageOptions.options[settingsView.languageOptions.value].text;
+        }
+
+        private static void SaveUsernameValue(SettingsView settingsView)
+        {
+            PlayerPrefs.SetString(PlayerPrefsKeys.Username, settingsView.usernameValue.text);
+            PlayerPrefs.Save();
         }
 
         private void SetAudioLevelLabelValue(SettingsView settingsView)
@@ -127,11 +138,6 @@ namespace FTRGames.Alpaseh.Services
             SetAudioLevelLabelValue(settingsView);
         }
 
-        public void SetSelectedColorIndex(int index)
-        {
-            uiColorService.SelectColorScheme(index);
-        }
-
         private void ActivateSelectedThemeToggle(SettingsView settingsView)
         {
             if (settingsView.themesToggles == null || settingsView.themesToggles.Length == 0)
@@ -139,7 +145,7 @@ namespace FTRGames.Alpaseh.Services
                 return;
             }
 
-            var activeIndex = Mathf.Clamp(
+            int activeIndex = Mathf.Clamp(
                 PlayerPrefs.GetInt(PlayerPrefsKeys.SelectedColorSchemeIndex, 0),
                 0,
                 settingsView.themesToggles.Length - 1);
