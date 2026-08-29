@@ -6,11 +6,11 @@ using UnityEngine.Events;
 
 namespace FTRGames.Alpaseh.Services
 {
-    public class LocalizationService
+    public sealed class LocalizationService
     {
         private readonly ResourceDataService resourceDataService;
         private readonly List<JObject> languageDataObjects = new List<JObject>();
-        private List<Localization> LocalizationDatas { get; } = new List<Localization>();
+        private readonly List<Localization> localizationDatas = new List<Localization>();
 
         public UnityEvent languageChangedEvent = new UnityEvent();
 
@@ -23,48 +23,14 @@ namespace FTRGames.Alpaseh.Services
 
         public void Initialize()
         {
-            LocalizationDatas.Clear();
+            localizationDatas.Clear();
             languageDataObjects.Clear();
             LoadAllLocalizationData();
         }
 
-        private void LoadAllLocalizationData()
-        {
-            for (int i = 0; i < resourceDataService.LanguageCount; i++)
-            {
-                JObject languageData = JObject.Parse(resourceDataService.GetLocalizationFile(i).text);
-                languageDataObjects.Add(languageData);
-                AddLocalizationData(languageData);
-            }
-        }
-
-        private void AddLocalizationData(JObject languageData)
-        {
-            var introLocal = languageData["Intro"].ToObject<Intro>();
-            var mainMenuLocal = languageData["MainMenu"].ToObject<MainMenu>();
-            var howToPlayLocal = languageData["HowToPlay"].ToObject<HowToPlay>();
-            var settingsLocal = languageData["Settings"].ToObject<Settings>();
-            var highScoresLocal = languageData["HighScores"].ToObject<HighScores>();
-            var creditsLocal = languageData["Credits"].ToObject<Credits>();
-            var gameLocal = languageData["Game"].ToObject<Game>();
-            var languageLocal = ((JArray)languageData["Language"]).ToObject<List<Language>>().ToArray();
-
-            LocalizationDatas.Add(new Localization
-            {
-                Intro = introLocal,
-                MainMenu = mainMenuLocal,
-                HowToPlay = howToPlayLocal,
-                Settings = settingsLocal,
-                HighScores = highScoresLocal,
-                Credits = creditsLocal,
-                Game = gameLocal,
-                Language = languageLocal
-            });
-        }
-
         public Localization GetLocalizationData()
         {
-            return LocalizationDatas[resourceDataService.SelectedLanguageIndex];
+            return localizationDatas[resourceDataService.SelectedLanguageIndex];
         }
 
         public string GetLocalizationData(LanguageObject languageObject, string key)
@@ -76,6 +42,31 @@ namespace FTRGames.Alpaseh.Services
         public List<string> GetLanguageFlagFileNames()
         {
             return new List<string>(resourceDataService.GetLanguageIds());
+        }
+
+        private void LoadAllLocalizationData()
+        {
+            for (int i = 0; i < resourceDataService.LanguageCount; i++)
+            {
+                JObject languageData = JObject.Parse(resourceDataService.GetLocalizationFile(i).text);
+                languageDataObjects.Add(languageData);
+                localizationDatas.Add(CreateLocalizationData(languageData));
+            }
+        }
+
+        private static Localization CreateLocalizationData(JObject languageData)
+        {
+            return new Localization
+            {
+                Intro = languageData["Intro"].ToObject<Intro>(),
+                MainMenu = languageData["MainMenu"].ToObject<MainMenu>(),
+                HowToPlay = languageData["HowToPlay"].ToObject<HowToPlay>(),
+                Settings = languageData["Settings"].ToObject<Settings>(),
+                HighScores = languageData["HighScores"].ToObject<HighScores>(),
+                Credits = languageData["Credits"].ToObject<Credits>(),
+                Game = languageData["Game"].ToObject<Game>(),
+                Language = ((JArray)languageData["Language"]).ToObject<List<Language>>().ToArray()
+            };
         }
     }
 }
