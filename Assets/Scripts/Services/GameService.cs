@@ -1,21 +1,17 @@
 ﻿using FTRGames.Alpaseh.Views;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 namespace FTRGames.Alpaseh.Services
 {
     public class GameService
     {
-        private const float TimeTickInterval = 1.0f;
-
         private readonly AudioService audioService;
         private readonly TweenService tweenService;
         private readonly ScoreService scoreService;
         private readonly SceneNavigationService sceneNavigationService;
         private readonly GameSessionService gameSessionService;
-
-        private float timeTickElapsed;
+        private readonly GameTimerService gameTimerService;
 
         public UnityEvent GameOver { get; set; }
         public UnityEvent GameCompleted { get; set; }
@@ -27,25 +23,26 @@ namespace FTRGames.Alpaseh.Services
             TweenService tweenService,
             ScoreService scoreService,
             SceneNavigationService sceneNavigationService,
-            GameSessionService gameSessionService)
+            GameSessionService gameSessionService,
+            GameTimerService gameTimerService)
         {
             this.audioService = audioService;
             this.tweenService = tweenService;
             this.scoreService = scoreService;
             this.sceneNavigationService = sceneNavigationService;
             this.gameSessionService = gameSessionService;
+            this.gameTimerService = gameTimerService;
         }
 
         public void Initialization(AudioView audioView, LevelService levelService, GameView gameView)
         {
             GameEventsInit();
             gameSessionService.Initialize();
+            gameTimerService.Initialize();
             InitGameUI(gameView, levelService);
 
             GetActiveQuestionText(levelService, gameView);
-
             PlayAmbienceSound(audioView);
-            timeTickElapsed = 0.0f;
         }
 
         #region Sound Functions
@@ -54,23 +51,6 @@ namespace FTRGames.Alpaseh.Services
         {
             audioService.StopAudio(audioView.loopAudioSource);
             audioService.PlayGameSceneAudio();
-        }
-
-        private void UpdateTimeTick(float deltaTime)
-        {
-            timeTickElapsed += deltaTime;
-
-            if (timeTickElapsed < TimeTickInterval)
-            {
-                return;
-            }
-
-            timeTickElapsed -= TimeTickInterval;
-
-            if (!gameSessionService.IsGameCompleted)
-            {
-                audioService.PlayTimeTickAudio();
-            }
         }
 
         #endregion
@@ -101,7 +81,6 @@ namespace FTRGames.Alpaseh.Services
         private void GetActiveQuestionText(LevelService levelService, GameView gameView)
         {
             int activeQuestionIndex = levelService.Levels[levelService.ActiveLevelIndex].ActiveQuestionIndex;
-
             string question = levelService.Levels[levelService.ActiveLevelIndex].WordList[activeQuestionIndex].ToString();
 
             gameView.questionText.text = TurkishCharacterToEnglish(question);
@@ -127,20 +106,15 @@ namespace FTRGames.Alpaseh.Services
 
         #region Tick Event Functions
 
-        public void GameCheck(GameView gameView, LevelService levelService)
+        public void GameCheck(GameView gameView)
         {
-            if (gameSessionService.CanTick)
-            {
-                gameSessionService.Tick(Time.deltaTime);
-                UpdateTimeTick(Time.deltaTime);
-            }
+            gameTimerService.Tick(Time.deltaTime);
 
             gameView.totalTimeText.text = Mathf.Round(gameSessionService.TotalTime).ToString();
 
             if (gameSessionService.ShouldGameOver && !gameSessionService.IsGameOver)
             {
                 gameSessionService.MarkGameOver();
-
                 GameOver.Invoke();
             }
         }
@@ -149,86 +123,6 @@ namespace FTRGames.Alpaseh.Services
 
         #region Event Binding Functions
 
-        public void Number0BtnClick(GameView gameView)
-        {
-            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
-            {
-                gameView.enteredNumberWordText.text += "0";
-            }
-        }
-
-        public void Number1BtnClick(GameView gameView)
-        {
-            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
-            {
-                gameView.enteredNumberWordText.text += "1";
-            }
-        }
-
-        public void Number2BtnClick(GameView gameView)
-        {
-            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
-            {
-                gameView.enteredNumberWordText.text += "2";
-            }
-        }
-
-        public void Number3BtnClick(GameView gameView)
-        {
-            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
-            {
-                gameView.enteredNumberWordText.text += "3";
-            }
-        }
-
-        public void Number4BtnClick(GameView gameView)
-        {
-            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
-            {
-                gameView.enteredNumberWordText.text += "4";
-            }
-        }
-
-        public void Number5BtnClick(GameView gameView)
-        {
-            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
-            {
-                gameView.enteredNumberWordText.text += "5";
-            }
-        }
-
-        public void Number6BtnClick(GameView gameView)
-        {
-            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
-            {
-                gameView.enteredNumberWordText.text += "6";
-            }
-        }
-
-        public void Number7BtnClick(GameView gameView)
-        {
-            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
-            {
-                gameView.enteredNumberWordText.text += "7";
-            }
-        }
-
-        public void Number8BtnClick(GameView gameView)
-        {
-            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
-            {
-                gameView.enteredNumberWordText.text += "8";
-            }
-        }
-
-        public void Number9BtnClick(GameView gameView)
-        {
-            if (gameView.enteredNumberWordText.text.Length < gameView.questionText.text.Length)
-            {
-                gameView.enteredNumberWordText.text += "6";
-            }
-        }
-
         public void ControlBtnClick(GameView gameView, LevelService levelService, WordNumberConverterService wordNumberConverterService)
         {
             bool isCorrectAnswer = levelService.Levels[levelService.ActiveLevelIndex].CheckEnteredNumberWord(
@@ -236,7 +130,6 @@ namespace FTRGames.Alpaseh.Services
                 wordNumberConverterService.GetNumbersFromWord(gameView.questionText.text));
 
             gameSessionService.Pause();
-
             audioService.StopTimeTickAudio();
 
             if (isCorrectAnswer)
@@ -251,17 +144,14 @@ namespace FTRGames.Alpaseh.Services
             int levelCount = levelService.Levels.Length;
             var lastLevel = levelService.Levels[levelCount - 1];
 
-            if (lastLevel.WordList.Count > 0)
+            if (lastLevel.WordList.Count > 0 && levelService.ActiveLevelIndex == levelCount - 1)
             {
-                if (levelService.ActiveLevelIndex == levelCount - 1)
-                {
-                    int lastLevelWordListLastItemIndex = lastLevel.WordList.Count - 1;
+                int lastLevelWordListLastItemIndex = lastLevel.WordList.Count - 1;
 
-                    if (lastLevel.ActiveQuestionIndex == lastLevelWordListLastItemIndex)
-                    {
-                        GameCompleted.Invoke();
-                        gameSessionService.MarkCompleted();
-                    }
+                if (lastLevel.ActiveQuestionIndex == lastLevelWordListLastItemIndex)
+                {
+                    GameCompleted.Invoke();
+                    gameSessionService.MarkCompleted();
                 }
             }
         }
@@ -271,16 +161,13 @@ namespace FTRGames.Alpaseh.Services
             int levelCount = levelService.Levels.Length;
             var lastLevel = levelService.Levels[levelCount - 1];
 
-            if (lastLevel.WordList.Count > 0)
+            if (lastLevel.WordList.Count > 0 && levelService.ActiveLevelIndex == levelCount - 1)
             {
-                if (levelService.ActiveLevelIndex == levelCount - 1)
-                {
-                    int lastLevelWordListLastItemIndex = lastLevel.WordList.Count - 1;
+                int lastLevelWordListLastItemIndex = lastLevel.WordList.Count - 1;
 
-                    if (lastLevel.ActiveQuestionIndex == lastLevelWordListLastItemIndex)
-                    {
-                        return;
-                    }
+                if (lastLevel.ActiveQuestionIndex == lastLevelWordListLastItemIndex)
+                {
+                    return;
                 }
             }
 
@@ -303,15 +190,6 @@ namespace FTRGames.Alpaseh.Services
         public void ContinueTheGame()
         {
             gameSessionService.Resume();
-        }
-
-        public void DeleteBtnClick(GameView gameView)
-        {
-            if (gameView.enteredNumberWordText.text != "")
-            {
-                gameView.enteredNumberWordText.text = gameView.enteredNumberWordText.text.Remove(
-                    gameView.enteredNumberWordText.text.Length - 1);
-            }
         }
 
         public void PlayAgainBtnClick()
