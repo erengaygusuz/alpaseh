@@ -19,6 +19,7 @@ namespace FTRGames.Alpaseh.LifeTimeScopes
             builder.Register<GameService>(Lifetime.Scoped);
             builder.Register<GameSessionService>(Lifetime.Scoped);
             builder.Register<GameInputService>(Lifetime.Scoped);
+            builder.Register<GameEventBindingService>(Lifetime.Scoped);
             builder.Register<GameTimerService>(Lifetime.Scoped);
             builder.Register<GameFlowService>(Lifetime.Scoped);
             builder.Register<GameUIService>(Lifetime.Scoped);
