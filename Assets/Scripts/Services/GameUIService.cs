@@ -50,7 +50,6 @@ namespace FTRGames.Alpaseh.Services
 
         public void ShowScoreInfoPrompt(GameView gameView)
         {
-            Time.timeScale = 0.0f;
             gameView.infoPanel.SetActive(true);
             gameView.infoPanel.transform.GetChild(0).gameObject.SetActive(true);
             gameView.infoPanel.transform.GetChild(1).gameObject.SetActive(false);
