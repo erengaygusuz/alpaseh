@@ -1,4 +1,4 @@
-﻿using FTRGames.Alpaseh.Views;
+using FTRGames.Alpaseh.Views;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,41 +8,35 @@ namespace FTRGames.Alpaseh.Services
     {
         private readonly AudioService audioService;
         private readonly TweenService tweenService;
-        private readonly ScoreService scoreService;
-        private readonly SceneNavigationService sceneNavigationService;
         private readonly GameSessionService gameSessionService;
         private readonly GameTimerService gameTimerService;
         private readonly QuestionService questionService;
         private readonly AnswerService answerService;
+        private readonly GameFlowService gameFlowService;
 
-        public UnityEvent GameOver { get; set; }
-        public UnityEvent GameCompleted { get; set; }
-
-        public bool IsGotoMainMenuBtnClick;
+        public UnityEvent GameOver => gameFlowService.GameOver;
+        public UnityEvent GameCompleted => gameFlowService.GameCompleted;
 
         public GameService(
             AudioService audioService,
             TweenService tweenService,
-            ScoreService scoreService,
-            SceneNavigationService sceneNavigationService,
             GameSessionService gameSessionService,
             GameTimerService gameTimerService,
             QuestionService questionService,
-            AnswerService answerService)
+            AnswerService answerService,
+            GameFlowService gameFlowService)
         {
             this.audioService = audioService;
             this.tweenService = tweenService;
-            this.scoreService = scoreService;
-            this.sceneNavigationService = sceneNavigationService;
             this.gameSessionService = gameSessionService;
             this.gameTimerService = gameTimerService;
             this.questionService = questionService;
             this.answerService = answerService;
+            this.gameFlowService = gameFlowService;
         }
 
         public void Initialization(AudioView audioView, LevelService levelService, GameView gameView)
         {
-            GameEventsInit();
             gameSessionService.Initialize();
             gameTimerService.Initialize();
             InitGameUI(gameView, levelService);
@@ -51,15 +45,11 @@ namespace FTRGames.Alpaseh.Services
             PlayAmbienceSound(audioView);
         }
 
-        #region Sound Functions
-
         private void PlayAmbienceSound(AudioView audioView)
         {
             audioService.StopAudio(audioView.loopAudioSource);
             audioService.PlayGameSceneAudio();
         }
-
-        #endregion
 
         private void InitGameUI(GameView gameView, LevelService levelService)
         {
@@ -71,37 +61,12 @@ namespace FTRGames.Alpaseh.Services
             gameView.activeLevelText.text = (levelService.ActiveLevelIndex + 1).ToString();
         }
 
-        private void GameEventsInit()
-        {
-            if (GameOver == null)
-            {
-                GameOver = new UnityEvent();
-            }
-
-            if (GameCompleted == null)
-            {
-                GameCompleted = new UnityEvent();
-            }
-        }
-
-        #region Tick Event Functions
-
         public void GameCheck(GameView gameView)
         {
             gameTimerService.Tick(Time.deltaTime);
-
             gameView.totalTimeText.text = Mathf.Round(gameSessionService.TotalTime).ToString();
-
-            if (gameSessionService.ShouldGameOver && !gameSessionService.IsGameOver)
-            {
-                gameSessionService.MarkGameOver();
-                GameOver.Invoke();
-            }
+            gameFlowService.CheckGameOver();
         }
-
-        #endregion
-
-        #region Event Binding Functions
 
         public void ControlBtnClick(GameView gameView, LevelService levelService)
         {
@@ -110,7 +75,7 @@ namespace FTRGames.Alpaseh.Services
                 gameView.enteredNumberWordText.text,
                 gameView.questionText.text);
 
-            gameSessionService.Pause();
+            gameFlowService.PauseForAnswer();
             audioService.StopTimeTickAudio();
 
             if (isCorrectAnswer)
@@ -122,16 +87,12 @@ namespace FTRGames.Alpaseh.Services
                 tweenService.PlayWrongAnswerAnim(gameView.enteredNumberWordText, gameView.checkButton);
             }
 
-            if (questionService.IsLastQuestion(levelService))
-            {
-                GameCompleted.Invoke();
-                gameSessionService.MarkCompleted();
-            }
+            gameFlowService.CompleteIfLastQuestion(levelService);
         }
 
         public void PrepareScreenForNextQuestion(GameView gameView, LevelService levelService)
         {
-            if (questionService.IsLastQuestion(levelService))
+            if (!gameFlowService.CanPrepareNextQuestion(levelService))
             {
                 return;
             }
@@ -154,28 +115,28 @@ namespace FTRGames.Alpaseh.Services
 
         public void ContinueTheGame()
         {
-            gameSessionService.Resume();
+            gameFlowService.ResumeGame();
         }
 
         public void PlayAgainBtnClick()
         {
-            sceneNavigationService.Load(SceneNames.Game);
+            gameFlowService.PlayAgain();
         }
 
         public void ExitGameBtnClick()
         {
-            Application.Quit();
+            gameFlowService.ExitGame();
         }
 
         public void GoToMainMenuBtnClick(GameView gameView)
         {
-            IsGotoMainMenuBtnClick = true;
+            gameFlowService.RequestMainMenu();
             ShowInfoPanelUI(gameView);
         }
 
         public void InfoPanelYesBtnClick(GameView gameView)
         {
-            scoreService.IsNewScoreAdded = true;
+            gameFlowService.AcceptScoreSave();
 
             gameView.infoPanel.transform.GetChild(0).gameObject.SetActive(false);
             gameView.infoPanel.transform.GetChild(1).gameObject.SetActive(true);
@@ -184,14 +145,7 @@ namespace FTRGames.Alpaseh.Services
         public void InfoPanelNoBtnClick(GameView gameView)
         {
             gameView.infoPanel.SetActive(false);
-
-            if (IsGotoMainMenuBtnClick)
-            {
-                Time.timeScale = 1;
-                IsGotoMainMenuBtnClick = false;
-
-                sceneNavigationService.Load(SceneNames.MainMenu);
-            }
+            gameFlowService.TryGoToMainMenu();
         }
 
         public void InfoPanelOkBtnClick(GameView gameView)
@@ -200,13 +154,7 @@ namespace FTRGames.Alpaseh.Services
             gameView.infoPanel.transform.GetChild(1).gameObject.SetActive(false);
             gameView.infoPanel.SetActive(false);
 
-            if (IsGotoMainMenuBtnClick)
-            {
-                Time.timeScale = 1;
-                IsGotoMainMenuBtnClick = false;
-
-                sceneNavigationService.Load(SceneNames.MainMenu);
-            }
+            gameFlowService.TryGoToMainMenu();
         }
 
         public void EarnScoreTextEffect(GameView gameView, LevelService levelService)
@@ -266,21 +214,17 @@ namespace FTRGames.Alpaseh.Services
 
         public void ShowInfoPanelUI(GameView gameView)
         {
-            if (scoreService.CompareNewScoreWithScoresInTheList(gameSessionService.TotalScore))
+            if (gameFlowService.ShouldShowScoreInfoPanel())
             {
-                Time.timeScale = 0;
+                Time.timeScale = 0.0f;
 
                 gameView.infoPanel.SetActive(true);
                 gameView.infoPanel.transform.GetChild(0).gameObject.SetActive(true);
                 gameView.infoPanel.transform.GetChild(1).gameObject.SetActive(false);
+                return;
             }
-            else if (IsGotoMainMenuBtnClick)
-            {
-                Time.timeScale = 1;
-                IsGotoMainMenuBtnClick = false;
 
-                sceneNavigationService.Load(SceneNames.MainMenu);
-            }
+            gameFlowService.TryGoToMainMenu();
         }
 
         public void ShowGameOverPanel(GameView gameView)
@@ -307,7 +251,5 @@ namespace FTRGames.Alpaseh.Services
         {
             audioService.PlayGameCompletedAudio();
         }
-
-        #endregion
     }
 }
