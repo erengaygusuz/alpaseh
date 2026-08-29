@@ -12,19 +12,12 @@ namespace FTRGames.Alpaseh.Services
 
         public bool IsLastQuestion(LevelService levelService)
         {
-            if (levelService.Levels == null || levelService.Levels.Length == 0)
+            if (levelService.LevelCount == 0 || !levelService.IsLastLevel)
             {
                 return false;
             }
 
-            int lastLevelIndex = levelService.Levels.Length - 1;
-
-            if (levelService.ActiveLevelIndex != lastLevelIndex)
-            {
-                return false;
-            }
-
-            var lastLevel = levelService.Levels[lastLevelIndex];
+            var lastLevel = levelService.GetActiveLevel();
 
             if (lastLevel.WordList == null || lastLevel.WordList.Count == 0)
             {

@@ -38,7 +38,7 @@ namespace FTRGames.Alpaseh.Services
             gameView.scoreIncDecObj.SetActive(true);
             tweenService.TweenText(
                 gameView.scoreIncDecObj,
-                levelService.Levels[levelService.ActiveLevelIndex].EarnedScoreAmount.ToString(),
+                levelService.GetActiveLevel().EarnedScoreAmount.ToString(),
                 Color.green,
                 true,
                 gameView.checkButton);
@@ -49,7 +49,7 @@ namespace FTRGames.Alpaseh.Services
             gameView.timeIncDecObj.SetActive(true);
             tweenService.TweenText(
                 gameView.timeIncDecObj,
-                levelService.Levels[levelService.ActiveLevelIndex].EarnedTimeAmount.ToString(),
+                levelService.GetActiveLevel().EarnedTimeAmount.ToString(),
                 Color.green,
                 true,
                 gameView.checkButton);
@@ -60,7 +60,7 @@ namespace FTRGames.Alpaseh.Services
             gameView.lifeIncDecObj.SetActive(true);
             tweenService.TweenText(
                 gameView.lifeIncDecObj,
-                levelService.Levels[levelService.ActiveLevelIndex].LifeIncreaseAmount.ToString(),
+                levelService.GetActiveLevel().LifeIncreaseAmount.ToString(),
                 Color.green,
                 true,
                 gameView.checkButton);
@@ -71,7 +71,7 @@ namespace FTRGames.Alpaseh.Services
             gameView.timeIncDecObj.SetActive(true);
             tweenService.TweenText(
                 gameView.timeIncDecObj,
-                levelService.Levels[levelService.ActiveLevelIndex].LoseTimeAmount.ToString(),
+                levelService.GetActiveLevel().LoseTimeAmount.ToString(),
                 Color.red,
                 false,
                 gameView.checkButton);
@@ -82,7 +82,7 @@ namespace FTRGames.Alpaseh.Services
             gameView.lifeIncDecObj.SetActive(true);
             tweenService.TweenText(
                 gameView.lifeIncDecObj,
-                levelService.Levels[levelService.ActiveLevelIndex].LoseLifeAmount.ToString(),
+                levelService.GetActiveLevel().LoseLifeAmount.ToString(),
                 Color.red,
                 false,
                 gameView.checkButton);
