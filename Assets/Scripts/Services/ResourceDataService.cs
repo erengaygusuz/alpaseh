@@ -73,6 +73,26 @@ namespace FTRGames.Alpaseh.Services
             return language.AllowedLetters;
         }
 
+        public string GetQuestionNormalizationSourceCharacters(int languageIndex)
+        {
+            return GetLanguage(languageIndex).QuestionNormalizationSourceCharacters ?? string.Empty;
+        }
+
+        public string GetQuestionNormalizationTargetCharacters(int languageIndex)
+        {
+            LanguageCatalogEntry language = GetLanguage(languageIndex);
+            string sourceCharacters = language.QuestionNormalizationSourceCharacters ?? string.Empty;
+            string targetCharacters = language.QuestionNormalizationTargetCharacters ?? string.Empty;
+
+            if (sourceCharacters.Length != targetCharacters.Length)
+            {
+                throw new InvalidOperationException(
+                    $"Language '{language.Id}' question normalization source and target character counts do not match.");
+            }
+
+            return targetCharacters;
+        }
+
         private LanguageCatalogEntry GetLanguage(int languageIndex)
         {
             return languageCatalog.GetLanguage(NormalizeLanguageIndex(languageIndex));
