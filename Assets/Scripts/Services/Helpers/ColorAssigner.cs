@@ -1,4 +1,5 @@
-﻿using FTRGames.Alpaseh.Enums;
+using FTRGames.Alpaseh.Enums;
+using FTRGames.Alpaseh.Models;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -19,6 +20,7 @@ namespace FTRGames.Alpaseh.Services
 
         private void Start()
         {
+            EnsureColorService();
             uiColorService.ColorSchemeChanged += AssignObject;
             AssignObject();
         }
@@ -31,26 +33,59 @@ namespace FTRGames.Alpaseh.Services
             }
         }
 
+        private void EnsureColorService()
+        {
+            if (uiColorService != null)
+            {
+                return;
+            }
+
+            // Some scene/prefab UI objects can run before VContainer injects this helper.
+            // The service is stateless apart from PlayerPrefs, so a local fallback safely
+            // preserves the active theme color and prevents high-score UI crashes.
+            uiColorService = new UIColorService();
+        }
+
         private void AssignObject()
         {
+            EnsureColorService();
+
+            ColorScheme colorScheme = uiColorService.GetActiveColorScheme;
+
             switch (SelectedObjectType)
             {
                 case ObjectType.BAR:
-                    GetComponent<Image>().color = uiColorService.GetActiveColorScheme.BarBackgroundColor;
+                    AssignImageColor(colorScheme.BarBackgroundColor);
                     break;
 
                 case ObjectType.TEXT:
-                    GetComponent<Text>().color = uiColorService.GetActiveColorScheme.TextColor;
+                    AssignTextColor(colorScheme.TextColor);
                     break;
 
                 case ObjectType.CONTENT:
-                    GetComponent<Image>().color = uiColorService.GetActiveColorScheme.ContentBackgroundColor;
+                    AssignImageColor(colorScheme.ContentBackgroundColor);
                     break;
 
                 case ObjectType.BUTTON:
                 default:
-                    GetComponent<Image>().color = uiColorService.GetActiveColorScheme.ButtonBackgroundColor;
+                    AssignImageColor(colorScheme.ButtonBackgroundColor);
                     break;
+            }
+        }
+
+        private void AssignImageColor(Color color)
+        {
+            if (TryGetComponent(out Image image))
+            {
+                image.color = color;
+            }
+        }
+
+        private void AssignTextColor(Color color)
+        {
+            if (TryGetComponent(out Text text))
+            {
+                text.color = color;
             }
         }
     }
