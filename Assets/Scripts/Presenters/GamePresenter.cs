@@ -10,27 +10,31 @@ namespace FTRGames.Alpaseh.Presenters
         private readonly AudioView audioView;
         private readonly GameService gameService;
         private readonly GameInputService gameInputService;
+        private readonly GameUIService gameUIService;
+        private readonly GameFeedbackService gameFeedbackService;
         private readonly AnswerService answerService;
         private readonly ScoreService scoreService;
         private readonly LevelService levelService;
         private readonly WordParserService wordParserService;
-        private readonly TweenService tweenService;
         private readonly AudioService audioService;
 
         public GamePresenter(
             GameService gameService,
             GameInputService gameInputService,
+            GameUIService gameUIService,
+            GameFeedbackService gameFeedbackService,
             AnswerService answerService,
             ScoreService scoreService,
             GameView gameView,
             AudioView audioView,
             LevelService levelService,
             WordParserService wordParserService,
-            TweenService tweenService,
             AudioService audioService)
         {
             this.gameService = gameService;
             this.gameInputService = gameInputService;
+            this.gameUIService = gameUIService;
+            this.gameFeedbackService = gameFeedbackService;
             this.answerService = answerService;
             this.scoreService = scoreService;
             this.gameView = gameView;
@@ -38,7 +42,6 @@ namespace FTRGames.Alpaseh.Presenters
             this.levelService = levelService;
             this.wordParserService = wordParserService;
             this.audioService = audioService;
-            this.tweenService = tweenService;
         }
 
         void IStartable.Start()
@@ -47,7 +50,7 @@ namespace FTRGames.Alpaseh.Presenters
             wordParserService.Initialization();
             answerService.Initialization();
             levelService.Initialization();
-            tweenService.Initialization();
+            gameFeedbackService.Initialization();
 
             gameService.Initialization(audioView, levelService, gameView);
 
@@ -88,28 +91,28 @@ namespace FTRGames.Alpaseh.Presenters
             gameInputService.DeletePressed.AddListener(() => gameInputService.Delete(gameView));
             gameInputService.SubmitPressed.AddListener(() => gameService.ControlBtnClick(gameView, levelService));
 
-            levelService.EarnScore.AddListener(() => gameService.EarnScoreTextEffect(gameView, levelService));
-            levelService.EarnTime.AddListener(() => gameService.EarnTimeTextEffect(gameView, levelService));
-            levelService.LooseLife.AddListener(() => gameService.LooseLifeTextEffect(gameView, levelService));
-            levelService.LooseTime.AddListener(() => gameService.LooseTimeTextEffect(gameView, levelService));
-            levelService.EarnLife.AddListener(() => gameService.EarnLifeTextEffect(gameView, levelService));
+            levelService.EarnScore.AddListener(() => gameFeedbackService.ShowEarnScore(gameView, levelService));
+            levelService.EarnTime.AddListener(() => gameFeedbackService.ShowEarnTime(gameView, levelService));
+            levelService.LooseLife.AddListener(() => gameFeedbackService.ShowLoseLife(gameView, levelService));
+            levelService.LooseTime.AddListener(() => gameFeedbackService.ShowLoseTime(gameView, levelService));
+            levelService.EarnLife.AddListener(() => gameFeedbackService.ShowEarnLife(gameView, levelService));
 
-            gameService.GameOver.AddListener(() => gameService.ShowGameOverPanel(gameView));
+            gameService.GameOver.AddListener(() => gameUIService.ShowGameOverPanel(gameView));
             gameService.GameOver.AddListener(() => gameService.StopGameLoopAudio(audioView));
             gameService.GameOver.AddListener(() => audioService.StopTimeTickAudio());
             gameService.GameOver.AddListener(() => gameService.PlayGameOverAudio());
 
-            gameService.GameCompleted.AddListener(() => gameService.ShowGameCompletedPanel(gameView));
+            gameService.GameCompleted.AddListener(() => gameUIService.ShowGameCompletedPanel(gameView));
             gameService.GameCompleted.AddListener(() => gameService.StopGameLoopAudio(audioView));
             gameService.GameCompleted.AddListener(() => audioService.StopTimeTickAudio());
             gameService.GameCompleted.AddListener(() => gameService.PlayGameCompletedAudio());
 
-            tweenService.playCorrectAnswerAnimEvent.AddListener(() => audioService.PlayCorrectAnswerAudio());
-            tweenService.playCorrectAnswerAnimEvent.AddListener(() => gameService.PrepareScreenForNextQuestion(gameView, levelService));
+            gameFeedbackService.CorrectAnswerCompleted.AddListener(() => audioService.PlayCorrectAnswerAudio());
+            gameFeedbackService.CorrectAnswerCompleted.AddListener(() => gameService.PrepareScreenForNextQuestion(gameView, levelService));
 
-            tweenService.playWrongAnswerAnimEvent.AddListener(() => audioService.PlayWrongAnswerAudio());
-            tweenService.playWrongAnswerAnimEvent.AddListener(() => gameService.PrepareScreenForNextQuestion(gameView, levelService));
-            tweenService.tweenTextEvent.AddListener(() => gameService.ContinueTheGame());
+            gameFeedbackService.WrongAnswerCompleted.AddListener(() => audioService.PlayWrongAnswerAudio());
+            gameFeedbackService.WrongAnswerCompleted.AddListener(() => gameService.PrepareScreenForNextQuestion(gameView, levelService));
+            gameFeedbackService.FeedbackCompleted.AddListener(() => gameService.ContinueTheGame());
         }
     }
 }
