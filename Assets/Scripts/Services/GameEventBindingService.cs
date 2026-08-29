@@ -78,14 +78,14 @@ namespace FTRGames.Alpaseh.Services
         private void BindGameFlow(GameView gameView, AudioView audioView)
         {
             gameService.GameOver.AddListener(() => gameUIService.ShowGameOverPanel(gameView));
-            gameService.GameOver.AddListener(() => gameService.StopGameLoopAudio(audioView));
+            gameService.GameOver.AddListener(() => audioService.StopAudio(audioView.loopAudioSource));
             gameService.GameOver.AddListener(() => audioService.StopTimeTickAudio());
-            gameService.GameOver.AddListener(() => gameService.PlayGameOverAudio());
+            gameService.GameOver.AddListener(() => audioService.PlayGameOverAudio());
 
             gameService.GameCompleted.AddListener(() => gameUIService.ShowGameCompletedPanel(gameView));
-            gameService.GameCompleted.AddListener(() => gameService.StopGameLoopAudio(audioView));
+            gameService.GameCompleted.AddListener(() => audioService.StopAudio(audioView.loopAudioSource));
             gameService.GameCompleted.AddListener(() => audioService.StopTimeTickAudio());
-            gameService.GameCompleted.AddListener(() => gameService.PlayGameCompletedAudio());
+            gameService.GameCompleted.AddListener(() => audioService.PlayGameCompletedAudio());
         }
 
         private void BindFeedbackCompletion(GameView gameView, LevelService levelService)

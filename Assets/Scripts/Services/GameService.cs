@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 namespace FTRGames.Alpaseh.Services
 {
-    public class GameService
+    public sealed class GameService
     {
         private readonly AudioService audioService;
         private readonly GameSessionService gameSessionService;
@@ -112,21 +112,6 @@ namespace FTRGames.Alpaseh.Services
         {
             gameUIService.ResetAndHideInfoPanel(gameView);
             gameFlowService.TryGoToMainMenu();
-        }
-
-        public void StopGameLoopAudio(AudioView audioView)
-        {
-            audioService.StopAudio(audioView.loopAudioSource);
-        }
-
-        public void PlayGameOverAudio()
-        {
-            audioService.PlayGameOverAudio();
-        }
-
-        public void PlayGameCompletedAudio()
-        {
-            audioService.PlayGameCompletedAudio();
         }
 
         private void PlayAmbienceSound(AudioView audioView)
