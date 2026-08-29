@@ -84,11 +84,39 @@ namespace FTRGames.Alpaseh.Services
             string sourceCharacters = language.QuestionNormalizationSourceCharacters ?? string.Empty;
             string targetCharacters = language.QuestionNormalizationTargetCharacters ?? string.Empty;
 
-            if (sourceCharacters.Length != targetCharacters.Length)
+            ValidateCharacterMappingLength(
+                language.Id,
+                "question normalization",
+                sourceCharacters,
+                targetCharacters);
+
+            return targetCharacters;
+        }
+
+        public string GetWordNumberSourceCharacters(int languageIndex)
+        {
+            LanguageCatalogEntry language = GetLanguage(languageIndex);
+
+            if (string.IsNullOrWhiteSpace(language.WordNumberSourceCharacters))
             {
                 throw new InvalidOperationException(
-                    $"Language '{language.Id}' question normalization source and target character counts do not match.");
+                    $"Language '{language.Id}' is missing its word number source characters in the language catalog.");
             }
+
+            return language.WordNumberSourceCharacters;
+        }
+
+        public string GetWordNumberTargetCharacters(int languageIndex)
+        {
+            LanguageCatalogEntry language = GetLanguage(languageIndex);
+            string sourceCharacters = language.WordNumberSourceCharacters ?? string.Empty;
+            string targetCharacters = language.WordNumberTargetCharacters ?? string.Empty;
+
+            ValidateCharacterMappingLength(
+                language.Id,
+                "word number",
+                sourceCharacters,
+                targetCharacters);
 
             return targetCharacters;
         }
@@ -119,6 +147,21 @@ namespace FTRGames.Alpaseh.Services
             }
 
             return asset;
+        }
+
+        private static void ValidateCharacterMappingLength(
+            string languageId,
+            string mappingName,
+            string sourceCharacters,
+            string targetCharacters)
+        {
+            if (sourceCharacters.Length == targetCharacters.Length)
+            {
+                return;
+            }
+
+            throw new InvalidOperationException(
+                $"Language '{languageId}' {mappingName} source and target character counts do not match.");
         }
     }
 }
