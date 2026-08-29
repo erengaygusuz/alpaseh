@@ -1,18 +1,18 @@
-﻿using UnityEngine;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using FTRGames.Alpaseh.Models.LocalizationData;
-using UnityEngine.Events;
 using FTRGames.Alpaseh.Enums;
+using FTRGames.Alpaseh.Models.LocalizationData;
+using Newtonsoft.Json.Linq;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace FTRGames.Alpaseh.Services
 {
     public class LocalizationService
     {
-        private TextAsset[] languageFiles;
-        private List<Localization> LocalizationDatas { get; set; }
+        private TextAsset[] languageFiles = new TextAsset[0];
+        private List<Localization> LocalizationDatas { get; } = new List<Localization>();
 
-        public UnityEvent languageChangedEvent;
+        public UnityEvent languageChangedEvent = new UnityEvent();
 
         public int GetLanguageCount
         {
@@ -22,29 +22,23 @@ namespace FTRGames.Alpaseh.Services
             }
         }
 
-        public void Initialization()
+        public void Initialize()
         {
-            LocalizationDataInit();
-            GetAllLocalizationDatas();
+            LocalizationDatas.Clear();
+            LoadAllLocalizationData();
         }
 
-        private void LocalizationDataInit()
-        {
-            LocalizationDatas = new List<Localization>();
-            languageChangedEvent = new UnityEvent();
-        }
-
-        private void GetAllLocalizationDatas()
+        private void LoadAllLocalizationData()
         {
             languageFiles = Resources.LoadAll<TextAsset>("Language/");
 
-            for (int i = 0; i < languageFiles.Length; i++)
+            for (var i = 0; i < languageFiles.Length; i++)
             {
-                SetLocalizationData(i);
+                AddLocalizationData(i);
             }
         }
 
-        private void SetLocalizationData(int selectedLanguageIndex)
+        private void AddLocalizationData(int selectedLanguageIndex)
         {
             var languageData = JObject.Parse(languageFiles[selectedLanguageIndex].text);
 
@@ -57,7 +51,8 @@ namespace FTRGames.Alpaseh.Services
             var gameLocal = languageData["Game"].ToObject<Game>();
             var languageLocal = ((JArray)languageData["Language"]).ToObject<List<Language>>().ToArray();
 
-            LocalizationDatas.Add(new Localization { 
+            LocalizationDatas.Add(new Localization
+            {
                 Intro = introLocal,
                 MainMenu = mainMenuLocal,
                 HowToPlay = howToPlayLocal,
@@ -83,14 +78,14 @@ namespace FTRGames.Alpaseh.Services
 
         public List<string> GetLanguageFlagFileNames()
         {
-            List<string> tempList = new List<string>();
+            var fileNames = new List<string>();
 
-            for (int i = 0; i < languageFiles.Length; i++)
+            for (var i = 0; i < languageFiles.Length; i++)
             {
-                tempList.Add(languageFiles[i].name);
+                fileNames.Add(languageFiles[i].name);
             }
 
-            return tempList;
+            return fileNames;
         }
     }
 }
