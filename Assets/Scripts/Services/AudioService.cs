@@ -14,9 +14,13 @@ namespace FTRGames.Alpaseh.Services
             this.audioView = audioView;
         }
 
+        public float Volume => audioView.loopAudioSource.volume;
+
+        public float SavedVolume => PlayerPrefs.GetFloat(AudioLevelKey, 1.0f);
+
         public void Initialize()
         {
-            var volume = PlayerPrefs.GetFloat(AudioLevelKey, 1.0f);
+            var volume = SavedVolume;
 
             if (!PlayerPrefs.HasKey(AudioLevelKey))
             {
@@ -36,6 +40,14 @@ namespace FTRGames.Alpaseh.Services
             audioView.timeTickAudioSource.volume = clampedVolume;
             audioView.gameOverAudioSource.volume = clampedVolume;
             audioView.gameCompletedAudioSource.volume = clampedVolume;
+        }
+
+        public void SetVolumeAndSave(float volume)
+        {
+            SetVolume(volume);
+
+            PlayerPrefs.SetFloat(AudioLevelKey, Volume);
+            PlayerPrefs.Save();
         }
 
         private void PlayAudio(AudioSource audioSource, AudioClip clip)
