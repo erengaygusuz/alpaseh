@@ -1,38 +1,30 @@
-﻿using FTRGames.Alpaseh.Models;
-using UnityEngine;
+using FTRGames.Alpaseh.Models;
 
 namespace FTRGames.Alpaseh.Services
 {
     public class WordParserService
     {
-        private TextAsset[] wordText;
+        private readonly ResourceDataService resourceDataService;
+
         private char[] IdentifiedLetters { get; set; }
         public WordData WordDatas { get; set; }
 
-        public void Initialization()
+        public WordParserService(ResourceDataService resourceDataService)
         {
-            LetterIdentification();
-            ProcessData();
+            this.resourceDataService = resourceDataService;
         }
 
-        private void LetterIdentification()
+        public void Initialization()
         {
-            if (PlayerPrefs.GetInt("Alpaseh-SelectedLanguageIndex", 0) == 0)
-            {
-                IdentifiedLetters = new char[]
-                {
-                    'o', 'O',
-                    'e', 'E',
-                    'z', 'Z',
-                    's', 'S',
-                    'g', 'G',
-                    'b', 'B',
-                    'l', 'L',
-                    'h', 'H'
-                };
-            }
+            int selectedLanguageIndex = resourceDataService.SelectedLanguageIndex;
 
-            else
+            LetterIdentification(resourceDataService.GetLanguageId(selectedLanguageIndex));
+            ProcessData(selectedLanguageIndex);
+        }
+
+        private void LetterIdentification(string languageId)
+        {
+            if (languageId == ResourceDataService.TurkishLanguageId)
             {
                 IdentifiedLetters = new char[]
                 {
@@ -46,13 +38,28 @@ namespace FTRGames.Alpaseh.Services
                     'l', 'L',
                     'h', 'H'
                 };
+
+                return;
             }
+
+            IdentifiedLetters = new char[]
+            {
+                'o', 'O',
+                'e', 'E',
+                'z', 'Z',
+                's', 'S',
+                'g', 'G',
+                'b', 'B',
+                'l', 'L',
+                'h', 'H'
+            };
         }
 
-        private void ProcessData()
+        private void ProcessData(int selectedLanguageIndex)
         {
-            wordText = Resources.LoadAll<TextAsset>("WordList/");
-            WordDatas = new WordData(wordText[PlayerPrefs.GetInt("Alpaseh-SelectedLanguageIndex", 0)].text, IdentifiedLetters);
+            WordDatas = new WordData(
+                resourceDataService.GetWordListFile(selectedLanguageIndex).text,
+                IdentifiedLetters);
         }
     }
 }

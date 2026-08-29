@@ -8,13 +8,16 @@ namespace FTRGames.Alpaseh.Services
     public class IntroService
     {
         private readonly LocalizationService localizationService;
+        private readonly ResourceDataService resourceDataService;
         private readonly SceneNavigationService sceneNavigationService;
 
         public IntroService(
             LocalizationService localizationService,
+            ResourceDataService resourceDataService,
             SceneNavigationService sceneNavigationService)
         {
             this.localizationService = localizationService;
+            this.resourceDataService = resourceDataService;
             this.sceneNavigationService = sceneNavigationService;
         }
 
@@ -25,29 +28,24 @@ namespace FTRGames.Alpaseh.Services
 
         private void GetLanguageValues(IntroView introView)
         {
-            if (PlayerPrefs.HasKey(PlayerPrefsKeys.SelectedLanguageIndex))
-            {
-                introView.languageOptions.value = PlayerPrefs.GetInt(PlayerPrefsKeys.SelectedLanguageIndex);
-            }
-            else
-            {
-                introView.languageOptions.value = 0;
-            }
+            introView.languageOptions.value = resourceDataService.SelectedLanguageIndex;
         }
 
         private void FillLanguageDropdown(IntroView introView)
         {
-            List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
+            var options = new List<Dropdown.OptionData>();
 
             for (int i = 0; i < localizationService.GetLanguageCount; i++)
             {
-                Dropdown.OptionData option = new Dropdown.OptionData(
+                var option = new Dropdown.OptionData(
                     localizationService.GetLocalizationData().Language[i].Name,
-                    Resources.Load<Sprite>("Flags/" + localizationService.GetLanguageFlagFileNames()[i]));
-                list.Add(option);
+                    resourceDataService.GetLanguageFlag(i));
+
+                options.Add(option);
             }
 
-            introView.languageOptions.AddOptions(list);
+            introView.languageOptions.ClearOptions();
+            introView.languageOptions.AddOptions(options);
 
             GetLanguageValues(introView);
         }

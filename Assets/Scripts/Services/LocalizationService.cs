@@ -2,46 +2,44 @@ using System.Collections.Generic;
 using FTRGames.Alpaseh.Enums;
 using FTRGames.Alpaseh.Models.LocalizationData;
 using Newtonsoft.Json.Linq;
-using UnityEngine;
 using UnityEngine.Events;
 
 namespace FTRGames.Alpaseh.Services
 {
     public class LocalizationService
     {
-        private TextAsset[] languageFiles = new TextAsset[0];
+        private readonly ResourceDataService resourceDataService;
+        private readonly List<JObject> languageDataObjects = new List<JObject>();
         private List<Localization> LocalizationDatas { get; } = new List<Localization>();
 
         public UnityEvent languageChangedEvent = new UnityEvent();
 
-        public int GetLanguageCount
+        public LocalizationService(ResourceDataService resourceDataService)
         {
-            get
-            {
-                return languageFiles.Length;
-            }
+            this.resourceDataService = resourceDataService;
         }
+
+        public int GetLanguageCount => resourceDataService.LanguageCount;
 
         public void Initialize()
         {
             LocalizationDatas.Clear();
+            languageDataObjects.Clear();
             LoadAllLocalizationData();
         }
 
         private void LoadAllLocalizationData()
         {
-            languageFiles = Resources.LoadAll<TextAsset>("Language/");
-
-            for (var i = 0; i < languageFiles.Length; i++)
+            for (int i = 0; i < resourceDataService.LanguageCount; i++)
             {
-                AddLocalizationData(i);
+                JObject languageData = JObject.Parse(resourceDataService.GetLocalizationFile(i).text);
+                languageDataObjects.Add(languageData);
+                AddLocalizationData(languageData);
             }
         }
 
-        private void AddLocalizationData(int selectedLanguageIndex)
+        private void AddLocalizationData(JObject languageData)
         {
-            var languageData = JObject.Parse(languageFiles[selectedLanguageIndex].text);
-
             var introLocal = languageData["Intro"].ToObject<Intro>();
             var mainMenuLocal = languageData["MainMenu"].ToObject<MainMenu>();
             var howToPlayLocal = languageData["HowToPlay"].ToObject<HowToPlay>();
@@ -66,26 +64,18 @@ namespace FTRGames.Alpaseh.Services
 
         public Localization GetLocalizationData()
         {
-            return LocalizationDatas[PlayerPrefs.GetInt(PlayerPrefsKeys.SelectedLanguageIndex)];
+            return LocalizationDatas[resourceDataService.SelectedLanguageIndex];
         }
 
         public string GetLocalizationData(LanguageObject languageObject, string key)
         {
-            var languageData = JObject.Parse(languageFiles[PlayerPrefs.GetInt(PlayerPrefsKeys.SelectedLanguageIndex)].text);
-
+            JObject languageData = languageDataObjects[resourceDataService.SelectedLanguageIndex];
             return languageData[languageObject.ToString()][key].ToObject<string>();
         }
 
         public List<string> GetLanguageFlagFileNames()
         {
-            var fileNames = new List<string>();
-
-            for (var i = 0; i < languageFiles.Length; i++)
-            {
-                fileNames.Add(languageFiles[i].name);
-            }
-
-            return fileNames;
+            return new List<string>(resourceDataService.GetLanguageIds());
         }
     }
 }

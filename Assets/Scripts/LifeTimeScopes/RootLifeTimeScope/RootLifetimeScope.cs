@@ -13,6 +13,7 @@ namespace FTRGames.Alpaseh.LifeTimeScopes
 
         protected override void Configure(IContainerBuilder builder)
         {
+            builder.Register<ResourceDataService>(Lifetime.Singleton);
             builder.Register<LocalizationService>(Lifetime.Singleton);
             builder.Register<AudioService>(Lifetime.Singleton);
             builder.Register<UIColorService>(Lifetime.Singleton);

@@ -8,17 +8,20 @@ namespace FTRGames.Alpaseh.Services
     public class SettingsService
     {
         private readonly LocalizationService localizationService;
+        private readonly ResourceDataService resourceDataService;
         private readonly AudioService audioService;
         private readonly UIColorService uiColorService;
         private readonly SceneNavigationService sceneNavigationService;
 
         public SettingsService(
             LocalizationService localizationService,
+            ResourceDataService resourceDataService,
             AudioService audioService,
             UIColorService uiColorService,
             SceneNavigationService sceneNavigationService)
         {
             this.localizationService = localizationService;
+            this.resourceDataService = resourceDataService;
             this.audioService = audioService;
             this.uiColorService = uiColorService;
             this.sceneNavigationService = sceneNavigationService;
@@ -39,7 +42,7 @@ namespace FTRGames.Alpaseh.Services
 
         public void GetLanguageValues(SettingsView settingsView)
         {
-            settingsView.languageOptions.value = PlayerPrefs.GetInt(PlayerPrefsKeys.SelectedLanguageIndex, 0);
+            settingsView.languageOptions.value = resourceDataService.SelectedLanguageIndex;
         }
 
         public void FillLanguageDropdown(SettingsView settingsView)
@@ -50,7 +53,7 @@ namespace FTRGames.Alpaseh.Services
             {
                 var option = new Dropdown.OptionData(
                     localizationService.GetLocalizationData().Language[i].Name,
-                    Resources.Load<Sprite>("Flags/" + localizationService.GetLanguageFlagFileNames()[i]));
+                    resourceDataService.GetLanguageFlag(i));
 
                 options.Add(option);
             }
