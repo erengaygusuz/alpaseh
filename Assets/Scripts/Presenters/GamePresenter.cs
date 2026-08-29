@@ -58,7 +58,7 @@ namespace FTRGames.Alpaseh.Presenters
         public void Tick()
         {
             scoreService.UpdateScoreValues();
-            gameService.GameCheck(gameView, levelService);
+            gameService.GameCheck(gameView);
         }
 
         private void EventBinding()
