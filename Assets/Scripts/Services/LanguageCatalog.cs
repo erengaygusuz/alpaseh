@@ -57,6 +57,12 @@ namespace FTRGames.Alpaseh.Services
         [SerializeField]
         private string questionNormalizationTargetCharacters;
 
+        [SerializeField]
+        private string wordNumberSourceCharacters;
+
+        [SerializeField]
+        private string wordNumberTargetCharacters;
+
         public string Id => id;
         public TextAsset LocalizationFile => localizationFile;
         public TextAsset WordListFile => wordListFile;
@@ -64,5 +70,7 @@ namespace FTRGames.Alpaseh.Services
         public string AllowedLetters => allowedLetters;
         public string QuestionNormalizationSourceCharacters => questionNormalizationSourceCharacters;
         public string QuestionNormalizationTargetCharacters => questionNormalizationTargetCharacters;
+        public string WordNumberSourceCharacters => wordNumberSourceCharacters;
+        public string WordNumberTargetCharacters => wordNumberTargetCharacters;
     }
 }
