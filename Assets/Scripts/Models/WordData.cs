@@ -1,86 +1,111 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FTRGames.Alpaseh.Models
 {
     public class WordData
     {
-        public List<List<string>> LevelWordList = new List<List<string>>();
+        private const int MinimumWordLength = 3;
+        private const int MaximumWordLength = 7;
+
+        private readonly Random random = new Random();
+
+        public List<List<string>> LevelWordList { get; } = new List<List<string>>();
 
         public WordData(string wordText, char[] identifiedLetters)
         {
-            for (int i = 3; i < 8; i++)
+            if (wordText == null)
             {
-                AddWordsToList(wordText.Split('\n'), i, IdentifiedLetters(identifiedLetters));
+                throw new ArgumentNullException(nameof(wordText));
+            }
+
+            HashSet<char> allowedLetters = BuildAllowedLetters(identifiedLetters);
+            string[] words = ParseWords(wordText);
+
+            for (int wordLength = MinimumWordLength; wordLength <= MaximumWordLength; wordLength++)
+            {
+                LevelWordList.Add(BuildWordList(words, wordLength, allowedLetters));
             }
         }
 
-        private List<Letter> IdentifiedLetters(char[] identifiedLetters)
+        private static HashSet<char> BuildAllowedLetters(char[] identifiedLetters)
         {
-            var letters = new List<Letter>();
-
-            for (int i = 0; i < identifiedLetters.Length; i = i + 2)
+            if (identifiedLetters == null)
             {
-                letters.Add(new Letter
-                {
-                    LowerCase = identifiedLetters[i],
-                    UpperCase = identifiedLetters[i + 1]
-                });
+                throw new ArgumentNullException(nameof(identifiedLetters));
             }
 
-            return letters;
+            if (identifiedLetters.Length % 2 != 0)
+            {
+                throw new ArgumentException(
+                    "Identified letters must contain lower/upper case pairs.",
+                    nameof(identifiedLetters));
+            }
+
+            var allowedLetters = new HashSet<char>();
+
+            for (int i = 0; i < identifiedLetters.Length; i += 2)
+            {
+                allowedLetters.Add(identifiedLetters[i]);
+            }
+
+            return allowedLetters;
         }
 
-        private void AddWordsToList(string[] wordList, int wordSize, List<Letter> selectedLetters)
+        private static string[] ParseWords(string wordText)
         {
-            var tempList = new List<string>();
+            return wordText.Split(
+                new[] { '\r', '\n' },
+                StringSplitOptions.RemoveEmptyEntries);
+        }
 
-            for (int i = 0; i < wordList.Length; i++)
+        private List<string> BuildWordList(
+            string[] words,
+            int wordLength,
+            HashSet<char> allowedLetters)
+        {
+            var uniqueWords = new HashSet<string>(StringComparer.Ordinal);
+            var result = new List<string>();
+
+            foreach (string rawWord in words)
             {
-                if (wordList[i].Length > 0)
+                string word = rawWord.Trim().ToLowerInvariant();
+
+                if (word.Length != wordLength || !UsesOnlyAllowedLetters(word, allowedLetters))
                 {
-                    var selectedWord = wordList[i].Substring(0, wordList[i].Length - 1);
+                    continue;
+                }
 
-                    var selectedWordListCount = selectedWord.Length;
-
-                    if (selectedWordListCount == wordSize)
-                    {
-                        var wordLetterCount = 0;
-
-                        for (int k = 0; k < selectedWordListCount; k++)
-                        {
-                            for (int j = 0; j < selectedLetters.Count; j++)
-                            {
-                                selectedWord = selectedWord.ToLower();
-
-                                var selectedWordLetter = selectedWord[k];
-                                var selectedLetter = selectedLetters[j];
-
-                                if (selectedWordLetter == selectedLetter.LowerCase)
-                                {
-                                    wordLetterCount++;
-                                }
-                            }
-                        }
-
-                        if (wordLetterCount == selectedWordListCount)
-                        {
-                            if (!tempList.Contains(selectedWord))
-                            {
-                                tempList.Add(selectedWord);
-                            }
-                        }
-                    }
+                if (uniqueWords.Add(word))
+                {
+                    result.Add(word);
                 }
             }
 
-            LevelWordList.Add(ShuffleList(tempList));
+            Shuffle(result);
+            return result;
         }
 
-        private List<string> ShuffleList(List<string> list)
+        private static bool UsesOnlyAllowedLetters(string word, HashSet<char> allowedLetters)
         {
-            return list.OrderBy(a => Guid.NewGuid()).ToList();
+            foreach (char letter in word)
+            {
+                if (!allowedLetters.Contains(letter))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void Shuffle(List<string> list)
+        {
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                int swapIndex = random.Next(i + 1);
+                (list[i], list[swapIndex]) = (list[swapIndex], list[i]);
+            }
         }
     }
 }
