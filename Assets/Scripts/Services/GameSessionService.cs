@@ -1,9 +1,15 @@
+using System;
+
 namespace FTRGames.Alpaseh.Services
 {
     public sealed class GameSessionService
     {
-        private const float InitialTime = 200.0f;
-        private const float InitialLife = 10.0f;
+        private readonly GameConfig gameConfig;
+
+        public GameSessionService(GameConfig gameConfig)
+        {
+            this.gameConfig = gameConfig ?? throw new ArgumentNullException(nameof(gameConfig));
+        }
 
         public float TotalTime { get; private set; }
         public float TotalLife { get; private set; }
@@ -18,8 +24,8 @@ namespace FTRGames.Alpaseh.Services
 
         public void Initialize()
         {
-            TotalTime = InitialTime;
-            TotalLife = InitialLife;
+            TotalTime = gameConfig.InitialTime;
+            TotalLife = gameConfig.InitialLife;
             TotalScore = 0;
 
             IsGameOver = false;
