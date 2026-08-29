@@ -73,52 +73,26 @@ namespace FTRGames.Alpaseh.Services
             return language.AllowedLetters;
         }
 
-        public string GetQuestionNormalizationSourceCharacters(int languageIndex)
-        {
-            return GetLanguage(languageIndex).QuestionNormalizationSourceCharacters ?? string.Empty;
-        }
-
-        public string GetQuestionNormalizationTargetCharacters(int languageIndex)
+        public CharacterMapping GetQuestionNormalizationMapping(int languageIndex)
         {
             LanguageCatalogEntry language = GetLanguage(languageIndex);
-            string sourceCharacters = language.QuestionNormalizationSourceCharacters ?? string.Empty;
-            string targetCharacters = language.QuestionNormalizationTargetCharacters ?? string.Empty;
 
-            ValidateCharacterMappingLength(
+            return CharacterMapping.Optional(
                 language.Id,
                 "question normalization",
-                sourceCharacters,
-                targetCharacters);
-
-            return targetCharacters;
+                language.QuestionNormalizationSourceCharacters,
+                language.QuestionNormalizationTargetCharacters);
         }
 
-        public string GetWordNumberSourceCharacters(int languageIndex)
+        public CharacterMapping GetWordNumberMapping(int languageIndex)
         {
             LanguageCatalogEntry language = GetLanguage(languageIndex);
 
-            if (string.IsNullOrWhiteSpace(language.WordNumberSourceCharacters))
-            {
-                throw new InvalidOperationException(
-                    $"Language '{language.Id}' is missing its word number source characters in the language catalog.");
-            }
-
-            return language.WordNumberSourceCharacters;
-        }
-
-        public string GetWordNumberTargetCharacters(int languageIndex)
-        {
-            LanguageCatalogEntry language = GetLanguage(languageIndex);
-            string sourceCharacters = language.WordNumberSourceCharacters ?? string.Empty;
-            string targetCharacters = language.WordNumberTargetCharacters ?? string.Empty;
-
-            ValidateCharacterMappingLength(
+            return CharacterMapping.Required(
                 language.Id,
                 "word number",
-                sourceCharacters,
-                targetCharacters);
-
-            return targetCharacters;
+                language.WordNumberSourceCharacters,
+                language.WordNumberTargetCharacters);
         }
 
         private LanguageCatalogEntry GetLanguage(int languageIndex)
@@ -147,21 +121,6 @@ namespace FTRGames.Alpaseh.Services
             }
 
             return asset;
-        }
-
-        private static void ValidateCharacterMappingLength(
-            string languageId,
-            string mappingName,
-            string sourceCharacters,
-            string targetCharacters)
-        {
-            if (sourceCharacters.Length == targetCharacters.Length)
-            {
-                return;
-            }
-
-            throw new InvalidOperationException(
-                $"Language '{languageId}' {mappingName} source and target character counts do not match.");
         }
     }
 }
