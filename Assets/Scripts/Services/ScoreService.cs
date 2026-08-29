@@ -1,110 +1,113 @@
-﻿using FTRGames.Alpaseh.Models;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+using FTRGames.Alpaseh.Models;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace FTRGames.Alpaseh.Services
 {
-    public class ScoreService
+    public sealed class ScoreService
     {
-        private SortedSet<ScoreInfo> ScoreList { get; set; }
+        private const int MaxScoreCount = 100;
+        private const string ScoreListFileName = "score-list.json";
+        private const string EmptyScoreListJson = "[]";
 
-        public bool IsNewScoreAdded { get; set; }
+        private readonly SortedSet<ScoreInfo> scoreList = new SortedSet<ScoreInfo>(new ScoreInfoScoreComparer());
 
         private string scoreListPath;
 
+        public bool IsNewScoreAdded { get; set; }
+
         public void Initialization()
         {
-            ScoreListPathInit();
-
-            ScoreListInit();
-
-            GetScoreListFromJSON();
+            scoreListPath = Path.Combine(Application.persistentDataPath, ScoreListFileName);
+            LoadScoreList();
         }
 
         public void UpdateScoreValues()
         {
-            if (IsNewScoreAdded)
+            if (!IsNewScoreAdded)
             {
-                SetScoreListToJSON();
-
-                IsNewScoreAdded = false;
-            }
-        }
-
-        private void ScoreListPathInit()
-        {
-            scoreListPath = Application.persistentDataPath + "/" + "score-list.json";
-        }
-
-        private void ScoreListInit()
-        {
-            ScoreList = new SortedSet<ScoreInfo>(new ScoreInfoScoreComparer());
-        }
-
-        private void GetScoreListFromJSON()
-        {
-            if (!File.Exists(scoreListPath))
-            {
-                FileStream fileStream = File.Create(scoreListPath);
-
-                Byte[] emptyContent = new UTF8Encoding(true).GetBytes("[]");
-                fileStream.Write(emptyContent, 0, emptyContent.Length);
-                fileStream.Close();
+                return;
             }
 
-            List<ScoreInfo> tempScoreList = JsonConvert.DeserializeObject<List<ScoreInfo>>(File.ReadAllText(scoreListPath));
-
-            for (int i = 0; i < tempScoreList.Count; i++)
-            {
-                ScoreList.Add(tempScoreList[i]);
-            }
-        }
-
-        private void SetScoreListToJSON()
-        {
-            File.WriteAllText(scoreListPath, JsonConvert.SerializeObject(ScoreList));
+            SaveScoreList();
+            IsNewScoreAdded = false;
         }
 
         public bool CompareNewScoreWithScoresInTheList(int newScore)
         {
-            if (newScore > 0)
+            if (newScore <= 0)
             {
-                if (ScoreList.Count < 100)
-                {
-                    ScoreList.Add(new ScoreInfo { Username = PlayerPrefs.GetString(PlayerPrefsKeys.Username, ""), Score = newScore });
-
-                    return true;
-                }
-
-                else
-                {
-                    if (ScoreList.Min.Score < newScore)
-                    {
-                        ScoreList.Remove(ScoreList.Min);
-                        ScoreList.Add(new ScoreInfo { Username = PlayerPrefs.GetString(PlayerPrefsKeys.Username, ""), Score = newScore });
-
-                        return true;
-                    }
-                }
+                return false;
             }
 
-            return false;
+            if (scoreList.Count < MaxScoreCount)
+            {
+                AddScore(newScore);
+                return true;
+            }
+
+            ScoreInfo lowestScore = scoreList.Min;
+
+            if (lowestScore == null || lowestScore.Score >= newScore)
+            {
+                return false;
+            }
+
+            scoreList.Remove(lowestScore);
+            AddScore(newScore);
+            return true;
         }
 
         public List<ScoreInfo> GetScoreList()
         {
-            return ScoreList.Reverse().ToList();
+            return scoreList.Reverse().ToList();
         }
 
         public void DeleteAllScoresFromTheList()
         {
-            ScoreList.Clear();
-            SetScoreListToJSON();
+            scoreList.Clear();
+            SaveScoreList();
+        }
+
+        private void LoadScoreList()
+        {
+            EnsureScoreFileExists();
+            scoreList.Clear();
+
+            List<ScoreInfo> loadedScores = JsonConvert.DeserializeObject<List<ScoreInfo>>(
+                File.ReadAllText(scoreListPath)) ?? new List<ScoreInfo>();
+
+            for (int i = 0; i < loadedScores.Count; i++)
+            {
+                scoreList.Add(loadedScores[i]);
+            }
+        }
+
+        private void EnsureScoreFileExists()
+        {
+            if (File.Exists(scoreListPath))
+            {
+                return;
+            }
+
+            File.WriteAllText(scoreListPath, EmptyScoreListJson);
+        }
+
+        private void SaveScoreList()
+        {
+            File.WriteAllText(scoreListPath, JsonConvert.SerializeObject(scoreList));
+        }
+
+        private void AddScore(int score)
+        {
+            scoreList.Add(new ScoreInfo
+            {
+                Username = PlayerPrefs.GetString(PlayerPrefsKeys.Username, string.Empty),
+                Score = score
+            });
         }
     }
 }
